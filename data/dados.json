@@ -1,0 +1,811 @@
+{
+  "heroSlides": [
+    {
+      "eyebrow": "Soluções técnicas para transporte industrial",
+      "title": "Soluções completas em correias transportadoras",
+      "accent": "para sua indústria não parar.",
+      "text": "Fornecimento, instalação, conserto e manutenção de correias em PU, PVC, borracha, nylon e transmissão.",
+      "image": "/images/hero.webp",
+      "cta": {
+        "label": "Solicitar orçamento",
+        "to": "/solicitar-orcamento"
+      }
+    },
+    {
+      "eyebrow": "Principal área de atuação",
+      "title": "Correias sanitárias para frigoríficos",
+      "accent": "higiene, resistência e confiabilidade.",
+      "text": "Resistência a cortes, graxas, óleos, baixas temperaturas e processos frequentes de higienização.",
+      "image": "/images/setores/frigorificos.webp",
+      "cta": {
+        "label": "Ver soluções para frigoríficos",
+        "to": "/setores#frigorificos"
+      }
+    },
+    {
+      "eyebrow": "Assistência técnica 24h",
+      "title": "Instalação, conserto e manutenção",
+      "accent": "para reduzir suas paradas.",
+      "text": "Vulcanização, colagem, revestimento de rolos e acompanhamento preventivo da sua operação.",
+      "image": "/images/servicos/vulcanizacao.webp",
+      "cta": {
+        "label": "Conhecer serviços",
+        "to": "/servicos"
+      }
+    }
+  ],
+  "products": [
+    {
+      "slug": "correia-pu-sanitaria",
+      "name": "Correia PU Sanitária",
+      "category": "correias-pu",
+      "categoryLabel": "Correias em PU",
+      "summary": "Solução desenvolvida para processos que exigem higiene, resistência e facilidade de limpeza.",
+      "description": "A Correia PU Sanitária é indicada para linhas de produção sujeitas a cortes, contato com graxas, óleos, produtos químicos e baixas temperaturas. Sua composição reduz problemas comuns como desfiamento lateral, trincas e rachaduras, contribuindo para maior durabilidade e segurança operacional.",
+      "benefits": [
+        "Maior vida útil",
+        "Elevada resistência a cortes",
+        "Não desfia lateralmente",
+        "Não trinca nem racha",
+        "Baixa absorção de graxas e óleos",
+        "Resistência a produtos químicos",
+        "Bom desempenho em baixas temperaturas",
+        "Facilidade de higienização"
+      ],
+      "applications": [
+        "Frigoríficos",
+        "Indústria alimentícia",
+        "Panificadoras",
+        "Produção de biscoitos",
+        "Processos com higienização frequente"
+      ],
+      "image": "/images/produtos/correia-pu-sanitaria.webp",
+      "cta": "Solicitar orçamento",
+      "relatedServices": [
+        "instalacao-conserto-correias-pu",
+        "aplicacao-guias-taliscas",
+        "consultoria-acompanhamento-preventivo"
+      ],
+      "relatedSectors": [
+        "frigorificos",
+        "industria-farmaceutica",
+        "panificacao-biscoitos"
+      ],
+      "featured": true,
+      "seoTitle": "Correia PU Sanitária para Indústrias | Elotec",
+      "seoDescription": "Correia PU sanitária resistente a cortes, óleos, graxas e baixas temperaturas, indicada para processos que exigem fácil higienização."
+    },
+    {
+      "slug": "correia-pu-tracao-positiva",
+      "name": "Correia PU de Tração Positiva",
+      "category": "correias-pu",
+      "categoryLabel": "Correias em PU",
+      "summary": "Movimentação precisa, baixo alongamento e estabilidade para processos que exigem maior controle da correia.",
+      "description": "A correia de tração positiva trabalha de forma sincronizada com o sistema de acionamento, reduzindo o risco de desalinhamento e melhorando a estabilidade da operação. É indicada para ambientes que exigem facilidade de higienização, resistência química e elevada resistência a cortes.",
+      "benefits": [
+        "Alta resistência química",
+        "Baixo índice de alongamento",
+        "Menor risco de desalinhamento",
+        "Elevada resistência a cortes",
+        "Fácil higienização",
+        "Maior estabilidade durante a operação"
+      ],
+      "applications": [
+        "Frigoríficos",
+        "Indústria alimentícia",
+        "Indústria farmacêutica",
+        "Sistemas de transporte sincronizado",
+        "Processos que exigem posicionamento estável"
+      ],
+      "image": "/images/produtos/correia-pu-tracao-positiva.webp",
+      "cta": "Falar com um especialista",
+      "relatedServices": [
+        "instalacao-conserto-correias-pu",
+        "aplicacao-guias-taliscas"
+      ],
+      "relatedSectors": [
+        "frigorificos",
+        "industria-farmaceutica",
+        "panificacao-biscoitos"
+      ],
+      "featured": true,
+      "seoTitle": "Correia PU de Tração Positiva | Elotec Correias",
+      "seoDescription": "Correia PU de tração positiva com baixo alongamento, resistência química, fácil higienização e menor risco de desalinhamento."
+    },
+    {
+      "slug": "correia-pu-lonada",
+      "name": "Correia PU Lonada",
+      "category": "correias-pu",
+      "categoryLabel": "Correias em PU",
+      "summary": "Flexibilidade, aderência e resistência para aplicações com polias de pequenos diâmetros.",
+      "description": "A Correia PU Lonada combina a resistência do poliuretano com reforço em lona, oferecendo flexibilidade e estabilidade em aplicações industriais. Pode trabalhar com diâmetros menores e suporta temperaturas de até 100 °C, conforme as condições da aplicação.",
+      "benefits": [
+        "Trabalha com diâmetros pequenos",
+        "Suporta temperaturas de até 100 °C",
+        "Propriedade antiestática",
+        "Boa aderência",
+        "Resistência à abrasão",
+        "Resistência a graxas e óleos"
+      ],
+      "image": "/images/produtos/correia-pu-lonada.webp",
+      "cta": "Solicitar avaliação",
+      "relatedServices": [
+        "instalacao-conserto-correias-pu"
+      ],
+      "relatedSectors": [
+        "frigorificos",
+        "panificacao-biscoitos",
+        "industria-moveis"
+      ],
+      "featured": true,
+      "seoTitle": "Correia PU Lonada Industrial | Elotec Correias",
+      "seoDescription": "Correia PU lonada para pequenos diâmetros, temperaturas de até 100 °C e aplicações com abrasão, graxas e óleos."
+    },
+    {
+      "slug": "correia-pvc",
+      "name": "Correia PVC",
+      "category": "correias-pvc",
+      "categoryLabel": "Correias em PVC",
+      "summary": "Uma solução versátil e personalizável para diferentes processos de transporte industrial.",
+      "description": "As correias em PVC podem ser configuradas com guias, taliscas e outros elementos para atender transportes planos, inclinados ou com barreiras. O material apresenta resistência química, propriedade antiestática e baixo coeficiente de atrito.",
+      "benefits": [
+        "Resistência química",
+        "Permite aplicação de guias e taliscas",
+        "Propriedade antiestática",
+        "Baixo coeficiente de atrito",
+        "Adequada para transporte com barreiras",
+        "Diferentes possibilidades de personalização"
+      ],
+      "image": "/images/produtos/correia-pvc.webp",
+      "cta": "Solicitar orçamento",
+      "relatedServices": [
+        "instalacao-conserto-correias-pvc",
+        "aplicacao-guias-taliscas"
+      ],
+      "relatedSectors": [
+        "frigorificos",
+        "industria-farmaceutica",
+        "industria-moveis",
+        "panificacao-biscoitos"
+      ],
+      "featured": true,
+      "seoTitle": "Correia Transportadora em PVC | Elotec Correias",
+      "seoDescription": "Correia transportadora em PVC resistente a produtos químicos, antiestática e personalizável com guias e taliscas."
+    },
+    {
+      "slug": "correia-pvc-elevadora-canecas",
+      "name": "Correia PVC Elevadora de Canecas",
+      "category": "correias-pvc",
+      "categoryLabel": "Correias em PVC",
+      "summary": "Leveza, resistência e menor esforço para sistemas de elevação de materiais.",
+      "description": "A Correia PVC Elevadora de Canecas foi desenvolvida para reduzir o peso e o tensionamento do sistema, contribuindo para a preservação de rolamentos e mancais. Sua composição oferece resistência a óleos, umidade, rasgos e impactos.",
+      "benefits": [
+        "Menor peso",
+        "Maior vida útil de rolamentos e mancais",
+        "Melhor fixação das canecas",
+        "Propriedade antichama",
+        "Propriedade antiestática",
+        "Resistência a óleos e umidade",
+        "Resistência a rasgos e impactos",
+        "Baixo tensionamento",
+        "Potencial economia de energia",
+        "Menor necessidade de manutenção",
+        "Baixo coeficiente de atrito"
+      ],
+      "applications": [
+        "Cerealistas",
+        "Elevadores de grãos",
+        "Transporte vertical",
+        "Beneficiamento e armazenagem"
+      ],
+      "image": "/images/produtos/correia-pvc-elevadora.webp",
+      "cta": "Solicitar dimensionamento",
+      "relatedServices": [
+        "instalacao-conserto-correias-pvc"
+      ],
+      "relatedSectors": [
+        "cerealistas"
+      ],
+      "featured": true,
+      "seoTitle": "Correia PVC para Elevador de Canecas | Elotec",
+      "seoDescription": "Correia PVC para elevadores de canecas, leve, antiestática, resistente à umidade, óleos, rasgos e impactos."
+    },
+    {
+      "slug": "correia-de-borracha",
+      "name": "Correia de Borracha",
+      "category": "correias-borracha",
+      "categoryLabel": "Correias de Borracha",
+      "summary": "Robustez para trabalhos pesados, abrasão, impacto e condições severas.",
+      "description": "A Correia de Borracha é indicada para operações que exigem elevada resistência mecânica e capacidade de suportar materiais abrasivos, impactos, umidade e tensões operacionais.",
+      "benefits": [
+        "Alta resistência à abrasão",
+        "Resistência a óleos e umidade",
+        "Resistência a rasgos e impactos",
+        "Indicada para serviços pesados",
+        "Adequada a condições severas",
+        "Boa assimilação das tensões de operação",
+        "Baixo alongamento permanente"
+      ],
+      "applications": [
+        "Britadores",
+        "Picadores de lenha",
+        "Transporte de cavacos",
+        "Cerealistas",
+        "Operações industriais pesadas"
+      ],
+      "image": "/images/produtos/correia-borracha.webp",
+      "cta": "Solicitar orçamento",
+      "relatedServices": [
+        "instalacao-conserto-correias-borracha"
+      ],
+      "relatedSectors": [
+        "britadores",
+        "lenha-cavacos",
+        "cerealistas"
+      ],
+      "featured": true,
+      "seoTitle": "Correia Transportadora de Borracha | Elotec",
+      "seoDescription": "Correia de borracha resistente à abrasão, óleos, umidade, rasgos e impactos para serviços pesados e condições severas."
+    },
+    {
+      "slug": "canecas-para-elevadores",
+      "name": "Canecas para Elevadores",
+      "category": "componentes",
+      "categoryLabel": "Componentes Industriais",
+      "summary": "Componentes leves e resistentes para transporte vertical de grãos e materiais.",
+      "description": "Canecas desenvolvidas para sistemas de elevação de grãos, com material atóxico, superfície antiaderente e propriedade antiestática. Exigem menos esforço do equipamento e são de fácil instalação.",
+      "benefits": [
+        "Indicadas para transporte de grãos",
+        "Exigem menos esforço do equipamento",
+        "Material atóxico",
+        "Superfície antiaderente",
+        "Propriedade antiestática",
+        "Fácil instalação"
+      ],
+      "image": "/images/produtos/canecas.webp",
+      "cta": "Consultar modelos disponíveis",
+      "relatedServices": [
+        "consultoria-acompanhamento-preventivo"
+      ],
+      "relatedSectors": [
+        "cerealistas"
+      ],
+      "seoTitle": "Canecas para Elevadores de Grãos | Elotec",
+      "seoDescription": "Canecas leves, atóxicas, antiaderentes e antiestáticas para transporte e elevação de grãos."
+    },
+    {
+      "slug": "rolos-e-roletes",
+      "name": "Rolos e Roletes Industriais",
+      "category": "componentes",
+      "categoryLabel": "Componentes Industriais",
+      "summary": "Componentes desenvolvidos conforme o ambiente, o transportador e as condições de operação.",
+      "description": "Rolos e roletes industriais configurados para cada aplicação, com opções de materiais, vedação e acabamento conforme o ambiente de trabalho e as exigências do transportador.",
+      "features": [
+        "Aço carbono",
+        "Opções galvanizadas",
+        "Opções em aço inox",
+        "Rolamentos em inox",
+        "Vedação em labirinto ou retentor",
+        "Pintura automotiva a pó",
+        "Pintura eletrostática",
+        "Configurações para diferentes necessidades"
+      ],
+      "benefits": [],
+      "image": "/images/produtos/rolos-roletes.webp",
+      "cta": "Solicitar fabricação ou orçamento",
+      "relatedServices": [
+        "revestimento-de-rolos",
+        "consultoria-acompanhamento-preventivo"
+      ],
+      "relatedSectors": [
+        "frigorificos",
+        "britadores",
+        "cerealistas",
+        "fabricantes-equipamentos"
+      ],
+      "seoTitle": "Rolos e Roletes Industriais | Elotec Correias",
+      "seoDescription": "Rolos e roletes industriais em aço carbono, galvanizado ou inox, com diferentes sistemas de vedação e acabamentos."
+    },
+    {
+      "slug": "material-para-revestimento",
+      "name": "Material para Revestimento Industrial",
+      "category": "revestimentos",
+      "categoryLabel": "Revestimentos",
+      "summary": "Material flexível e resistente para proteção de superfícies expostas à abrasão, impacto e cortes.",
+      "description": "Material de revestimento flexível, com alta resistência à abrasão, impactos e cortes, indicado para proteção de superfícies industriais expostas a condições severas.",
+      "benefits": [
+        "Alta resistência à abrasão",
+        "Resistência a impactos",
+        "Resistência a cortes",
+        "Boa flexibilidade",
+        "Boa elasticidade"
+      ],
+      "applications": [
+        "Revestimento de tubos",
+        "Revestimento de tanques",
+        "Revestimento de rolos"
+      ],
+      "image": "/images/produtos/revestimento.webp",
+      "cta": "Falar com a equipe técnica",
+      "relatedServices": [
+        "revestimento-de-rolos"
+      ],
+      "relatedSectors": [
+        "britadores",
+        "lenha-cavacos"
+      ],
+      "seoTitle": "Material para Revestimento Industrial | Elotec",
+      "seoDescription": "Material flexível e resistente para revestimento de tubos, tanques e rolos expostos à abrasão, impacto e cortes."
+    }
+  ],
+  "productCategories": [
+    {
+      "slug": "correias-pu",
+      "label": "Correias em PU",
+      "description": "Soluções com elevada resistência, facilidade de limpeza e diferentes configurações para aplicações sanitárias e industriais."
+    },
+    {
+      "slug": "correias-pvc",
+      "label": "Correias em PVC",
+      "description": "Correias versáteis que permitem aplicação de guias, taliscas e acabamentos adequados ao transporte de diferentes produtos."
+    },
+    {
+      "slug": "correias-borracha",
+      "label": "Correias de Borracha",
+      "description": "Indicadas para trabalhos pesados, abrasão, impacto e ambientes com condições severas."
+    },
+    {
+      "slug": "componentes",
+      "label": "Componentes Industriais",
+      "description": "Canecas, rolos e roletes para sistemas transportadores e elevadores."
+    },
+    {
+      "slug": "revestimentos",
+      "label": "Revestimentos",
+      "description": "Materiais e serviços para aumentar a tração, durabilidade e eficiência de rolos e equipamentos."
+    }
+  ],
+  "services": [
+    {
+      "slug": "instalacao-conserto-correias-pu",
+      "name": "Instalação e conserto de correias em PU",
+      "shortName": "Correias em PU",
+      "category": "instalacao-conserto",
+      "summary": "Instalação e recuperação de correias em PU com processo de vulcanização.",
+      "description": "A Elotec realiza instalação e recuperação de correias em PU com até 1.100 mm de largura, utilizando processo de vulcanização. Conforme o tipo de intervenção e as condições do equipamento, determinados serviços podem ser realizados em aproximadamente 30 minutos.",
+      "techInfo": [
+        "Largura de até 1.100 mm",
+        "Processo de vulcanização",
+        "Atendimento para instalação e conserto",
+        "Execução rápida conforme a aplicação"
+      ],
+      "image": "/images/servicos/vulcanizacao.webp",
+      "cta": "Solicitar atendimento",
+      "relatedProducts": [
+        "correia-pu-sanitaria",
+        "correia-pu-tracao-positiva",
+        "correia-pu-lonada"
+      ],
+      "relatedSectors": [
+        "frigorificos",
+        "industria-farmaceutica",
+        "panificacao-biscoitos"
+      ]
+    },
+    {
+      "slug": "instalacao-conserto-correias-pvc",
+      "name": "Instalação e conserto de correias em PVC",
+      "shortName": "Correias em PVC",
+      "category": "instalacao-conserto",
+      "summary": "Instalação e recuperação de correias em PVC com processo de vulcanização.",
+      "description": "Serviços de instalação e recuperação de correias em PVC com até 900 mm de largura, utilizando processo de vulcanização. Conforme a complexidade e as condições da correia, determinados serviços podem ser concluídos em aproximadamente 60 minutos.",
+      "techInfo": [
+        "Largura de até 900 mm",
+        "Processo de vulcanização",
+        "Instalação e recuperação",
+        "Possibilidade de personalização"
+      ],
+      "image": "/images/servicos/vulcanizacao.webp",
+      "cta": "Solicitar atendimento",
+      "relatedProducts": [
+        "correia-pvc",
+        "correia-pvc-elevadora-canecas"
+      ],
+      "relatedSectors": [
+        "frigorificos",
+        "industria-moveis",
+        "cerealistas"
+      ]
+    },
+    {
+      "slug": "instalacao-conserto-correias-borracha",
+      "name": "Instalação e conserto de correias em borracha",
+      "shortName": "Correias em Borracha",
+      "category": "instalacao-conserto",
+      "summary": "Instalação e recuperação de correias de borracha com colagem a frio.",
+      "description": "A Elotec realiza instalação e recuperação de correias de borracha com até 1.000 mm de largura. O processo utiliza colagem a frio e apresenta tempo reduzido de secagem, de aproximadamente três horas, conforme as condições da aplicação.",
+      "techInfo": [
+        "Largura de até 1.000 mm",
+        "Colagem a frio",
+        "Secagem aproximada de três horas",
+        "Indicado para operações pesadas"
+      ],
+      "image": "/images/servicos/vulcanizacao.webp",
+      "cta": "Solicitar avaliação",
+      "relatedProducts": [
+        "correia-de-borracha"
+      ],
+      "relatedSectors": [
+        "britadores",
+        "lenha-cavacos",
+        "cerealistas"
+      ]
+    },
+    {
+      "slug": "instalacao-conserto-correias-nylon",
+      "name": "Instalação e conserto de correias em nylon",
+      "shortName": "Correias em Nylon",
+      "category": "instalacao-conserto",
+      "summary": "Instalação e recuperação de correias em nylon com vulcanização.",
+      "description": "Serviço técnico para instalação e recuperação de correias em nylon com até 900 mm de largura, utilizando processo de vulcanização.",
+      "techInfo": [
+        "Largura de até 900 mm",
+        "Processo de vulcanização",
+        "Atendimento para instalação e conserto"
+      ],
+      "image": "/images/servicos/vulcanizacao.webp",
+      "cta": "Falar com a equipe técnica",
+      "relatedProducts": [],
+      "relatedSectors": [
+        "fabricantes-equipamentos",
+        "industria-moveis"
+      ]
+    },
+    {
+      "slug": "instalacao-conserto-correias-transmissao",
+      "name": "Instalação e conserto de correias de transmissão",
+      "shortName": "Correias de Transmissão",
+      "category": "instalacao-conserto",
+      "summary": "Instalação e recuperação de correias de transmissão com vulcanização.",
+      "description": "A Elotec realiza instalação e recuperação de correias de transmissão com até 200 mm de largura, utilizando processo de vulcanização.",
+      "techInfo": [
+        "Largura de até 200 mm",
+        "Processo de vulcanização",
+        "Instalação e recuperação",
+        "Atendimento a diferentes equipamentos industriais"
+      ],
+      "image": "/images/servicos/vulcanizacao.webp",
+      "cta": "Solicitar orçamento",
+      "relatedProducts": [],
+      "relatedSectors": [
+        "fabricantes-equipamentos",
+        "industria-moveis",
+        "cerealistas"
+      ]
+    },
+    {
+      "slug": "revestimento-de-rolos",
+      "name": "Revestimento de rolos motores",
+      "shortName": "Revestimento de Rolos",
+      "category": "revestimento",
+      "summary": "Mais tração, menor tensionamento e maior durabilidade para correias e equipamentos.",
+      "description": "O revestimento de rolos motores ajuda a reduzir deslizamentos, melhorar a tração e diminuir a necessidade de tensionamento da correia. A Elotec atende rolos de diferentes tamanhos e oferece superfícies e acabamentos adaptados ao tipo de aplicação.",
+      "features": [
+        "Revestimento de rolos motores",
+        "Atendimento a diversos tamanhos",
+        "Superfícies e acabamentos variados",
+        "Solução adequada à necessidade da aplicação",
+        "Processo de colagem a frio"
+      ],
+      "benefits": [
+        "Maior tração",
+        "Menor necessidade de tensionamento",
+        "Maior vida útil das correias",
+        "Redução do desgaste dos equipamentos",
+        "Menor necessidade de manutenção",
+        "Maior produtividade",
+        "Potencial redução no consumo de energia"
+      ],
+      "image": "/images/servicos/revestimento-rolos.webp",
+      "cta": "Solicitar avaliação do rolo",
+      "relatedProducts": [
+        "rolos-e-roletes",
+        "material-para-revestimento"
+      ],
+      "relatedSectors": [
+        "frigorificos",
+        "britadores",
+        "cerealistas",
+        "industria-moveis"
+      ],
+      "seoTitle": "Revestimento de Rolos Industriais | Elotec",
+      "seoDescription": "Revestimento de rolos motores para aumentar a tração, reduzir tensionamento e prolongar a vida útil das correias e equipamentos."
+    },
+    {
+      "slug": "aplicacao-guias-taliscas",
+      "name": "Aplicação de guias e taliscas",
+      "shortName": "Guias e Taliscas",
+      "category": "personalizacao",
+      "summary": "Personalização da correia para melhorar direcionamento, estabilidade e transporte em linhas planas ou inclinadas.",
+      "description": "A Elotec aplica guias e taliscas em correias de PU e PVC, com diferentes formatos e dimensões. A configuração é definida conforme o produto transportado, a inclinação da linha e as características do equipamento.",
+      "features": [
+        "Aplicação em PU e PVC",
+        "Diferentes tamanhos",
+        "Diversos formatos",
+        "Processo de vulcanização",
+        "Colagem a quente",
+        "Soluções personalizadas"
+      ],
+      "image": "/images/servicos/guias-taliscas.webp",
+      "cta": "Enviar aplicação para análise",
+      "relatedProducts": [
+        "correia-pu-sanitaria",
+        "correia-pvc",
+        "correia-pu-tracao-positiva"
+      ],
+      "relatedSectors": [
+        "frigorificos",
+        "panificacao-biscoitos",
+        "industria-moveis"
+      ],
+      "seoTitle": "Aplicação de Guias e Taliscas em Correias | Elotec",
+      "seoDescription": "Aplicação de guias e taliscas em correias PU e PVC, com diferentes tamanhos, formas e processos de vulcanização."
+    },
+    {
+      "slug": "consultoria-acompanhamento-preventivo",
+      "name": "Consultoria técnica e acompanhamento preventivo",
+      "shortName": "Consultoria Preventiva",
+      "category": "consultoria",
+      "summary": "Avaliações periódicas para melhorar o desempenho das correias e reduzir o risco de paradas inesperadas.",
+      "description": "A consultoria da Elotec acompanha a aplicação dos materiais, o alinhamento das correias e as condições de transportadores, rolos e roletes. O serviço pode ser contratado de forma recorrente e ajuda a identificar desgastes e necessidades de manutenção antes que provoquem falhas maiores.",
+      "activities": [
+        "Orientação na aplicação dos materiais",
+        "Avaliação da utilização das correias",
+        "Verificação do alinhamento",
+        "Avaliação de transportadores",
+        "Avaliação de rolos e roletes",
+        "Acompanhamento da performance",
+        "Recomendações preventivas"
+      ],
+      "image": "/images/servicos/consultoria.webp",
+      "cta": "Conhecer o acompanhamento mensal",
+      "relatedProducts": [
+        "rolos-e-roletes"
+      ],
+      "relatedSectors": [
+        "frigorificos",
+        "britadores",
+        "cerealistas",
+        "industria-farmaceutica"
+      ],
+      "seoTitle": "Consultoria em Correias Transportadoras | Elotec",
+      "seoDescription": "Avaliação preventiva de correias, transportadores, rolos e roletes para reduzir falhas, paradas e custos de manutenção."
+    }
+  ],
+  "sectors": [
+    {
+      "slug": "frigorificos",
+      "name": "Frigoríficos",
+      "subtitle": "Higiene, resistência e confiabilidade para linhas que não podem parar.",
+      "homeText": "Correias sanitárias, resistentes a cortes, graxas, óleos, baixas temperaturas e processos frequentes de higienização.",
+      "description": "As linhas de processamento em frigoríficos exigem correias resistentes a cortes, contato com graxas e óleos, baixas temperaturas e ciclos frequentes de higienização. A Elotec fornece, instala e realiza a manutenção de correias e componentes adequados às diferentes etapas da produção.",
+      "challenges": [
+        "Higienização frequente",
+        "Contato com graxas e óleos",
+        "Cortes e impactos",
+        "Baixas temperaturas",
+        "Desalinhamento",
+        "Paradas não programadas"
+      ],
+      "relatedProducts": [
+        "correia-pu-sanitaria",
+        "correia-pu-tracao-positiva",
+        "correia-pu-lonada",
+        "correia-pvc"
+      ],
+      "relatedServices": [
+        "aplicacao-guias-taliscas",
+        "instalacao-conserto-correias-pu",
+        "revestimento-de-rolos",
+        "consultoria-acompanhamento-preventivo"
+      ],
+      "image": "/images/setores/frigorificos.webp",
+      "cta": "Solicitar avaliação da linha",
+      "highlight": true,
+      "seoTitle": "Correias Transportadoras para Frigoríficos | Elotec",
+      "seoDescription": "Correias sanitárias, tração positiva, instalação, manutenção e componentes para linhas de produção de frigoríficos."
+    },
+    {
+      "slug": "industria-farmaceutica",
+      "name": "Indústria Farmacêutica",
+      "subtitle": "Soluções para processos que exigem limpeza, estabilidade e resistência química.",
+      "homeText": "Soluções que favorecem higienização, resistência química, estabilidade e precisão no transporte.",
+      "description": "A Elotec atende aplicações industriais que precisam de materiais resistentes, fáceis de higienizar e configurados para um transporte estável.",
+      "needs": [
+        "Facilidade de limpeza",
+        "Resistência química",
+        "Precisão no transporte",
+        "Menor risco de desalinhamento",
+        "Rolos e componentes em materiais adequados",
+        "Manutenção preventiva"
+      ],
+      "relatedProducts": [
+        "correia-pu-sanitaria",
+        "correia-pu-tracao-positiva",
+        "correia-pvc",
+        "rolos-e-roletes"
+      ],
+      "relatedServices": [
+        "aplicacao-guias-taliscas",
+        "consultoria-acompanhamento-preventivo"
+      ],
+      "image": "/images/setores/farmaceutica.webp",
+      "cta": "Ver soluções para meu setor"
+    },
+    {
+      "slug": "panificacao-biscoitos",
+      "name": "Panificação e Biscoitos",
+      "subtitle": "Soluções para transporte de massas, produtos assados, resfriamento e embalagem.",
+      "homeText": "Correias para transporte de massas, produtos assados, resfriamento, movimentação e embalagem.",
+      "description": "As linhas de panificação e biscoitos exigem correias adequadas às características dos produtos, temperaturas, aderência, limpeza e movimentação entre diferentes etapas.",
+      "applications": [
+        "Transporte de massas",
+        "Movimentação entre etapas",
+        "Resfriamento",
+        "Transporte de produtos assados",
+        "Seleção e embalagem",
+        "Linhas inclinadas"
+      ],
+      "relatedProducts": [
+        "correia-pu-sanitaria",
+        "correia-pu-lonada",
+        "correia-pu-tracao-positiva",
+        "correia-pvc"
+      ],
+      "relatedServices": [
+        "aplicacao-guias-taliscas",
+        "revestimento-de-rolos"
+      ],
+      "image": "/images/setores/panificacao.webp",
+      "cta": "Ver soluções para meu setor"
+    },
+    {
+      "slug": "cerealistas",
+      "name": "Cerealistas",
+      "subtitle": "Eficiência e resistência para movimentação e elevação de grãos.",
+      "homeText": "Correias elevadoras, canecas, rolos e componentes para movimentação e elevação de grãos.",
+      "description": "A Elotec fornece correias, canecas, rolos e componentes para sistemas de transporte e elevação de grãos.",
+      "needs": [
+        "Resistência à umidade",
+        "Resistência a rasgos e impactos",
+        "Menor peso no sistema elevador",
+        "Melhor fixação das canecas",
+        "Menor desgaste de rolamentos e mancais",
+        "Redução da manutenção"
+      ],
+      "relatedProducts": [
+        "correia-pvc-elevadora-canecas",
+        "canecas-para-elevadores",
+        "correia-de-borracha",
+        "rolos-e-roletes"
+      ],
+      "relatedServices": [
+        "revestimento-de-rolos",
+        "instalacao-conserto-correias-transmissao"
+      ],
+      "image": "/images/setores/cerealistas.webp",
+      "cta": "Avaliar minha linha"
+    },
+    {
+      "slug": "britadores",
+      "name": "Britadores",
+      "subtitle": "Resistência à abrasão, impacto e condições severas de operação.",
+      "homeText": "Correias e componentes resistentes à abrasão, impactos e condições severas de trabalho.",
+      "description": "Operações de britagem exigem correias e componentes robustos, capazes de suportar materiais abrasivos, cargas elevadas, impactos e tensões constantes.",
+      "relatedProducts": [
+        "correia-de-borracha",
+        "rolos-e-roletes",
+        "material-para-revestimento"
+      ],
+      "relatedServices": [
+        "revestimento-de-rolos",
+        "instalacao-conserto-correias-borracha",
+        "consultoria-acompanhamento-preventivo"
+      ],
+      "image": "/images/setores/britadores.webp",
+      "cta": "Ver soluções para meu setor"
+    },
+    {
+      "slug": "industria-moveis",
+      "name": "Indústria de Móveis",
+      "subtitle": "Soluções para movimentação, corte, lixamento e acabamento.",
+      "homeText": "Soluções para transporte de chapas, corte, lixamento, pintura, acabamento e movimentação interna.",
+      "description": "A Elotec atende sistemas de transporte utilizados em diferentes etapas da fabricação de móveis e processamento de chapas.",
+      "applications": [
+        "Transporte de chapas",
+        "Alimentação de máquinas",
+        "Linhas de corte",
+        "Lixamento",
+        "Pintura",
+        "Acabamento",
+        "Movimentação interna"
+      ],
+      "relatedProducts": [
+        "correia-pvc",
+        "correia-pu-lonada",
+        "rolos-e-roletes"
+      ],
+      "relatedServices": [
+        "instalacao-conserto-correias-transmissao",
+        "aplicacao-guias-taliscas",
+        "revestimento-de-rolos"
+      ],
+      "image": "/images/setores/moveis.webp",
+      "cta": "Ver soluções para meu setor"
+    },
+    {
+      "slug": "fabricantes-equipamentos",
+      "name": "Fabricantes de Equipamentos",
+      "subtitle": "Correias e componentes adaptados ao projeto e à aplicação da máquina.",
+      "homeText": "Desenvolvimento de correias, rolos e componentes adaptados ao projeto e à aplicação da máquina.",
+      "description": "A Elotec pode apoiar fabricantes na escolha, configuração e fornecimento de correias, rolos, roletes, guias e componentes para novos equipamentos.",
+      "possibilities": [
+        "Escolha do tipo de correia",
+        "Configuração conforme a aplicação",
+        "Aplicação de guias e taliscas",
+        "Desenvolvimento de rolos e roletes",
+        "Fornecimento de correias sob medida",
+        "Apoio na instalação",
+        "Assistência para o cliente final",
+        "Consultoria técnica"
+      ],
+      "relatedProducts": [
+        "rolos-e-roletes",
+        "correia-pvc",
+        "correia-pu-lonada"
+      ],
+      "relatedServices": [
+        "instalacao-conserto-correias-transmissao",
+        "aplicacao-guias-taliscas",
+        "consultoria-acompanhamento-preventivo"
+      ],
+      "image": "/images/setores/equipamentos.webp",
+      "cta": "Desenvolver uma solução"
+    },
+    {
+      "slug": "lenha-cavacos",
+      "name": "Lenha e Cavacos",
+      "subtitle": "Resistência para materiais irregulares, abrasivos e sujeitos a impacto.",
+      "homeText": "Correias resistentes para transporte de materiais irregulares, abrasivos e sujeitos a impacto.",
+      "description": "A Elotec oferece correias e componentes para sistemas que transportam lenha, cavacos e materiais com condições severas de abrasão e impacto.",
+      "relatedProducts": [
+        "correia-de-borracha",
+        "rolos-e-roletes"
+      ],
+      "relatedServices": [
+        "instalacao-conserto-correias-borracha",
+        "revestimento-de-rolos",
+        "consultoria-acompanhamento-preventivo"
+      ],
+      "image": "/images/setores/lenha.webp",
+      "cta": "Ver soluções para meu setor"
+    }
+  ],
+  "contact": {
+    "whatsapp": "5549999551100",
+    "whatsappDisplay": "(49) 9 9955-1100",
+    "phoneAdmin": "(49) 3328-6223",
+    "email": "elotec@elotec.ind.br",
+    "address": {
+      "street": "Rua São Miguel do Oeste, 895-E",
+      "district": "Efapi",
+      "city": "Chapecó",
+      "state": "SC",
+      "zip": "89809-550"
+    },
+    "units": [
+      "Chapecó – SC (sede)",
+      "Toledo – PR (unidade)"
+    ]
+  }
+}

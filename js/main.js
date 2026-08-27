@@ -312,12 +312,13 @@
      8. Barra de progresso de leitura (páginas de catálogo)
      ------------------------------------------------------------------ */
   (function readProgress() {
-    var bar = $('.read-progress');
-    if (!bar) return;
+    var bars = $$('.read-progress');
+    if (!bars.length) return;
     function update() {
       var max = document.documentElement.scrollHeight - window.innerHeight;
       var p = max > 0 ? window.scrollY / max : 0;
-      bar.style.transform = 'scaleX(' + Math.min(Math.max(p, 0), 1) + ')';
+      var scale = 'scaleX(' + Math.min(Math.max(p, 0), 1) + ')';
+      bars.forEach(function (bar) { bar.style.transform = scale; });
     }
     update();
     window.addEventListener('scroll', update, { passive: true });
@@ -328,17 +329,22 @@
      9. Scrollspy da barra de âncoras
      ------------------------------------------------------------------ */
   (function scrollSpy() {
-    var bar = $('.anchor-bar');
-    if (!bar) return;
+    $$('.anchor-bar').forEach(setupSpy);
+
+    function setupSpy(bar) {
     var links = $$('.anchor-item', bar);
     var sections = links
-      .map(function (a) { return document.getElementById(a.getAttribute('href').slice(1)); })
+      .map(function (a) {
+        var href = a.getAttribute('href');
+        return document.getElementById(href.slice(href.lastIndexOf('/') + 1).replace(/^#/, ''));
+      })
       .filter(Boolean);
     if (!sections.length) return;
 
     function setCurrent(id) {
       links.forEach(function (a) {
-        var on = a.getAttribute('href') === '#' + id;
+        var href = a.getAttribute('href');
+        var on = href.slice(href.lastIndexOf('/') + 1).replace(/^#/, '') === id;
         a.classList.toggle('is-current', on);
         if (on) {
           // mantém o item ativo visível no scroller horizontal
@@ -355,6 +361,7 @@
       });
     }, { rootMargin: '-45% 0px -50% 0px' });
     sections.forEach(function (s) { io.observe(s); });
+    }
   })();
 
   /* ------------------------------------------------------------------
@@ -456,17 +463,28 @@
       form.reset();
     });
 
-    // Pré-seleciona produto/serviço/setor a partir da URL (?produto=slug)
-    var params = new URLSearchParams(window.location.search);
-    ['produto', 'servico', 'setor'].forEach(function (key) {
-      var value = params.get(key);
-      var select = form.elements[key];
-      if (!value || !select) return;
-      var match = $$('option', select).find(function (o) {
-        return o.value === value || o.getAttribute('data-slug') === value;
+    // Pré-seleciona produto/serviço/setor a partir da URL (?produto=slug).
+    // Na versão single-file os parâmetros chegam no hash (#/rota?produto=slug).
+    function applyPreselect() {
+      var params = new URLSearchParams(window.location.search);
+      var hashQuery = window.location.hash.split('?')[1];
+      if (hashQuery) {
+        new URLSearchParams(hashQuery).forEach(function (v, k) {
+          if (!params.has(k)) params.set(k, v);
+        });
+      }
+      ['produto', 'servico', 'setor'].forEach(function (key) {
+        var value = params.get(key);
+        var select = form.elements[key];
+        if (!value || !select) return;
+        var match = $$('option', select).find(function (o) {
+          return o.value === value || o.getAttribute('data-slug') === value;
+        });
+        if (match) select.value = match.value;
       });
-      if (match) select.value = match.value;
-    });
+    }
+    applyPreselect();
+    window.addEventListener('hashchange', applyPreselect);
   })();
 
   /* ------------------------------------------------------------------

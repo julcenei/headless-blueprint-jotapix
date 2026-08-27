@@ -46,6 +46,18 @@ Quem só vai hospedar o site não precisa de nada disso — basta subir a pasta.
 - `build/layout.mjs` — `<head>` (meta/OG/JSON-LD), header, footer, faixa de CTA
 - `build/page-home.mjs`, `build/page-catalog.mjs`, `build/page-misc.mjs` — as páginas
 
+## Versão single-file (link compartilhável)
+
+```bash
+node build/build-artifact.mjs   # gera dist/elotec-single.html (~3,5 MB)
+```
+
+As 8 páginas viram rotas em hash (`#/produtos/correia-pvc`), CSS e JS entram
+embutidos e as 22 fotos viram data URIs — cada arquivo uma única vez, atribuído
+em runtime a partir de um mapa. Serve para publicar como Artifact ou mandar o
+arquivo por e-mail: abre em qualquer navegador, sem servidor. `dist/` não é
+versionado; é sempre regerado a partir do site.
+
 ## Decisões de design (o que mudou em relação ao layout original)
 
 - **Marca preservada, apresentação reconstruída.** Azul-marinho + amarelo, chanfros por

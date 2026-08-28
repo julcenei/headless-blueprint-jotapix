@@ -193,6 +193,7 @@ function contact() {
   const c = data.contact;
   return `
   <section class="split-panels" id="contato">
+    <div class="container split-panels__grid">
     <div class="panel panel--navy on-dark">
       <div class="reveal">
         <p class="eyebrow" style="color:#fff">Onde estamos</p>
@@ -234,6 +235,7 @@ function contact() {
           <a class="btn btn--whats" href="${waLink()}" target="_blank" rel="noopener">${icon('whatsapp', 18, 1.7)} WhatsApp</a>
         </div>
       </div>
+    </div>
     </div>
   </section>`;
 }

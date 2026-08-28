@@ -1039,14 +1039,35 @@ a.chip:hover { background: var(--accent); border-color: var(--accent); transform
   clip-path: polygon(18px 0, 100% 0, 100% 100%, 0 100%, 0 18px);
 }
 
-/* -- Onde estamos / orçamento (split navy + branco) -- */
-.split-panels {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 380px), 1fr));
+/* -- Onde estamos / orçamento (split navy + branco) --
+   As cores sangram até as bordas da tela, mas o conteúdo fica no mesmo
+   container das demais seções: o texto alinha com o grid do site. --------- */
+.split-panels { background: var(--surface-alt); }
+.split-panels__grid { display: grid; grid-template-columns: 1fr; }
+.panel { padding-block: clamp(2.5rem, 5vw, 4.5rem); }
+.panel--navy { color: #fff; }
+
+/* Empilhado (mobile): cada painel sangra sozinho, puxando o fundo para fora
+   do container sem tirar o texto do alinhamento. */
+@media (max-width: 899px) {
+  .panel {
+    margin-inline: calc(var(--gutter) * -1);
+    padding-inline: var(--gutter);
+  }
+  .panel--navy { background: var(--navy); }
+  .panel--light { background: var(--surface-alt); }
 }
-.panel { padding: clamp(2.5rem, 5vw, 4.5rem) clamp(1.5rem, 4vw, 4rem); }
-.panel--navy { background: var(--navy); color: #fff; }
-.panel--light { background: var(--surface-alt); }
+
+/* Lado a lado: o fundo vira um gradiente com a virada exatamente no meio da
+   seção — que é o mesmo ponto onde as duas colunas do container se encontram. */
+@media (min-width: 900px) {
+  .split-panels {
+    background: linear-gradient(to right, var(--navy) 0 50%, var(--surface-alt) 50% 100%);
+  }
+  .split-panels__grid { grid-template-columns: 1fr 1fr; }
+  .panel--navy { padding-right: clamp(2rem, 4vw, 3.5rem); }
+  .panel--light { padding-left: clamp(2rem, 4vw, 3.5rem); }
+}
 
 .unit + .unit { margin-top: 2rem; padding-top: 2rem; border-top: 1px solid hsl(0 0% 100% / 0.14); }
 .unit__badge {

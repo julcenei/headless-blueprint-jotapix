@@ -1035,9 +1035,12 @@ a.chip:hover { background: var(--accent); border-color: var(--accent); transform
 }
 .product-rail__track::-webkit-scrollbar { display: none; }
 .product-rail__track > * {
-  flex: 0 0 clamp(230px, 26vw, 330px);
+  flex: 0 0 clamp(210px, 23.5vw, 300px);
   scroll-snap-align: start;
 }
+/* No trilho o card é retrato: a foto do produto ganha altura e cabem
+   quatro por vez na largura do container. */
+.product-rail .product-card { aspect-ratio: 3 / 4; }
 .product-rail__track.is-dragging { cursor: grabbing; scroll-snap-type: none; scroll-behavior: auto; }
 .product-rail__track.is-dragging a { pointer-events: none; }
 

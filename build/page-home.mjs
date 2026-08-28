@@ -92,7 +92,7 @@ export function productCard(p, i = 0, feature = false) {
    Troque PRODUCTS_LAYOUT para escolher qual vai para a home.
    Todos usam o mesmo card e os mesmos dados; muda só a composição.
 --------------------------------------------------------------------------- */
-export const PRODUCTS_LAYOUT = 'mosaico'; // 'mosaico' | 'carrossel' | 'coluna'
+export const PRODUCTS_LAYOUT = 'carrossel'; // 'mosaico' | 'carrossel' | 'coluna'
 
 const PRODUCTS_TEXT = {
   eyebrow: 'Catálogo técnico',

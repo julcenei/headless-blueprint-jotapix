@@ -1496,6 +1496,22 @@ a.chip:hover { background: var(--accent); border-color: var(--accent); transform
 .checkbox-field input { width: 20px; height: 20px; margin-top: 2px; accent-color: var(--navy); }
 .checkbox-field a { color: var(--navy); font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
 
+/* Resumo de erros do formulário: anunciado por leitor de tela e visível
+   antes dos campos, para não jogar a pessoa direto no primeiro erro. */
+.form-alert {
+  display: none;
+  gap: 0.75rem;
+  align-items: center;
+  padding: 0.9rem 1.15rem;
+  margin-bottom: 1.5rem;
+  background: hsl(6 60% 96%);
+  border-left: 4px solid #c0392b;
+  color: #8e2b1f;
+  font-size: 0.92rem;
+  font-weight: 600;
+}
+.form-alert[data-visible='true'] { display: flex; }
+
 .form-success {
   display: none;
   gap: 1rem;

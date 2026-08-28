@@ -136,7 +136,6 @@ function entry(item, index, kind) {
         ${blocks}
         <div class="entry__actions">
           <a class="btn btn--primary" href="${quoteHref}">${esc(item.cta || 'Solicitar orçamento')} ${icon('arrowRight', 16, 2.4)}</a>
-          <a class="link-arrow" href="solicitar-orcamento.html">Enviar fotos e medidas ${icon('arrowRight', 15, 2.4)}</a>
         </div>
       </div>
 

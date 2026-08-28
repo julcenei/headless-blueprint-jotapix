@@ -208,6 +208,8 @@ export const orcamentoPage = {
             </div>
           </div>
 
+          <p class="form-alert" id="form-erros" role="alert"></p>
+
           <h2 class="h-3">Dados da solicitação</h2>
           <p class="muted" style="margin-top:0.6rem;font-size:0.94rem">Campos marcados com <span style="color:var(--accent-ink);font-weight:700">*</span> são obrigatórios.</p>
 
@@ -259,7 +261,7 @@ export const orcamentoPage = {
                   ${data.products.map((p) => `<option value="${esc(p.name)}" data-slug="${p.slug}">${esc(p.name)}</option>`).join('')}
                 </select>
               </div>
-              <div class="field field--full">
+              <div class="field">
                 <label for="servico">Serviço de interesse</label>
                 <select id="servico" name="servico">
                   <option value="">Selecione</option>

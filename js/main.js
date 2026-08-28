@@ -491,6 +491,7 @@
     if (!form) return;
 
     var success = $('#form-success');
+    var alerta = $('#form-erros');
     var phone = form.getAttribute('data-whatsapp');
 
     function setError(field, message) {
@@ -537,10 +538,20 @@
       e.preventDefault();
       var invalid = validate();
       if (invalid) {
+        // Anuncia quantos campos faltam antes de mandar o foco para o primeiro:
+        // quem usa leitor de tela precisa do total, não só do campo atual.
+        if (alerta) {
+          var n = $$('[data-invalid="true"]', form).length;
+          alerta.textContent = n === 1
+            ? 'Um campo precisa ser corrigido antes de enviar.'
+            : n + ' campos precisam ser corrigidos antes de enviar.';
+          alerta.setAttribute('data-visible', 'true');
+        }
         invalid.focus();
         invalid.scrollIntoView({ block: 'center', behavior: reduceMotion ? 'auto' : 'smooth' });
         return;
       }
+      if (alerta) alerta.setAttribute('data-visible', 'false');
 
       var d = new FormData(form);
       var get = function (k) { return (d.get(k) || '').toString().trim(); };

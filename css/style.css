@@ -185,14 +185,28 @@ h1, h2, h3, h4, .display {
 .section--alt { background: var(--surface-alt); }
 .section--navy { background: var(--navy); color: #fff; }
 .section--navy h1, .section--navy h2, .section--navy h3 { color: #fff; }
-.section--navy .lead { color: var(--on-dark-muted); }
+
+/* Superfícies escuras redefinem os tokens de texto secundário e de âmbar.
+   Qualquer componente que use --text-muted ou --accent-ink dentro delas
+   passa a resolver para a versão clara, sem precisar de override próprio. */
+.on-dark,
+.section--navy,
+.cta-band,
+.panel--navy,
+.page-hero,
+.site-footer,
+.mobile-menu,
+.aside-card:not(.aside-card--light) {
+  --text-muted: var(--on-dark-muted);
+  --accent-ink: var(--accent);
+}
 
 /* Título de seção em duas linhas: "nossos" apagado / "produtos" navy bold */
 .section-title { display: block; }
 .section-title .t-soft {
   display: block;
   font-weight: 400;
-  color: hsl(225 15% 62%);
+  color: hsl(225 15% 56%);
   letter-spacing: -0.02em;
 }
 .section--navy .section-title .t-soft { color: hsl(225 30% 62%); }
@@ -200,7 +214,6 @@ h1, h2, h3, h4, .display {
 
 .text-accent { color: var(--accent); }
 .muted { color: var(--text-muted); }
-.on-dark .muted, .section--navy .muted { color: var(--on-dark-muted); }
 
 .stack > * + * { margin-top: 1.15rem; }
 .divider { height: 1px; background: var(--surface-line); border: 0; }
@@ -366,8 +379,6 @@ a.chip:hover { background: var(--accent); border-color: var(--accent); transform
   color: var(--text-muted);
 }
 .trust-badge svg { color: var(--accent-ink); flex: none; }
-.on-dark .trust-badge, .section--navy .trust-badge { color: var(--on-dark-muted); }
-.on-dark .trust-badge svg, .section--navy .trust-badge svg { color: var(--accent); }
 
 /* Tratamento uniforme das fotos: leve duotone navy + chanfro */
 .media {
@@ -777,24 +788,31 @@ a.chip:hover { background: var(--accent); border-color: var(--accent); transform
   z-index: 3;
 }
 .hero__dot {
-  width: 46px; height: 4px;
-  background: hsl(0 0% 100% / 0.28);
+  width: 46px; height: 24px;
+  background: none;
   border: 0;
   padding: 0;
   cursor: pointer;
   position: relative;
-  overflow: hidden;
 }
+/* trilho e preenchimento ficam centrados dentro da área de toque */
+.hero__dot::before,
 .hero__dot::after {
   content: '';
   position: absolute;
-  inset: 0;
+  left: 0; right: 0;
+  top: 50%;
+  height: 4px;
+  transform: translateY(-50%);
+}
+.hero__dot::before { background: hsl(0 0% 100% / 0.28); }
+.hero__dot::after {
   background: var(--accent);
-  transform: scaleX(0);
+  transform: translateY(-50%) scaleX(0);
   transform-origin: left;
 }
 .hero__dot[aria-selected='true']::after { animation: dotFill var(--slide-dur, 7s) linear forwards; }
-@keyframes dotFill { to { transform: scaleX(1); } }
+@keyframes dotFill { to { transform: translateY(-50%) scaleX(1); } }
 .hero.is-paused .hero__dot[aria-selected='true']::after { animation-play-state: paused; }
 
 /* Faixa de selos sob o hero */
@@ -1198,9 +1216,7 @@ a.chip:hover { background: var(--accent); border-color: var(--accent); transform
 .contact-lines { display: grid; gap: 0.85rem; margin-block: 1.75rem; }
 .contact-line { display: flex; align-items: center; gap: 0.85rem; font-weight: 600; }
 .contact-line svg { color: var(--accent-ink); flex: none; }
-.panel--navy .contact-line svg { color: var(--accent); }
 .contact-line span { font-size: 0.75rem; display: block; font-weight: 500; color: var(--text-muted); letter-spacing: 0.1em; text-transform: uppercase; }
-.panel--navy .contact-line span { color: var(--on-dark-muted); }
 
 /* ==========================================================================
    09. PÁGINAS DE CATÁLOGO

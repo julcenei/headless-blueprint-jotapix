@@ -67,7 +67,7 @@ function marquee() {
   return `
   <div class="marquee" data-paused="false" aria-label="Setores atendidos">
     <div class="marquee__track">${items}</div>
-    <button class="marquee__pause" type="button" aria-pressed="false" aria-label="Pausar rolagem dos setores">${icon('pause', 14, 0)}</button>
+    <button class="marquee__pause" type="button" aria-pressed="false" aria-label="Pausar rolagem dos setores">${icon('pause', 14, 1.8)}</button>
   </div>`;
 }
 

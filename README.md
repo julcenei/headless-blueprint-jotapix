@@ -52,7 +52,7 @@ Quem só vai hospedar o site não precisa de nada disso — basta subir a pasta.
 node build/build-artifact.mjs   # gera dist/elotec-single.html (~3,5 MB)
 ```
 
-As 8 páginas viram rotas em hash (`#/produtos/correia-pvc`), CSS e JS entram
+As 8 páginas do site viram rotas em hash (mais a de comparação, 9 no total) (`#/produtos/correia-pvc`), CSS e JS entram
 embutidos e as 22 fotos viram data URIs — cada arquivo uma única vez, atribuído
 em runtime a partir de um mapa. Serve para publicar como Artifact ou mandar o
 arquivo por e-mail: abre em qualquer navegador, sem servidor. `dist/` não é
@@ -65,8 +65,8 @@ Existem três tratamentos prontos em `build/page-home.mjs`; a constante
 
 | valor | o que é |
 |---|---|
-| `mosaico` | grade assimétrica: um card alto, um largo e blocos menores (padrão) |
-| `carrossel` | trilho com os 9 produtos, avanço automático, arrasto, setas e barra |
+| `mosaico` | grade assimétrica: um card alto, um largo e blocos menores |
+| `carrossel` | trilho com os 9 produtos em card retrato, avanço automático, arrasto, setas e barra (padrão) |
 | `coluna` | painel de texto sticky + grade 2×3 (o primeiro layout) |
 
 A página de comparação com as três opções empilhadas existe apenas na versão

@@ -85,6 +85,9 @@ const router = `
 
   function parse() {
     var raw = (location.hash || '#/').replace(/^#/, '');
+    // Só é rota o hash que começa com "/". Qualquer outro (o skip link
+    // "#conteudo", por exemplo) é âncora da própria página e não muda a rota.
+    if (raw && raw[0] !== '/') return null;
     var query = raw.split('?')[1] || '';
     var parts = raw.split('?')[0].split('/').filter(Boolean);
     return { route: parts.length ? '/' + parts[0] : '/', anchor: parts[1] || '', query: query };
@@ -92,6 +95,7 @@ const router = `
 
   function apply() {
     var p = parse();
+    if (!p) return; // âncora interna: deixa o navegador rolar sozinho
     var target = routes.filter(function (r) { return r.getAttribute('data-route') === p.route; })[0];
     if (!target) target = routes.filter(function (r) { return r.getAttribute('data-route') === '/404'; })[0] || routes[0];
 
@@ -120,7 +124,9 @@ const router = `
   apply();
 })();`;
 
-const html = `<title>Elotec Correias</title>
+const html = `<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Elotec Correias</title>
 <meta name="description" content="Redesign premium do site da Elotec — Serviços Técnicos em Correias. Versão navegável em arquivo único.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

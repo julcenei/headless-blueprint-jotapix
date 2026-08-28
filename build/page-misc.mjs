@@ -260,11 +260,13 @@ export const orcamentoPage = {
             </div>
 
             <div style="margin-top:1.5rem">
+              <div class="field">
               <label class="checkbox-field">
                 <input type="checkbox" id="lgpd" name="lgpd" required>
                 <span>Autorizo o uso dos meus dados para retorno comercial e técnico, conforme a <a href="politica-de-privacidade.html">Política de Privacidade</a>. <span class="req" style="color:var(--accent-ink)">*</span></span>
               </label>
               <p class="field__error" aria-live="polite"></p>
+              </div>
             </div>
 
             <div style="margin-top:2rem;display:flex;flex-wrap:wrap;gap:1rem;align-items:center">

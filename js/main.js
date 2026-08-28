@@ -29,7 +29,8 @@
   function whileVisible(el, aoEntrar, aoSair) {
     if (!('IntersectionObserver' in window)) { aoEntrar(); return; }
     new IntersectionObserver(function (entries) {
-      entries[0].isIntersecting ? aoEntrar() : aoSair();
+      // o lote pode trazer várias entradas: vale a mais recente
+      entries[entries.length - 1].isIntersecting ? aoEntrar() : aoSair();
     }, { threshold: 0 }).observe(el);
   }
 
@@ -251,8 +252,10 @@
     hero.addEventListener('focusout', function (e) {
       if (!hero.contains(e.relatedTarget)) play();
     });
+    var heroNaTela = true;
     document.addEventListener('visibilitychange', function () {
-      document.hidden ? stop() : play();
+      if (document.hidden) stop();
+      else if (heroNaTela) play();
     });
 
     // Setas do teclado quando o carrossel está focado
@@ -272,7 +275,7 @@
     }, { passive: true });
 
     // Fora da viewport o carrossel não precisa girar
-    whileVisible(hero, play, function () { stop(); });
+    whileVisible(hero, function () { heroNaTela = true; play(); }, function () { heroNaTela = false; stop(); });
 
     go(0);
     play();
@@ -405,11 +408,17 @@
       rail.addEventListener('mouseleave', startAuto);
       // parado fora da viewport: sem smooth-scroll rodando com o rail invisível
       var naTela = false;
-      whileVisible(rail, function () { naTela = true; startAuto(); }, function () { naTela = false; stopAuto(false); });
+      whileVisible(rail, function () {
+        naTela = true;
+        // no single-file o trilho nasce em rota oculta: mede 0 até aparecer
+        medir();
+        startAuto();
+      }, function () { naTela = false; stopAuto(false); });
       rail.addEventListener('focusin', function () { stopAuto(true); });
       track.addEventListener('touchstart', function () { stopAuto(true); }, { passive: true });
       document.addEventListener('visibilitychange', function () {
-        document.hidden ? stopAuto(false) : startAuto();
+        if (document.hidden) stopAuto(false);
+        else if (naTela) startAuto();
       });
 
       medir();
@@ -591,10 +600,14 @@
         // quem usa leitor de tela precisa do total, não só do campo atual.
         if (alerta) {
           var n = $$('[data-invalid="true"]', form).length;
-          alerta.textContent = n === 1
+          var aviso = n === 1
             ? 'Um campo precisa ser corrigido antes de enviar.'
             : n + ' campos precisam ser corrigidos antes de enviar.';
+          // o texto precisa entrar DEPOIS de o elemento estar visível:
+          // leitores de tela ignoram mudanças em nó com display:none
+          alerta.textContent = '';
           alerta.setAttribute('data-visible', 'true');
+          requestAnimationFrame(function () { alerta.textContent = aviso; });
         }
         invalid.focus();
         invalid.scrollIntoView({ block: 'center', behavior: suave });

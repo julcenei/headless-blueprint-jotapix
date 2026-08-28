@@ -58,6 +58,21 @@ em runtime a partir de um mapa. Serve para publicar como Artifact ou mandar o
 arquivo por e-mail: abre em qualquer navegador, sem servidor. `dist/` não é
 versionado; é sempre regerado a partir do site.
 
+## Layout da seção de produtos (home)
+
+Existem três tratamentos prontos em `build/page-home.mjs`; a constante
+`PRODUCTS_LAYOUT` decide qual vai para a home:
+
+| valor | o que é |
+|---|---|
+| `mosaico` | grade assimétrica: um card alto, um largo e blocos menores (padrão) |
+| `carrossel` | trilho com os 9 produtos, avanço automático, arrasto, setas e barra |
+| `coluna` | painel de texto sticky + grade 2×3 (o primeiro layout) |
+
+A página de comparação com as três opções empilhadas existe apenas na versão
+single-file, na rota `#/teste-produtos` (`build/page-teste.mjs`) — ela não é
+gerada no site publicado.
+
 ## Decisões de design (o que mudou em relação ao layout original)
 
 - **Marca preservada, apresentação reconstruída.** Azul-marinho + amarelo, chanfros por

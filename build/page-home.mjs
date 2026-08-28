@@ -72,9 +72,9 @@ function marquee() {
 }
 
 /* Card de produto reutilizado na home e nos blocos de relacionados. */
-export function productCard(p, i = 0) {
+export function productCard(p, i = 0, feature = false) {
   return `
-        <a class="product-card reveal" style="--i:${i}" href="produtos.html#${p.slug}">
+        <a class="product-card${feature ? ' product-card--feature' : ''} reveal" style="--i:${i}" href="produtos.html#${p.slug}">
           <img src="${img(p.image)}" alt="${esc(p.name)}" loading="lazy" width="640" height="480">
           <div class="product-card__body">
             <p class="product-card__cat">${esc(p.categoryLabel)}</p>
@@ -87,18 +87,90 @@ export function productCard(p, i = 0) {
         </a>`;
 }
 
-function products() {
+/* ---------------------------------------------------------------------------
+   Seção "Nossos produtos" — três tratamentos possíveis.
+   Troque PRODUCTS_LAYOUT para escolher qual vai para a home.
+   Todos usam o mesmo card e os mesmos dados; muda só a composição.
+--------------------------------------------------------------------------- */
+export const PRODUCTS_LAYOUT = 'mosaico'; // 'mosaico' | 'carrossel' | 'coluna'
+
+const PRODUCTS_TEXT = {
+  eyebrow: 'Catálogo técnico',
+  soft: 'nossos',
+  strong: 'produtos',
+  lead: 'Correias em PU, PVC e borracha, canecas, rolos, roletes e revestimentos para diferentes aplicações industriais.',
+};
+
+/** Cabeçalho comum: título com filete amarelo à esquerda, apoio à direita. */
+function productsHead(extra = '') {
+  return `
+      <div class="section-head">
+        <div class="section-head__main reveal">
+          <p class="eyebrow">${PRODUCTS_TEXT.eyebrow}</p>
+          <h2 class="h-2 section-title" style="margin-top:0.9rem">
+            <span class="t-soft">${PRODUCTS_TEXT.soft}</span>
+            <span class="t-strong">${PRODUCTS_TEXT.strong}</span>
+          </h2>
+        </div>
+        <div class="section-head__aside reveal" style="--i:1">
+          <p class="lead">${PRODUCTS_TEXT.lead}</p>
+          <div style="margin-top:1.5rem;display:flex;flex-wrap:wrap;gap:1rem;align-items:center">
+            <a class="btn btn--outline btn--sm" href="produtos.html">Ver todos os produtos ${icon('arrowRight', 15, 2.4)}</a>
+            ${extra}
+          </div>
+        </div>
+      </div>`;
+}
+
+/** A — mosaico assimétrico: um card alto, um largo e blocos menores. */
+export function productsMosaic(id = 'produtos') {
   const featured = data.products.filter((p) => p.featured).slice(0, 6);
   return `
-  <section class="section" id="produtos">
+  <section class="section" id="${id}">
+    <div class="container">
+      ${productsHead()}
+      <div class="product-mosaic">
+        ${featured.map((p, i) => productCard(p, Math.min(i, 3), i === 0)).join('')}
+      </div>
+    </div>
+  </section>`;
+}
+
+/** B — carrossel: os 9 produtos em trilho com arrasto, setas e avanço suave. */
+export function productsRail(id = 'produtos') {
+  return `
+  <section class="section" id="${id}">
+    <div class="container">
+      ${productsHead()}
+      <div class="product-rail" data-rail>
+        <div class="product-rail__track" data-rail-track tabindex="0" role="group" aria-label="Produtos Elotec — arraste ou use as setas">
+          ${data.products.map((p, i) => productCard(p, Math.min(i, 3))).join('')}
+        </div>
+        <div class="product-rail__foot">
+          <div class="product-rail__bar" aria-hidden="true"><span data-rail-bar></span></div>
+          <div class="product-rail__nav">
+            <button class="rail-arrow" type="button" data-rail-prev aria-label="Produtos anteriores">${icon('chevronLeft', 20, 2.2)}</button>
+            <button class="rail-arrow" type="button" data-rail-next aria-label="Próximos produtos">${icon('chevronRight', 20, 2.2)}</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>`;
+}
+
+/** C — layout atual: painel de texto sticky + grade 2×3. */
+export function productsSplit(id = 'produtos') {
+  const featured = data.products.filter((p) => p.featured).slice(0, 6);
+  return `
+  <section class="section" id="${id}">
     <div class="container split-grid">
       <div class="split-grid__aside reveal">
-        <p class="eyebrow">Catálogo técnico</p>
+        <p class="eyebrow">${PRODUCTS_TEXT.eyebrow}</p>
         <h2 class="h-2 section-title" style="margin-top:1.25rem">
-          <span class="t-soft">nossos</span>
-          <span class="t-strong">produtos</span>
+          <span class="t-soft">${PRODUCTS_TEXT.soft}</span>
+          <span class="t-strong">${PRODUCTS_TEXT.strong}</span>
         </h2>
-        <p class="lead" style="margin-top:1.25rem">Correias em PU, PVC e borracha, canecas, rolos, roletes e revestimentos para diferentes aplicações industriais.</p>
+        <p class="lead" style="margin-top:1.25rem">${PRODUCTS_TEXT.lead}</p>
         <div style="margin-top:2rem">
           <a class="btn btn--outline" href="produtos.html">Ver todos os produtos ${icon('arrowRight', 16, 2.4)}</a>
         </div>
@@ -113,6 +185,12 @@ function products() {
       </div>
     </div>
   </section>`;
+}
+
+const PRODUCTS_LAYOUTS = { mosaico: productsMosaic, carrossel: productsRail, coluna: productsSplit };
+
+function products() {
+  return PRODUCTS_LAYOUTS[PRODUCTS_LAYOUT]();
 }
 
 /* Quem somos + estatísticas com count-up. */

@@ -17,8 +17,11 @@ import { header, footer } from './layout.mjs';
 import { homePage } from './page-home.mjs';
 import { produtosPage, servicosPage, setoresPage } from './page-catalog.mjs';
 import { aElotecPage, orcamentoPage, privacidadePage, naoEncontradaPage } from './page-misc.mjs';
+import { testePage } from './page-teste.mjs';
 
-const PAGES = [homePage, aElotecPage, produtosPage, servicosPage, setoresPage, orcamentoPage, privacidadePage, naoEncontradaPage];
+// testePage só existe aqui: é a página de comparação de layouts, não faz
+// parte do site publicado.
+const PAGES = [homePage, aElotecPage, produtosPage, servicosPage, setoresPage, orcamentoPage, privacidadePage, testePage, naoEncontradaPage];
 
 const routeOf = (file) => (file === 'index.html' ? '/' : '/' + file.replace(/\.html$/, ''));
 

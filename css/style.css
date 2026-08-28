@@ -968,6 +968,115 @@ a.chip:hover { background: var(--accent); border-color: var(--accent); transform
 }
 .product-card--tall { aspect-ratio: 4 / 4.4; }
 
+/* -- Cabeçalho de seção: título à esquerda, apoio à direita (com filete) -- */
+.section-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  gap: clamp(1.5rem, 4vw, 4.5rem);
+  align-items: end;
+  margin-bottom: clamp(2.5rem, 5vw, 4rem);
+}
+.section-head__main { border-left: 3px solid var(--accent); padding-left: clamp(1rem, 1.6vw, 1.5rem); }
+.section-head__main .eyebrow::before { display: none; }
+.section-head__aside { padding-bottom: 0.35rem; }
+.section-head__aside .lead { font-size: 1.0625rem; }
+@media (max-width: 860px) {
+  .section-head { grid-template-columns: 1fr; align-items: start; }
+  .section-head__aside { padding-bottom: 0; }
+}
+
+/* -- Opção A: mosaico assimétrico de produtos --------------------------------
+   Grade de 6 colunas com um card alto, um largo e blocos menores. Os spans
+   vêm de custom properties para que o mobile os redefina sem !important. */
+.product-mosaic {
+  --mosaic-row: clamp(92px, 8.6vw, 124px);
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  grid-auto-rows: var(--mosaic-row);
+  gap: clamp(0.75rem, 1.2vw, 1.15rem);
+}
+.product-mosaic > * { grid-column: span var(--c, 2); grid-row: span var(--r, 2); }
+.product-mosaic > *:nth-child(1) { --c: 2; --r: 4; }
+.product-mosaic > *:nth-child(2) { --c: 4; --r: 2; }
+.product-mosaic > *:nth-child(3) { --c: 2; --r: 2; }
+.product-mosaic > *:nth-child(4) { --c: 2; --r: 2; }
+.product-mosaic > *:nth-child(5) { --c: 3; --r: 3; }
+.product-mosaic > *:nth-child(6) { --c: 3; --r: 3; }
+/* no mosaico a altura vem da grade, não do aspect-ratio do card */
+.product-mosaic .product-card { aspect-ratio: auto; height: 100%; }
+
+@media (max-width: 1024px) {
+  .product-mosaic { grid-template-columns: repeat(2, 1fr); grid-auto-rows: auto; }
+  .product-mosaic > *:nth-child(n) { --c: 1; --r: 1; }
+  .product-mosaic .product-card { aspect-ratio: 4 / 3.4; height: auto; }
+}
+@media (max-width: 560px) {
+  .product-mosaic { grid-template-columns: 1fr; }
+}
+
+/* Card em destaque do mosaico: resumo e CTA sempre visíveis */
+.product-card--feature .product-card__more { grid-template-rows: 1fr; opacity: 1; }
+
+/* -- Opção B: carrossel de produtos (arrastar, setas e avanço automático) -- */
+.product-rail { position: relative; }
+.product-rail__track {
+  display: flex;
+  gap: clamp(0.75rem, 1.2vw, 1.15rem);
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+  cursor: grab;
+  /* folga simétrica: alinha com o container e não corta o anel de foco.
+     scroll-padding acompanha para o snap não deslocar o primeiro card. */
+  margin: -6px;
+  padding: 6px;
+  scroll-padding: 6px;
+}
+.product-rail__track::-webkit-scrollbar { display: none; }
+.product-rail__track > * {
+  flex: 0 0 clamp(230px, 26vw, 330px);
+  scroll-snap-align: start;
+}
+.product-rail__track.is-dragging { cursor: grabbing; scroll-snap-type: none; scroll-behavior: auto; }
+.product-rail__track.is-dragging a { pointer-events: none; }
+
+.product-rail__foot {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  margin-top: 1.75rem;
+}
+.product-rail__bar {
+  position: relative;
+  flex: 1;
+  height: 3px;
+  background: var(--surface-line);
+  overflow: hidden;
+}
+.product-rail__bar span {
+  position: absolute;
+  top: 0; bottom: 0; left: 0;
+  width: 25%;
+  background: var(--accent);
+  transition: transform 0.25s var(--ease);
+}
+.product-rail__nav { display: flex; gap: 0.5rem; }
+.rail-arrow {
+  width: 46px; height: 46px;
+  display: grid;
+  place-items: center;
+  background: var(--navy);
+  color: #fff;
+  border: 0;
+  cursor: pointer;
+  transition: background-color 0.3s var(--ease), transform 0.3s var(--ease), opacity 0.3s;
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%);
+}
+.rail-arrow:hover { background: var(--accent); color: var(--navy); }
+.rail-arrow[disabled] { opacity: 0.3; cursor: default; }
+.rail-arrow[disabled]:hover { background: var(--navy); color: #fff; }
+
 /* -- Quem somos + stats -- */
 .about-grid {
   display: grid;

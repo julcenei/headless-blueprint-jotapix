@@ -253,6 +253,113 @@
   })();
 
   /* ------------------------------------------------------------------
+     5b. Carrossel de produtos: arrastar, setas, avanço automático e
+         barra de progresso. Usa scroll nativo + scroll-snap.
+     ------------------------------------------------------------------ */
+  (function productRail() {
+    $$('[data-rail]').forEach(function (rail) {
+      var track = $('[data-rail-track]', rail);
+      var bar = $('[data-rail-bar]', rail);
+      var prev = $('[data-rail-prev]', rail);
+      var next = $('[data-rail-next]', rail);
+      if (!track) return;
+
+      var autoplay = null;
+      var userTook = false; // depois de interagir, o avanço automático não volta
+
+      function step() {
+        var card = track.firstElementChild;
+        if (!card) return 300;
+        var gap = parseFloat(getComputedStyle(track).columnGap) || 0;
+        return card.getBoundingClientRect().width + gap;
+      }
+
+      function maxScroll() { return track.scrollWidth - track.clientWidth; }
+
+      function update() {
+        var max = maxScroll();
+        var ratio = max > 0 ? track.scrollLeft / max : 0;
+        if (bar) {
+          // a barra representa a fatia visível e desliza dentro do trilho
+          var visible = track.clientWidth / track.scrollWidth;
+          bar.style.width = Math.max(visible * 100, 12) + '%';
+          bar.style.transform = 'translateX(' + (ratio * (100 / Math.max(visible, 0.12) - 100)) + '%)';
+        }
+        if (prev) prev.disabled = track.scrollLeft <= 2;
+        if (next) next.disabled = track.scrollLeft >= max - 2;
+      }
+
+      function scrollBy(dir) {
+        track.scrollBy({ left: dir * step(), behavior: reduceMotion ? 'auto' : 'smooth' });
+      }
+
+      if (prev) prev.addEventListener('click', function () { stopAuto(true); scrollBy(-1); });
+      if (next) next.addEventListener('click', function () { stopAuto(true); scrollBy(1); });
+      track.addEventListener('scroll', update, { passive: true });
+      window.addEventListener('resize', update);
+
+      /* Arrastar com o mouse (no touch o scroll nativo já resolve) */
+      var dragging = false;
+      var startX = 0;
+      var startScroll = 0;
+      var moved = 0;
+
+      track.addEventListener('pointerdown', function (e) {
+        if (e.pointerType === 'touch') return;
+        dragging = true;
+        moved = 0;
+        startX = e.clientX;
+        startScroll = track.scrollLeft;
+        track.setPointerCapture(e.pointerId);
+        track.classList.add('is-dragging');
+        stopAuto(true);
+      });
+      track.addEventListener('pointermove', function (e) {
+        if (!dragging) return;
+        var dx = e.clientX - startX;
+        moved = Math.abs(dx);
+        track.scrollLeft = startScroll - dx;
+      });
+      ['pointerup', 'pointercancel'].forEach(function (evt) {
+        track.addEventListener(evt, function () {
+          if (!dragging) return;
+          dragging = false;
+          track.classList.remove('is-dragging');
+        });
+      });
+      // um arrasto não deve virar clique no card
+      track.addEventListener('click', function (e) {
+        if (moved > 6) { e.preventDefault(); moved = 0; }
+      }, true);
+
+      /* Avanço automático suave, até a primeira interação */
+      function startAuto() {
+        if (reduceMotion || userTook || autoplay) return;
+        autoplay = setInterval(function () {
+          if (track.scrollLeft >= maxScroll() - 2) track.scrollTo({ left: 0, behavior: 'smooth' });
+          else scrollBy(1);
+        }, 4500);
+      }
+      function stopAuto(permanent) {
+        if (permanent) userTook = true;
+        if (autoplay) clearInterval(autoplay);
+        autoplay = null;
+      }
+
+      rail.addEventListener('mouseenter', function () { stopAuto(false); });
+      rail.addEventListener('mouseleave', startAuto);
+      rail.addEventListener('focusin', function () { stopAuto(true); });
+      track.addEventListener('touchstart', function () { stopAuto(true); }, { passive: true });
+      document.addEventListener('visibilitychange', function () {
+        document.hidden ? stopAuto(false) : startAuto();
+      });
+
+      update();
+      startAuto();
+    });
+  })();
+
+  /* ------------------------------------------------------------------
      6. Animações de entrada com IntersectionObserver (fade-up + stagger)
      ------------------------------------------------------------------ */
   (function reveal() {

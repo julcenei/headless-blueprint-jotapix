@@ -9,6 +9,44 @@
   var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var $ = function (sel, ctx) { return (ctx || document).querySelector(sel); };
   var $$ = function (sel, ctx) { return Array.prototype.slice.call((ctx || document).querySelectorAll(sel)); };
+  var suave = reduceMotion ? 'auto' : 'smooth';
+
+  /** Observa uma lista, executa a ação na primeira aparição e desobserva. */
+  function observeOnce(els, acao, opts) {
+    if (!els.length) return;
+    if (!('IntersectionObserver' in window)) { els.forEach(acao); return; }
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        acao(entry.target);
+        io.unobserve(entry.target);
+      });
+    }, opts);
+    els.forEach(function (el) { io.observe(el); });
+  }
+
+  /** Liga/desliga um componente conforme ele entra e sai da viewport. */
+  function whileVisible(el, aoEntrar, aoSair) {
+    if (!('IntersectionObserver' in window)) { aoEntrar(); return; }
+    new IntersectionObserver(function (entries) {
+      entries[0].isIntersecting ? aoEntrar() : aoSair();
+    }, { threshold: 0 }).observe(el);
+  }
+
+  /** Agenda uma escrita de layout para o próximo frame, sem enfileirar duplicatas. */
+  function porFrame(fn) {
+    var agendado = false;
+    return function () {
+      if (agendado) return;
+      agendado = true;
+      requestAnimationFrame(function () { agendado = false; fn(); });
+    };
+  }
+
+  var aoRedimensionar = [];
+  window.addEventListener('resize', porFrame(function () {
+    aoRedimensionar.forEach(function (fn) { fn(); });
+  }));
 
   /* ------------------------------------------------------------------
      1. Header: encolhe/ganha sombra ao rolar + CTA flutuante contextual
@@ -18,12 +56,18 @@
     var siteHeader = $('.site-header');
     var floatQuote = $('.float-btn--quote');
     var last = 0;
+    var ultimoEscondido = null;
 
     // Publica a altura real do header em --header-h: as âncoras e a barra
     // sticky das páginas de catálogo se posicionam a partir dela.
+    var ultimaAltura = 0;
     function syncHeaderHeight() {
       if (!siteHeader) return;
-      root.style.setProperty('--header-h', siteHeader.offsetHeight + 'px');
+      var altura = siteHeader.offsetHeight;
+      // escrever custom property na raiz invalida a árvore inteira: só na mudança
+      if (altura === ultimaAltura) return;
+      ultimaAltura = altura;
+      root.style.setProperty('--header-h', altura + 'px');
     }
 
     function onScroll() {
@@ -34,17 +78,21 @@
         // a top bar colapsa com transição: mede depois que ela termina
         setTimeout(syncHeaderHeight, 420);
       }
-      // O CTA flutuante só aparece depois do primeiro dobra e some ao subir rápido
+      // O CTA flutuante só aparece depois da primeira dobra e some ao subir rápido.
+      // setAttribute sempre invalida estilo, então só escreve na transição.
       if (floatQuote) {
-        var goingUpFast = y < last - 40;
-        floatQuote.setAttribute('data-hidden', String(y < 600 || goingUpFast));
+        var esconder = y < 600 || y < last - 40;
+        if (esconder !== ultimoEscondido) {
+          ultimoEscondido = esconder;
+          floatQuote.setAttribute('data-hidden', String(esconder));
+        }
       }
       last = y;
     }
     onScroll();
     syncHeaderHeight();
     window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', syncHeaderHeight);
+    aoRedimensionar.push(syncHeaderHeight);
     window.addEventListener('load', syncHeaderHeight);
   })();
 
@@ -142,6 +190,7 @@
     if (!hero) return;
 
     var slides = $$('.hero__slide', hero);
+    var focaveis = slides.map(function (slide) { return $$('a, button', slide); });
     var dots = $$('.hero__dot', hero);
     var live = $('.hero__live', hero);
     var index = 0;
@@ -155,15 +204,18 @@
         slide.classList.toggle('is-active', active);
         slide.setAttribute('aria-hidden', String(!active));
         // Impede que links de slides ocultos recebam foco
-        $$('a, button', slide).forEach(function (el) {
+        focaveis[i].forEach(function (el) {
           if (active) el.removeAttribute('tabindex');
           else el.setAttribute('tabindex', '-1');
         });
       });
       dots.forEach(function (dot, i) {
         dot.setAttribute('aria-selected', String(i === index));
-        // reinicia a animação da barra do indicador
-        if (i === index) { dot.style.animation = 'none'; void dot.offsetWidth; dot.style.animation = ''; }
+        // reinicia a animação da barra do indicador sem forçar layout síncrono
+        if (i === index) {
+          dot.style.animation = 'none';
+          requestAnimationFrame(function () { dot.style.animation = ''; });
+        }
       });
       if (announce && live) live.textContent = 'Slide ' + (index + 1) + ' de ' + slides.length;
     }
@@ -217,7 +269,10 @@
       var dx = e.changedTouches[0].clientX - startX;
       if (Math.abs(dx) > 55) { go(index + (dx < 0 ? 1 : -1), true); play(); }
       startX = null;
-    });
+    }, { passive: true });
+
+    // Fora da viewport o carrossel não precisa girar
+    whileVisible(hero, play, function () { stop(); });
 
     go(0);
     play();
@@ -266,37 +321,37 @@
 
       var autoplay = null;
       var userTook = false; // depois de interagir, o avanço automático não volta
+      var passo = 300;
+      var maxScroll = 0;
+      var fatia = 1;
 
-      function step() {
+      // Largura do card, gap e limites só mudam em resize: medidos uma vez.
+      function medir() {
         var card = track.firstElementChild;
-        if (!card) return 300;
-        var gap = parseFloat(getComputedStyle(track).columnGap) || 0;
-        return card.getBoundingClientRect().width + gap;
-      }
-
-      function maxScroll() { return track.scrollWidth - track.clientWidth; }
-
-      function update() {
-        var max = maxScroll();
-        var ratio = max > 0 ? track.scrollLeft / max : 0;
-        if (bar) {
-          // a barra representa a fatia visível e desliza dentro do trilho
-          var visible = track.clientWidth / track.scrollWidth;
-          bar.style.width = Math.max(visible * 100, 12) + '%';
-          bar.style.transform = 'translateX(' + (ratio * (100 / Math.max(visible, 0.12) - 100)) + '%)';
+        if (card) {
+          var gap = parseFloat(getComputedStyle(track).columnGap) || 0;
+          passo = card.getBoundingClientRect().width + gap;
         }
-        if (prev) prev.disabled = track.scrollLeft <= 2;
-        if (next) next.disabled = track.scrollLeft >= max - 2;
+        maxScroll = track.scrollWidth - track.clientWidth;
+        fatia = track.clientWidth / track.scrollWidth;
+        if (bar) bar.style.width = Math.max(fatia * 100, 12) + '%';
+        update();
       }
+
+      var update = porFrame(function () {
+        var ratio = maxScroll > 0 ? track.scrollLeft / maxScroll : 0;
+        if (bar) bar.style.transform = 'translateX(' + (ratio * (100 / Math.max(fatia, 0.12) - 100)) + '%)';
+        if (prev) prev.disabled = track.scrollLeft <= 2;
+        if (next) next.disabled = track.scrollLeft >= maxScroll - 2;
+      });
 
       function scrollBy(dir) {
-        track.scrollBy({ left: dir * step(), behavior: reduceMotion ? 'auto' : 'smooth' });
+        track.scrollBy({ left: dir * passo, behavior: suave });
       }
 
       if (prev) prev.addEventListener('click', function () { stopAuto(true); scrollBy(-1); });
       if (next) next.addEventListener('click', function () { stopAuto(true); scrollBy(1); });
       track.addEventListener('scroll', update, { passive: true });
-      window.addEventListener('resize', update);
 
       /* Arrastar com o mouse (no touch o scroll nativo já resolve) */
       var dragging = false;
@@ -336,7 +391,7 @@
       function startAuto() {
         if (reduceMotion || userTook || autoplay) return;
         autoplay = setInterval(function () {
-          if (track.scrollLeft >= maxScroll() - 2) track.scrollTo({ left: 0, behavior: 'smooth' });
+          if (track.scrollLeft >= maxScroll - 2) track.scrollTo({ left: 0, behavior: suave });
           else scrollBy(1);
         }, 4500);
       }
@@ -348,14 +403,18 @@
 
       rail.addEventListener('mouseenter', function () { stopAuto(false); });
       rail.addEventListener('mouseleave', startAuto);
+      // parado fora da viewport: sem smooth-scroll rodando com o rail invisível
+      var naTela = false;
+      whileVisible(rail, function () { naTela = true; startAuto(); }, function () { naTela = false; stopAuto(false); });
       rail.addEventListener('focusin', function () { stopAuto(true); });
       track.addEventListener('touchstart', function () { stopAuto(true); }, { passive: true });
       document.addEventListener('visibilitychange', function () {
         document.hidden ? stopAuto(false) : startAuto();
       });
 
-      update();
-      startAuto();
+      medir();
+      aoRedimensionar.push(medir);
+      if (!naTela) stopAuto(false);
     });
   })();
 
@@ -364,19 +423,14 @@
      ------------------------------------------------------------------ */
   (function reveal() {
     var els = $$('.reveal');
-    if (!els.length) return;
-    if (reduceMotion || !('IntersectionObserver' in window)) {
+    if (reduceMotion) {
       els.forEach(function (el) { el.classList.add('is-visible'); });
       return;
     }
-    var io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        if (!entry.isIntersecting) return;
-        entry.target.classList.add('is-visible');
-        io.unobserve(entry.target);
-      });
-    }, { rootMargin: '0px 0px -12% 0px', threshold: 0.08 });
-    els.forEach(function (el) { io.observe(el); });
+    observeOnce(els, function (el) { el.classList.add('is-visible'); }, {
+      rootMargin: '0px 0px -12% 0px',
+      threshold: 0.08,
+    });
   })();
 
   /* ------------------------------------------------------------------
@@ -404,15 +458,7 @@
       requestAnimationFrame(step);
     }
 
-    if (!('IntersectionObserver' in window)) { nums.forEach(run); return; }
-    var io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        if (!entry.isIntersecting) return;
-        run(entry.target);
-        io.unobserve(entry.target);
-      });
-    }, { threshold: 0.6 });
-    nums.forEach(function (el) { io.observe(el); });
+    observeOnce(nums, run, { threshold: 0.6 });
   })();
 
   /* ------------------------------------------------------------------
@@ -421,15 +467,18 @@
   (function readProgress() {
     var bars = $$('.read-progress');
     if (!bars.length) return;
-    function update() {
-      var max = document.documentElement.scrollHeight - window.innerHeight;
+    // scrollHeight força layout do documento: medido em resize, não a cada scroll
+    var max = 0;
+    function medir() { max = document.documentElement.scrollHeight - window.innerHeight; update(); }
+    var update = porFrame(function () {
       var p = max > 0 ? window.scrollY / max : 0;
       var scale = 'scaleX(' + Math.min(Math.max(p, 0), 1) + ')';
       bars.forEach(function (bar) { bar.style.transform = scale; });
-    }
-    update();
+    });
+    medir();
     window.addEventListener('scroll', update, { passive: true });
-    window.addEventListener('resize', update);
+    aoRedimensionar.push(medir);
+    window.addEventListener('load', medir);
   })();
 
   /* ------------------------------------------------------------------
@@ -439,25 +488,25 @@
     $$('.anchor-bar').forEach(setupSpy);
 
     function setupSpy(bar) {
-    var links = $$('.anchor-item', bar);
-    var sections = links
-      .map(function (a) {
-        var href = a.getAttribute('href');
-        return document.getElementById(href.slice(href.lastIndexOf('/') + 1).replace(/^#/, ''));
-      })
-      .filter(Boolean);
+    var scroller = $('.anchor-bar__scroller', bar);
+    // id de cada link resolvido uma vez (o href muda de forma na versão single-file)
+    var links = $$('.anchor-item', bar).map(function (a) {
+      var href = a.getAttribute('href');
+      return { el: a, id: href.slice(href.lastIndexOf('/') + 1).replace(/^#/, '') };
+    });
+    var sections = links.map(function (l) { return document.getElementById(l.id); }).filter(Boolean);
     if (!sections.length) return;
 
+    var atual = null;
     function setCurrent(id) {
-      links.forEach(function (a) {
-        var href = a.getAttribute('href');
-        var on = href.slice(href.lastIndexOf('/') + 1).replace(/^#/, '') === id;
-        a.classList.toggle('is-current', on);
-        if (on) {
+      if (id === atual) return; // evita reiniciar o scroll suave à toa
+      atual = id;
+      links.forEach(function (l) {
+        var on = l.id === id;
+        l.el.classList.toggle('is-current', on);
+        if (on && scroller) {
           // mantém o item ativo visível no scroller horizontal
-          var scroller = $('.anchor-bar__scroller', bar);
-          var left = a.offsetLeft - scroller.clientWidth / 2 + a.clientWidth / 2;
-          scroller.scrollTo({ left: left, behavior: reduceMotion ? 'auto' : 'smooth' });
+          scroller.scrollTo({ left: l.el.offsetLeft - scroller.clientWidth / 2 + l.el.clientWidth / 2, behavior: suave });
         }
       });
     }
@@ -548,7 +597,7 @@
           alerta.setAttribute('data-visible', 'true');
         }
         invalid.focus();
-        invalid.scrollIntoView({ block: 'center', behavior: reduceMotion ? 'auto' : 'smooth' });
+        invalid.scrollIntoView({ block: 'center', behavior: suave });
         return;
       }
       if (alerta) alerta.setAttribute('data-visible', 'false');
@@ -576,7 +625,7 @@
       if (success) {
         success.setAttribute('data-visible', 'true');
         success.focus();
-        success.scrollIntoView({ block: 'center', behavior: reduceMotion ? 'auto' : 'smooth' });
+        success.scrollIntoView({ block: 'center', behavior: suave });
       }
       form.reset();
     });

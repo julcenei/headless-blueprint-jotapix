@@ -40,7 +40,7 @@ export const testePage = {
   <main id="conteudo">
     <section class="page-hero">
       <div class="container">
-        <p class="eyebrow" style="color:#fff">Teste de layout</p>
+        <p class="eyebrow">Teste de layout</p>
         <h1 class="h-1 page-hero__title" style="margin-top:1rem">Produtos na home <span class="text-accent">— 3 opções</span></h1>
         <p class="lead page-hero__text">Mesmo conteúdo e mesmo card, três composições. Role para comparar e me diga qual fica. Trocar entre elas é uma linha no gerador.</p>
       </div>

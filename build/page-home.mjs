@@ -1,6 +1,6 @@
 import { icon } from './icons.mjs';
 import { data, esc, img, waLink } from './data.mjs';
-import { ctaBand } from './layout.mjs';
+import { contactLines, ctaBand, statsBlock } from './layout.mjs';
 
 /* ---------------------------------------------------------------------------
    Hero carrossel — 3 slides com crossfade, ken burns e entrada em cascata.
@@ -199,19 +199,14 @@ function about() {
   <section class="section section--navy" id="quem-somos">
     <div class="container about-grid">
       <div class="reveal">
-        <p class="eyebrow" style="color:#fff">Quem somos</p>
+        <p class="eyebrow">Quem somos</p>
         <h2 class="h-2 section-title" style="margin-top:1.25rem">
           <span class="t-soft">conhecimento</span>
           <span class="t-strong">de chão de fábrica</span>
         </h2>
         <p class="lead" style="margin-top:1.5rem">Desde 2001, a Elotec atua com soluções em correias transportadoras, instalação, conserto, manutenção e avaliação de sistemas industriais — com conhecimento técnico construído no chão de fábrica.</p>
 
-        <div class="stats">
-          <div class="stat"><p class="stat__num"><span data-count-to="2001">2001</span></p><p class="stat__label">início das atividades</p></div>
-          <div class="stat"><p class="stat__num"><span data-count-to="24" data-suffix="h">24h</span></p><p class="stat__label">assistência técnica</p></div>
-          <div class="stat"><p class="stat__num"><span data-count-to="2">2</span></p><p class="stat__label">unidades: Chapecó–SC e Toledo–PR</p></div>
-          <div class="stat"><p class="stat__num"><span data-count-to="8" data-suffix="+">8+</span></p><p class="stat__label">setores industriais atendidos</p></div>
-        </div>
+        ${statsBlock()}
 
         <div style="margin-top:2.75rem">
           <a class="btn btn--primary" href="a-elotec.html">Saiba mais sobre a Elotec ${icon('arrowRight', 16, 2.4)}</a>
@@ -274,25 +269,21 @@ function contact() {
     <div class="container split-panels__grid">
     <div class="panel panel--navy on-dark">
       <div class="reveal">
-        <p class="eyebrow" style="color:#fff">Onde estamos</p>
-        <h2 class="h-3" style="margin-top:1.25rem;color:#fff">Duas unidades, atendimento em todo o Brasil</h2>
+        <p class="eyebrow">Onde estamos</p>
+        <h2 class="h-3" style="margin-top:1.25rem">Duas unidades, atendimento em todo o Brasil</h2>
 
         <div class="unit" style="margin-top:2rem">
           <span class="unit__badge">Matriz</span>
-          <h3 class="h-4" style="color:#fff">Chapecó — SC</h3>
+          <h3 class="h-4">Chapecó — SC</h3>
           <address>${esc(c.address.street)}<br>${esc(c.address.district)} — ${esc(c.address.city)}/${esc(c.address.state)}<br>CEP ${esc(c.address.zip)}</address>
         </div>
         <div class="unit">
           <span class="unit__badge">Unidade</span>
-          <h3 class="h-4" style="color:#fff">Toledo — PR</h3>
+          <h3 class="h-4">Toledo — PR</h3>
           <address>Atendimento técnico regional para o oeste do Paraná.</address>
         </div>
 
-        <div class="contact-lines">
-          <p class="contact-line">${icon('whatsapp', 20, 1.7)} <a href="https://wa.me/${c.whatsapp}" target="_blank" rel="noopener"><span>WhatsApp</span>${esc(c.whatsappDisplay)}</a></p>
-          <p class="contact-line">${icon('phone', 20, 1.7)} <a href="tel:+554933286223"><span>Administrativo</span>${esc(c.phoneAdmin)}</a></p>
-          <p class="contact-line">${icon('mail', 20, 1.7)} <a href="mailto:${c.email}"><span>E-mail</span>${esc(c.email)}</a></p>
-        </div>
+        ${contactLines(`https://wa.me/${c.whatsapp}`)}
       </div>
     </div>
 

@@ -1,5 +1,5 @@
 import { icon } from './icons.mjs';
-import { data, esc, href, img, waLink, SITE } from './data.mjs';
+import { data, esc, img, telLink, waLink, SITE } from './data.mjs';
 
 /* ==========================================================================
    <head> — meta, Open Graph, fontes e JSON-LD
@@ -107,7 +107,7 @@ export function head(page) {
    Header: top bar + navbar com mega dropdowns + menu mobile
    ========================================================================== */
 function logo(light = false) {
-  return `<a class="logo${light ? ' logo--light' : ''}" href="${href('index.html')}" aria-label="Elotec — página inicial">
+  return `<a class="logo${light ? ' logo--light' : ''}" href="index.html" aria-label="Elotec — página inicial">
         <span class="logo__mark" aria-hidden="true"><span>e</span></span>
         <span>
           <span class="logo__word">elotec</span>
@@ -267,7 +267,7 @@ export function footer() {
             ${esc(c.address.district)} — ${esc(c.address.city)}/${esc(c.address.state)}<br>
             CEP ${esc(c.address.zip)}<br><br>
             <a href="https://wa.me/${c.whatsapp}" target="_blank" rel="noopener">WhatsApp ${esc(c.whatsappDisplay)}</a><br>
-            <a href="tel:+554933286223">Adm ${esc(c.phoneAdmin)}</a><br>
+            <a href="${telLink(c.phoneAdmin)}">Adm ${esc(c.phoneAdmin)}</a><br>
             <a href="mailto:${c.email}">${esc(c.email)}</a>
           </address>
         </div>
@@ -330,7 +330,7 @@ export function ctaBand(title, text, primaryLabel = 'Solicitar orçamento') {
   <section class="cta-band">
     <div class="container cta-band__inner">
       <div class="reveal">
-        <p class="eyebrow" style="color:#fff">Fale com a equipe técnica</p>
+        <p class="eyebrow">Fale com a equipe técnica</p>
         <h2 class="h-2" style="margin-top:1rem">${title}</h2>
         <p class="lead" style="margin-top:1.25rem">${esc(text)}</p>
       </div>
@@ -340,4 +340,57 @@ export function ctaBand(title, text, primaryLabel = 'Solicitar orçamento') {
       </div>
     </div>
   </section>`;
+}
+
+/* ==========================================================================
+   Blocos compartilhados entre páginas
+   ========================================================================== */
+
+/** Hero das páginas internas: breadcrumb + título com destaque + subtítulo. */
+export function pageHero({ title, accent, text, crumb }) {
+  return `
+  <section class="page-hero">
+    <div class="container">
+      <nav aria-label="Você está aqui">
+        <ol class="breadcrumb">
+          <li><a href="index.html">Início</a></li>
+          <li><span aria-current="page">${esc(crumb)}</span></li>
+        </ol>
+      </nav>
+      <h1 class="h-1 page-hero__title">${esc(title)} <span class="text-accent">${esc(accent)}</span></h1>
+      <p class="lead page-hero__text">${esc(text)}</p>
+    </div>
+  </section>`;
+}
+
+/** Linhas de contato (WhatsApp / administrativo / e-mail). */
+export function contactLines(waHref = waLink()) {
+  const c = data.contact;
+  return `
+        <div class="contact-lines">
+          <p class="contact-line">${icon('whatsapp', 20, 1.7)} <a href="${waHref}" target="_blank" rel="noopener"><span>WhatsApp</span>${esc(c.whatsappDisplay)}</a></p>
+          <p class="contact-line">${icon('phone', 20, 1.7)} <a href="${telLink(c.phoneAdmin)}"><span>Administrativo</span>${esc(c.phoneAdmin)}</a></p>
+          <p class="contact-line">${icon('mail', 20, 1.7)} <a href="mailto:${c.email}"><span>E-mail</span>${esc(c.email)}</a></p>
+        </div>`;
+}
+
+/** Os quatro números da empresa, com count-up ao entrar na viewport. */
+export function statsBlock(style = '') {
+  const stats = [
+    { to: '2001', label: 'início das atividades' },
+    { to: '24', suffix: 'h', label: 'assistência técnica' },
+    { to: '2', label: 'unidades: Chapecó–SC e Toledo–PR' },
+    { to: '8', suffix: '+', label: 'setores industriais atendidos' },
+  ];
+  return `
+        <div class="stats"${style ? ` style="${style}"` : ''}>
+          ${stats
+            .map(
+              (s) => `<div class="stat">
+            <p class="stat__num"><span data-count-to="${s.to}"${s.suffix ? ` data-suffix="${s.suffix}"` : ''}>${s.to}${s.suffix || ''}</span></p>
+            <p class="stat__label">${esc(s.label)}</p>
+          </div>`
+            )
+            .join('')}
+        </div>`;
 }

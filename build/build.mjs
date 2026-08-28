@@ -11,7 +11,7 @@
  */
 import { writeFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { ROOT } from './data.mjs';
+import { ROOT, SITE } from './data.mjs';
 import { head, header, footer } from './layout.mjs';
 import { homePage } from './page-home.mjs';
 import { produtosPage, servicosPage, setoresPage } from './page-catalog.mjs';
@@ -37,15 +37,14 @@ for (const page of PAGES) {
 }
 
 // sitemap.xml simples com as páginas indexáveis
-const SITE_URL = 'https://www.elotec.ind.br';
 const urls = PAGES.filter((p) => !p.noindex)
-  .map((p) => `  <url><loc>${SITE_URL}/${p.file === 'index.html' ? '' : p.file}</loc></url>`)
+  .map((p) => `  <url><loc>${SITE.url}/${p.file === 'index.html' ? '' : p.file}</loc></url>`)
   .join('\n');
 writeFileSync(
   join(ROOT, 'sitemap.xml'),
   `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>\n`,
   'utf8'
 );
-writeFileSync(join(ROOT, 'robots.txt'), `User-agent: *\nAllow: /\n\nSitemap: ${SITE_URL}/sitemap.xml\n`, 'utf8');
+writeFileSync(join(ROOT, 'robots.txt'), `User-agent: *\nAllow: /\n\nSitemap: ${SITE.url}/sitemap.xml\n`, 'utf8');
 
 console.log(`\n${PAGES.length} páginas geradas (${(total / 1024).toFixed(0)} KB de HTML) + sitemap.xml + robots.txt`);

@@ -28,9 +28,9 @@ export function img(path = '') {
   return String(path).replace(/^\//, '');
 }
 
-/** Mantém os links relativos (o site abre direto do sistema de arquivos). */
-export function href(path = '') {
-  return path;
+/** Converte um telefone exibido ("(49) 3328-6223") em href tel: com DDI. */
+export function telLink(display) {
+  return 'tel:+55' + String(display).replace(/\D/g, '');
 }
 
 /** Link do WhatsApp com mensagem padrão (ou personalizada). */

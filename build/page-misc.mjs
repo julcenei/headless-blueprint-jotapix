@@ -1,24 +1,8 @@
 import { icon } from './icons.mjs';
 import { data, esc, img, waLink } from './data.mjs';
-import { ctaBand } from './layout.mjs';
+import { contactLines, ctaBand, pageHero, statsBlock } from './layout.mjs';
 
 const c = data.contact;
-
-function pageHero({ title, accent, text, crumb }) {
-  return `
-  <section class="page-hero">
-    <div class="container">
-      <nav aria-label="Você está aqui">
-        <ol class="breadcrumb">
-          <li><a href="index.html">Início</a></li>
-          <li><span aria-current="page">${esc(crumb)}</span></li>
-        </ol>
-      </nav>
-      <h1 class="h-1 page-hero__title">${esc(title)} <span class="text-accent">${esc(accent)}</span></h1>
-      <p class="lead page-hero__text">${esc(text)}</p>
-    </div>
-  </section>`;
-}
 
 /* ==========================================================================
    A ELOTEC
@@ -80,26 +64,21 @@ export const aElotecPage = {
     <section class="section section--navy">
       <div class="container">
         <div class="reveal" style="max-width:44rem">
-          <p class="eyebrow" style="color:#fff">Diferenciais</p>
-          <h2 class="h-2" style="margin-top:1.25rem;color:#fff">Por que as indústrias chamam a Elotec</h2>
+          <p class="eyebrow">Diferenciais</p>
+          <h2 class="h-2" style="margin-top:1.25rem">Por que as indústrias chamam a Elotec</h2>
         </div>
         <div class="card-grid" style="margin-top:3rem">
           ${DIFERENCIAIS.map(
             (d, i) => `
-          <article class="reveal" style="--i:${i % 3};padding:1.75rem 1.5rem;background:hsl(0 0% 100% / 0.05);border-left:3px solid var(--accent)">
-            <span style="color:var(--accent);display:block">${icon(d.ico, 28, 1.6)}</span>
-            <h3 class="h-4" style="margin-top:1rem;color:#fff">${esc(d.title)}</h3>
-            <p class="muted" style="margin-top:0.6rem;font-size:0.94rem">${esc(d.text)}</p>
+          <article class="feature-card reveal" style="--i:${i % 3}">
+            <span class="feature-card__icon">${icon(d.ico, 28, 1.6)}</span>
+            <h3 class="h-4">${esc(d.title)}</h3>
+            <p>${esc(d.text)}</p>
           </article>`
           ).join('')}
         </div>
 
-        <div class="stats" style="margin-top:3.5rem">
-          <div class="stat"><p class="stat__num"><span data-count-to="2001">2001</span></p><p class="stat__label">início das atividades</p></div>
-          <div class="stat"><p class="stat__num"><span data-count-to="24" data-suffix="h">24h</span></p><p class="stat__label">assistência técnica</p></div>
-          <div class="stat"><p class="stat__num"><span data-count-to="2">2</span></p><p class="stat__label">unidades: Chapecó–SC e Toledo–PR</p></div>
-          <div class="stat"><p class="stat__num"><span data-count-to="8" data-suffix="+">8+</span></p><p class="stat__label">setores industriais atendidos</p></div>
-        </div>
+        ${statsBlock('margin-top:3.5rem')}
       </div>
     </section>
 
@@ -297,13 +276,9 @@ export const orcamentoPage = {
 
         <aside class="reveal" style="--i:1">
           <div class="aside-card on-dark">
-            <h2 class="h-4" style="color:#fff">Precisa de atendimento agora?</h2>
+            <h2 class="h-4">Precisa de atendimento agora?</h2>
             <p class="muted" style="margin-top:0.75rem;font-size:0.94rem">A assistência técnica funciona 24h para emergências que param a produção.</p>
-            <div class="contact-lines">
-              <p class="contact-line">${icon('whatsapp', 20, 1.7)} <a href="${waLink()}" target="_blank" rel="noopener"><span>WhatsApp</span>${esc(c.whatsappDisplay)}</a></p>
-              <p class="contact-line">${icon('phone', 20, 1.7)} <a href="tel:+554933286223"><span>Administrativo</span>${esc(c.phoneAdmin)}</a></p>
-              <p class="contact-line">${icon('mail', 20, 1.7)} <a href="mailto:${c.email}"><span>E-mail</span>${esc(c.email)}</a></p>
-            </div>
+            ${contactLines(waLink())}
             <a class="btn btn--whats btn--block" href="${waLink()}" target="_blank" rel="noopener">${icon('whatsapp', 18, 1.7)} Abrir conversa</a>
           </div>
 
@@ -410,7 +385,7 @@ export const naoEncontradaPage = {
     <section class="error-page">
       <div class="container">
         <p class="error-code">404</p>
-        <h1 class="h-2" style="color:#fff;margin-top:1.5rem">Esta página saiu da linha de produção</h1>
+        <h1 class="h-2" style="margin-top:1.5rem">Esta página saiu da linha de produção</h1>
         <p class="lead" style="margin-top:1.25rem;max-width:38rem;margin-inline:auto">O endereço acessado não existe ou foi movido. Use os atalhos abaixo para encontrar o que procura.</p>
         <div style="display:flex;flex-wrap:wrap;gap:1rem;justify-content:center;margin-top:2.5rem">
           <a class="btn btn--primary" href="index.html">Voltar para a home ${icon('arrowRight', 16, 2.4)}</a>

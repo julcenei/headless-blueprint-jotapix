@@ -1,28 +1,12 @@
 import { icon } from './icons.mjs';
 import { data, esc, img, bySlug } from './data.mjs';
-import { ctaBand } from './layout.mjs';
+import { ctaBand, pageHero } from './layout.mjs';
 
 /* ---------------------------------------------------------------------------
    Páginas de catálogo (Produtos / Serviços / Setores)
    Padrão comum: hero navy + breadcrumb, barra de âncoras com ícones,
    seções numeradas alternando fundo, texto à esquerda e foto chanfrada.
 --------------------------------------------------------------------------- */
-
-function pageHero({ title, accent, text, crumb }) {
-  return `
-  <section class="page-hero">
-    <div class="container">
-      <nav aria-label="Você está aqui">
-        <ol class="breadcrumb">
-          <li><a href="index.html">Início</a></li>
-          <li><span aria-current="page">${esc(crumb)}</span></li>
-        </ol>
-      </nav>
-      <h1 class="h-1 page-hero__title">${esc(title)} <span class="text-accent">${esc(accent)}</span></h1>
-      <p class="lead page-hero__text">${esc(text)}</p>
-    </div>
-  </section>`;
-}
 
 function anchorBar(items, page) {
   return `
@@ -153,7 +137,6 @@ function catalogPage({ file, nav, title, description, heroTitle, heroAccent, her
     title,
     description,
     image: items[0].image,
-    hasProgress: true,
     breadcrumb: [
       { label: 'Início', href: '' },
       { label: crumb, href: file },

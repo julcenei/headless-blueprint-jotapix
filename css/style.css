@@ -34,6 +34,9 @@
 
   /* Cor de título/eyebrow: as superfícies escuras redefinem, ninguém pinta na mão */
   --heading: var(--navy);
+  /* Régua estrutural. O amarelo é reservado a ação, estado e marca;
+     divisórias e filetes decorativos usam este tom neutro. */
+  --rule: hsl(225 18% 86%);
 
   /* Estados semânticos (antes eram literais soltos no formulário) */
   --danger: #c0392b;
@@ -189,7 +192,8 @@ h1, h2, h3, h4 {
   content: '';
   width: 26px;
   height: 2px;
-  background: var(--accent);
+  background: currentColor;
+  opacity: 0.4;
 }
 
 .container {
@@ -218,6 +222,7 @@ h1, h2, h3, h4 {
 .hero,
 .aside-card:not(.aside-card--light) {
   --heading: #fff;
+  --rule: hsl(0 0% 100% / 0.22);
   --text-muted: var(--on-dark-muted);
   --accent-ink: var(--accent);
 }
@@ -395,7 +400,7 @@ a.chip:hover { background: var(--accent); border-color: var(--accent); transform
   width: 20px;
   height: 20px;
   margin-top: 0.28em;
-  background: var(--accent);
+  background: var(--heading);
   clip-path: polygon(0 0, 100% 0, 100% 100%, 5px 100%, 0 calc(100% - 5px));
   -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M4 12.5l5 5L20 6.5' fill='none' stroke='%23000' stroke-width='3.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/78% no-repeat;
   mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M4 12.5l5 5L20 6.5' fill='none' stroke='%23000' stroke-width='3.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/78% no-repeat;
@@ -585,7 +590,7 @@ a.chip:hover { background: var(--accent); border-color: var(--accent); transform
   left: 0; right: 0;
   top: 100%;
   background: #fff;
-  border-bottom: 3px solid var(--accent);
+  border-bottom: 1px solid var(--surface-line);
   box-shadow: var(--shadow-md);
   opacity: 0;
   visibility: hidden;
@@ -611,7 +616,7 @@ a.chip:hover { background: var(--accent); border-color: var(--accent); transform
   text-transform: uppercase;
   color: var(--navy);
   padding-left: 0.75rem;
-  border-left: 3px solid var(--accent);
+  border-left: 3px solid var(--rule);
   margin-bottom: 1rem;
 }
 .dropdown__col li + li { margin-top: 0.6rem; }
@@ -740,7 +745,8 @@ a.chip:hover { background: var(--accent); border-color: var(--accent); transform
   transform: scale(1.08);
 }
 /* Ken burns só no slide ativo */
-.hero__slide.is-active .hero__bg img { animation: kenburns 9s var(--ease) forwards; }
+/* 7s = a duração do slide: antes eram 9s e o movimento era cortado no meio */
+.hero__slide.is-active .hero__bg img { animation: kenburns 7s var(--ease) forwards; }
 @keyframes kenburns {
   from { transform: scale(1.14) translate3d(1.5%, 1%, 0); }
   to { transform: scale(1.02) translate3d(-1%, -0.5%, 0); }
@@ -1038,7 +1044,7 @@ a.chip:hover { background: var(--accent); border-color: var(--accent); transform
   align-items: end;
   margin-bottom: clamp(2.5rem, 5vw, 4rem);
 }
-.section-head__main { border-left: 3px solid var(--accent); padding-left: clamp(1rem, 1.6vw, 1.5rem); }
+.section-head__main { border-left: 3px solid var(--rule); padding-left: clamp(1rem, 1.6vw, 1.5rem); }
 .section-head__main .eyebrow::before { display: none; }
 .section-head__aside { padding-bottom: 0.35rem; }
 .section-head__aside .lead { font-size: 1.0625rem; }
@@ -1155,7 +1161,7 @@ a.chip:hover { background: var(--accent); border-color: var(--accent); transform
   gap: 1.75rem 1rem;
   margin-top: 2.75rem;
 }
-.stat { padding-left: 1.15rem; border-left: 3px solid var(--accent); }
+.stat { padding-left: 1.15rem; border-left: 3px solid var(--rule); }
 .stat__num {
   font-family: var(--font-display);
   font-size: clamp(2rem, 1.4rem + 1.8vw, 2.9rem);
@@ -1191,7 +1197,7 @@ a.chip:hover { background: var(--accent); border-color: var(--accent); transform
 .feature-card {
   padding: 1.75rem 1.5rem;
   background: hsl(0 0% 100% / 0.05);
-  border-left: 3px solid var(--accent);
+  border-left: 3px solid var(--rule);
 }
 .feature-card__icon { color: var(--accent); display: block; }
 .feature-card h3 { margin-top: 1rem; }

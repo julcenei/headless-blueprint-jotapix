@@ -75,6 +75,20 @@ três layouts, e `#/teste-tipografia` (`build/page-tipografia.mjs`) com quatro
 pareamentos de fonte. A tipografia inteira passa por dois tokens —
 `--font-display` e `--font-body` — então trocar de pareamento são duas linhas.
 
+## Regras de uso do amarelo e do movimento
+
+**Amarelo** é reservado a três papéis: **ação** (botões, links em hover),
+**estado** (foco, item ativo da barra de âncoras, progresso) e **marca**
+(logotipo, faixa de setores, selos que o brief pede). Divisórias, filetes e
+marcadores de conteúdo usam o token `--rule`, que é neutro no claro e
+translúcido no escuro. A única exceção é o filete dos 5 passos do orçamento,
+onde a numeração é uma sequência de verdade.
+
+**Movimento**: a página tem um único loop ambiente — a faixa de setores, que o
+brief pede — e um momento orquestrado, o hero. Todo o resto responde a uma ação
+do visitante. O carrossel de produtos não anda sozinho: arrasto, setas, teclado
+e scroll-snap.
+
 ## Decisões de design (o que mudou em relação ao layout original)
 
 - **Marca preservada, apresentação reconstruída.** Azul-marinho + amarelo, chanfros por

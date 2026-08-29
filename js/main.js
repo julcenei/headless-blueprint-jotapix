@@ -322,8 +322,6 @@
       var next = $('[data-rail-next]', rail);
       if (!track) return;
 
-      var autoplay = null;
-      var userTook = false; // depois de interagir, o avanço automático não volta
       var passo = 300;
       var maxScroll = 0;
       var fatia = 1;
@@ -352,8 +350,8 @@
         track.scrollBy({ left: dir * passo, behavior: suave });
       }
 
-      if (prev) prev.addEventListener('click', function () { stopAuto(true); scrollBy(-1); });
-      if (next) next.addEventListener('click', function () { stopAuto(true); scrollBy(1); });
+      if (prev) prev.addEventListener('click', function () { scrollBy(-1); });
+      if (next) next.addEventListener('click', function () { scrollBy(1); });
       track.addEventListener('scroll', update, { passive: true });
 
       /* Arrastar com o mouse (no touch o scroll nativo já resolve) */
@@ -370,7 +368,6 @@
         startScroll = track.scrollLeft;
         track.setPointerCapture(e.pointerId);
         track.classList.add('is-dragging');
-        stopAuto(true);
       });
       track.addEventListener('pointermove', function (e) {
         if (!dragging) return;
@@ -390,40 +387,13 @@
         if (moved > 6) { e.preventDefault(); moved = 0; }
       }, true);
 
-      /* Avanço automático suave, até a primeira interação */
-      function startAuto() {
-        if (reduceMotion || userTook || autoplay) return;
-        autoplay = setInterval(function () {
-          if (track.scrollLeft >= maxScroll - 2) track.scrollTo({ left: 0, behavior: suave });
-          else scrollBy(1);
-        }, 4500);
-      }
-      function stopAuto(permanent) {
-        if (permanent) userTook = true;
-        if (autoplay) clearInterval(autoplay);
-        autoplay = null;
-      }
-
-      rail.addEventListener('mouseenter', function () { stopAuto(false); });
-      rail.addEventListener('mouseleave', startAuto);
-      // parado fora da viewport: sem smooth-scroll rodando com o rail invisível
-      var naTela = false;
-      whileVisible(rail, function () {
-        naTela = true;
-        // no single-file o trilho nasce em rota oculta: mede 0 até aparecer
-        medir();
-        startAuto();
-      }, function () { naTela = false; stopAuto(false); });
-      rail.addEventListener('focusin', function () { stopAuto(true); });
-      track.addEventListener('touchstart', function () { stopAuto(true); }, { passive: true });
-      document.addEventListener('visibilitychange', function () {
-        if (document.hidden) stopAuto(false);
-        else if (naTela) startAuto();
-      });
+      // O trilho não anda sozinho: o marquee de setores, logo acima, já é o
+      // único loop ambiente da página. Aqui o movimento é sempre do visitante.
+      // Só remede ao aparecer, porque em rota oculta o trilho mede zero.
+      whileVisible(rail, medir, function () {});
 
       medir();
       aoRedimensionar.push(medir);
-      if (!naTela) stopAuto(false);
     });
   })();
 

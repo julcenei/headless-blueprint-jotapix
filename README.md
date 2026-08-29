@@ -145,9 +145,19 @@ e scroll-snap.
   **Archivo** nos títulos — grotesca industrial, mais densa e contemporânea, com
   `letter-spacing` negativo e `clamp()` em todos os tamanhos, sem breakpoints de fonte.
 - **Hero cinematográfico.** Crossfade entre os 3 slides + ken burns lento na foto,
-  entrada do texto em cascata, gradiente navy diagonal (em vez do véu uniforme) e uma
-  faixa de selos de confiança logo abaixo. Setas, indicadores com barra de progresso,
-  teclado, swipe e pausa automática no hover/foco/aba oculta.
+  entrada do texto em cascata e gradiente navy diagonal (em vez do véu uniforme). Setas,
+  indicadores com barra de progresso, teclado, swipe e pausa automática no hover/foco/aba
+  oculta. A faixa de selos que existia entre o hero e o marquee saiu: os quatro selos
+  repetiam a barra superior ("Atendimento em todo o Brasil · Assistência técnica 24h") e
+  três das quatro estatísticas de "quem somos" (2001, 24h, 8+ setores), e empilhava uma
+  terceira faixa horizontal antes do primeiro conteúdo real da página.
+- **Marquee de setores.** Amarelo, itens clicáveis e separador quadradinho, como o brief
+  pede. O que mudou foi o acabamento: as pontas dissolvem por máscara em vez de cortar a
+  palavra no meio, a faixa afinou de 67 para 57px, o quadradinho virou losango (o mesmo
+  vocabulário diagonal do chanfro) e o botão de pausa ficou só ícone — um bloco navy de
+  44px era o elemento mais pesado da faixa. Ele ganha corpo quando `aria-pressed="true"`,
+  porque aí é estado. A máscara vive no `.marquee__viewport`, não na faixa: assim o
+  amarelo continua sangrando de ponta a ponta e o controle de pausa não desbota junto.
 - **Grid quebrado e assimetria controlada.** A home deixou de ser uma pilha de blocos
   centrados: a seção de produtos usa painel de texto *sticky* + grade de cards, "quem
   somos" tem moldura amarela deslocada sobre a foto, e o bloco final é um split

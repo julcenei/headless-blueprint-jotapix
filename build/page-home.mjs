@@ -48,14 +48,6 @@ function hero() {
     </div>
     <p class="hero__live visually-hidden" aria-live="polite"></p>
 
-    <div class="hero__trust on-dark">
-      <div class="container">
-        <p class="trust-badge">${icon('clock', 18, 1.8)} Desde 2001 no chão de fábrica</p>
-        <p class="trust-badge">${icon('bolt', 18, 1.8)} Assistência técnica 24h</p>
-        <p class="trust-badge">${icon('pin', 18, 1.8)} Atendimento em todo o Brasil</p>
-        <p class="trust-badge">${icon('target', 18, 1.8)} 8+ setores industriais</p>
-      </div>
-    </div>
   </section>`;
 }
 
@@ -66,7 +58,9 @@ function marquee() {
     .join('');
   return `
   <div class="marquee" data-paused="false" aria-label="Setores atendidos">
-    <div class="marquee__track">${items}</div>
+    <div class="marquee__viewport">
+      <div class="marquee__track">${items}</div>
+    </div>
     <button class="marquee__pause" type="button" aria-pressed="false" aria-label="Pausar rolagem dos setores">${icon('pause', 14, 1.8)}</button>
   </div>`;
 }

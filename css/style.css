@@ -1046,30 +1046,27 @@ a.chip:hover { background: var(--accent); border-color: var(--accent); transform
 .hero.is-paused .hero__dot[aria-selected='true']::after { animation-play-state: paused; }
 
 /* Faixa de selos sob o hero */
-.hero__trust {
-  position: relative;
-  z-index: 2;
-  border-top: 1px solid hsl(0 0% 100% / 0.12);
-  background: hsl(232 62% 11% / 0.55);
-  backdrop-filter: blur(8px);
-}
-.hero__trust .container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem 2.5rem;
-  padding-block: 1.1rem;
-}
 
 /* ==========================================================================
    07. MARQUEE DE SETORES
    ========================================================================== */
 .marquee {
   position: relative;
+  padding-right: 3.5rem;
   background: var(--accent);
   color: var(--navy);
-  overflow: hidden;
   display: flex;
   align-items: center;
+}
+/* A máscara vai no viewport, não na faixa: assim as palavras dissolvem nas
+   pontas em vez de serem cortadas no meio, e o amarelo continua sangrando de
+   ponta a ponta — e o botão de pausa, que é irmão, não desbota junto. */
+.marquee__viewport {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 9%, #000 92%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 9%, #000 92%, transparent);
 }
 .marquee__track {
   display: flex;
@@ -1083,42 +1080,54 @@ a.chip:hover { background: var(--accent); border-color: var(--accent); transform
 .marquee__item {
   display: inline-flex;
   align-items: center;
-  gap: 1.75rem;
-  padding: 1.15rem 1.75rem 1.15rem 0;
+  gap: 2.25rem;
+  padding: 0.95rem 2.25rem 0.95rem 0;
   font-family: var(--font-display);
-  font-size: clamp(0.95rem, 0.85rem + 0.35vw, 1.15rem);
+  font-size: clamp(0.875rem, 0.8rem + 0.3vw, 1rem);
   font-weight: 700;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.09em;
   text-transform: uppercase;
   white-space: nowrap;
   transition: opacity 0.25s;
 }
-.marquee__item:hover { opacity: 0.6; }
+.marquee__item:hover { opacity: 0.55; }
+/* o "quadradinho" do brief, virado 45°: o mesmo vocabulário diagonal do chanfro */
 .marquee__item::after {
   content: '';
-  width: 8px; height: 8px;
+  width: 6px; height: 6px;
   background: var(--navy);
+  transform: rotate(45deg);
+  opacity: 0.55;
 }
+/* Só o ícone: um bloco navy de 44px cortava a faixa amarela e virava o
+   elemento mais pesado dela. O alvo de toque continua com 44px, porque o
+   fundo transparente também recebe o clique. */
 .marquee__pause {
   position: absolute;
-  right: 0.5rem;
+  right: 0.35rem;
   top: 50%;
   transform: translateY(-50%);
   width: 44px; height: 44px;
   display: grid;
   place-items: center;
-  background: var(--navy);
-  color: var(--accent);
+  background: transparent;
+  color: var(--navy);
   border: 0;
   cursor: pointer;
   /* visível sempre: no toque não existe hover para revelá-lo */
-  opacity: 0.55;
-  transition: opacity 0.25s;
+  opacity: 0.6;
+  transition: opacity 0.25s, background-color 0.25s;
   z-index: 2;
 }
 .marquee:hover .marquee__pause,
 .marquee__pause:hover,
 .marquee__pause:focus-visible { opacity: 1; }
+/* pausado é um estado: aí o controle ganha corpo */
+.marquee__pause[aria-pressed='true'] {
+  background: var(--navy);
+  color: var(--accent);
+  opacity: 1;
+}
 
 /* ==========================================================================
    08. SEÇÕES DA HOME
@@ -2063,7 +2072,6 @@ a.chip:hover { background: var(--accent); border-color: var(--accent); transform
 }
 
 @media (max-width: 420px) {
-  .hero__trust .container { padding-block: 0.9rem; }
   .btn { width: 100%; }
   .entry__actions .btn { width: auto; }
 }

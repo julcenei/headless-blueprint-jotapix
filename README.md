@@ -84,6 +84,10 @@ marcadores de conteúdo usam o token `--rule`, que é neutro no claro e
 translúcido no escuro. A única exceção é o filete dos 5 passos do orçamento,
 onde a numeração é uma sequência de verdade.
 
+**Assinatura**: o chanfro. Ele aparece em escala grande uma vez — no painel do
+hero — e miúdo nos componentes. O painel também entrega a quebra de grid que o
+brief pedia: o texto sobrepõe a foto em vez de flutuar sobre um véu.
+
 **Movimento**: a página tem um único loop ambiente — a faixa de setores, que o
 brief pede — e um momento orquestrado, o hero. Todo o resto responde a uma ação
 do visitante. O carrossel de produtos não anda sozinho: arrasto, setas, teclado

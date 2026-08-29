@@ -12,22 +12,22 @@ const OPCOES = [
   {
     tag: 'A',
     nome: 'Texto sobre a foto',
-    estado: 'no ar agora',
+    estado: 'tratamento anterior',
     nota:
       'A foto ocupa o card inteiro e um gradiente navy escurece a base para o texto caber por cima. ' +
       'Categoria em amarelo versal, nome em branco, e no hover aparecem o resumo e o "Ver detalhes". ' +
       'Quatro elementos de texto no mesmo retângulo, mais o gradiente que existe só para tornar isso possível.',
-    variante: '',
+    variante: 'sobreposto',
   },
   {
     tag: 'B',
     nome: 'Legenda embaixo da foto',
-    estado: 'proposta',
+    estado: 'no ar agora',
     nota:
       'A foto fica limpa, sem gradiente e sem nada escrito em cima; o nome vai para uma faixa branca no pé do card, ' +
       'com a categoria acima em cinza. O hover dá zoom na foto e traz uma seta ao lado do nome — o resumo sai, ' +
       'porque uma faixa que cresce empurraria a foto. Um elemento de texto por vez, como faz a Plasmetal.',
-    variante: 'legenda',
+    variante: '',
   },
 ];
 

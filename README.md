@@ -126,9 +126,15 @@ e scroll-snap.
   centrados: a seção de produtos usa painel de texto *sticky* + grade de cards, "quem
   somos" tem moldura amarela deslocada sobre a foto, e o bloco final é um split
   navy/claro de ponta a ponta.
-- **Cards de produto com hierarquia extra.** Categoria, nome e — revelados no hover/foco —
-  resumo e CTA, com zoom suave na foto e chanfro no canto inferior direito. As fotos
-  ganharam overlay navy padronizado (`.media`), o que uniformiza um acervo heterogêneo.
+- **Cards de produto com a legenda fora da foto.** A imagem fica limpa e o nome vai numa
+  faixa clara no pé do card, com a categoria acima; o hover dá zoom na foto e traz uma
+  seta ao lado do nome. É o padrão de 31 dos 40 blocos com foto do site — a sobreposição
+  de texto ficou reservada ao hero, onde o painel chanfrado a transforma em assinatura.
+  Sobrepor texto a fotografia faria o contraste depender de cada imagem, inclusive das
+  que ainda vão entrar; na faixa ele é fixado por token (5,29:1 na categoria, 13,11:1 no
+  nome). A foto tem proporção fixa e a faixa absorve a diferença de altura, então um nome
+  de três linhas não estica as fotos da fileira. `productCard(..., 'sobreposto')` devolve
+  o tratamento antigo, usado só na rota de comparação `#/teste-cards`.
 - **Conversão sempre à mão.** CTA amarelo fixo no header, CTA flutuante discreto que
   aparece depois da primeira dobra (e some ao subir), WhatsApp flutuante, CTA ao fim de
   cada seção de catálogo e faixa navy de fechamento em todas as páginas internas.

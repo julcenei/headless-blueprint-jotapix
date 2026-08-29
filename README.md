@@ -69,9 +69,11 @@ Existem três tratamentos prontos em `build/page-home.mjs`; a constante
 | `carrossel` | trilho com os 9 produtos em card retrato, avanço automático, arrasto, setas e barra (padrão) |
 | `coluna` | painel de texto sticky + grade 2×3 (o primeiro layout) |
 
-A página de comparação com as três opções empilhadas existe apenas na versão
-single-file, na rota `#/teste-produtos` (`build/page-teste.mjs`) — ela não é
-gerada no site publicado.
+As páginas de comparação existem apenas na versão single-file e não são
+geradas no site publicado: `#/teste-produtos` (`build/page-teste.mjs`) com os
+três layouts, e `#/teste-tipografia` (`build/page-tipografia.mjs`) com quatro
+pareamentos de fonte. A tipografia inteira passa por dois tokens —
+`--font-display` e `--font-body` — então trocar de pareamento são duas linhas.
 
 ## Decisões de design (o que mudou em relação ao layout original)
 

@@ -1633,7 +1633,9 @@ a.chip:hover { background: var(--accent); border-color: var(--accent); transform
 /* Amostra da página de comparação tipográfica (só na versão single-file).
    Reaplica --font-body no próprio bloco: a herança do corpo é resolvida no
    <body>, então redefinir o token num descendente não bastaria. */
-.tipo-amostra { max-width: 62ch; font-family: var(--font-body); }
+/* largura FIXA em px: ch varia com a fonte e tornaria as quebras de linha
+   incomparáveis entre as amostras */
+.tipo-amostra { max-width: 620px; font-family: var(--font-body); }
 .tipo-amostra .stats { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 .prose h2 { font-size: clamp(1.35rem, 1.2rem + 0.7vw, 1.65rem); margin-top: 2.75rem; }
 .prose h2:first-child { margin-top: 0; }

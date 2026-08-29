@@ -159,6 +159,7 @@
       menu.setAttribute('data-open', String(open));
       document.body.classList.toggle('is-locked', open);
       toggle.setAttribute('aria-label', open ? 'Fechar menu' : 'Abrir menu');
+      if (!open) $$('.mnav__row[aria-controls]', menu).forEach(function (b) { b.setAttribute('aria-expanded', 'false'); });
       if (open) {
         var first = menu.querySelector('a, button');
         if (first) first.focus({ preventScroll: true });
@@ -167,6 +168,16 @@
 
     toggle.addEventListener('click', function () {
       setOpen(toggle.getAttribute('aria-expanded') !== 'true');
+    });
+
+    // Acordeão: um grupo aberto por vez, para a lista não voltar a crescer.
+    var grupos = $$('.mnav__row[aria-controls]', menu);
+    grupos.forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var abrindo = btn.getAttribute('aria-expanded') !== 'true';
+        grupos.forEach(function (outro) { outro.setAttribute('aria-expanded', 'false'); });
+        btn.setAttribute('aria-expanded', String(abrindo));
+      });
     });
     menu.addEventListener('click', function (e) {
       if (e.target.closest('a')) setOpen(false);

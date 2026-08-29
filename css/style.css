@@ -666,35 +666,96 @@ a.chip:hover { background: var(--accent); border-color: var(--accent); transform
   z-index: 99;
   background: var(--navy);
   color: #fff;
-  padding: calc(var(--navbar-h) + 2rem) var(--gutter) 3rem;
+  padding: calc(var(--header-h) + 1.5rem) var(--gutter) 2.5rem;
   overflow-y: auto;
+  overscroll-behavior: contain;
   opacity: 0;
   visibility: hidden;
   transform: translateY(-2%);
   transition: opacity 0.4s var(--ease), transform 0.4s var(--ease), visibility 0.4s;
 }
 .mobile-menu[data-open='true'] { opacity: 1; visibility: visible; transform: none; }
-.mobile-menu h2 {
-  font-size: 0.72rem;
-  letter-spacing: 0.16em;
+
+/* Navegação em acordeão: as linhas de primeiro nível são a lista inteira;
+   os grupos abrem sob demanda, um de cada vez. */
+.mnav { border-top: 1px solid var(--rule); }
+.mnav__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  width: 100%;
+  min-height: 58px;
+  padding: 0.85rem 0;
+  border: 0;
+  border-bottom: 1px solid var(--rule);
+  background: none;
+  color: #fff;
+  text-align: left;
+  cursor: pointer;
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  transition: color 0.25s var(--ease);
+}
+.mnav__row:hover { color: var(--accent); }
+.mnav__chevron {
+  display: grid;
+  place-items: center;
+  opacity: 0.55;
+  transition: transform 0.35s var(--ease), opacity 0.25s, color 0.25s;
+}
+.mnav__row[aria-expanded='true'] { color: var(--accent); }
+.mnav__row[aria-expanded='true'] .mnav__chevron { transform: rotate(180deg); opacity: 1; }
+
+.mnav__panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.4s var(--ease);
+}
+.mnav__row[aria-expanded='true'] + .mnav__panel { grid-template-rows: 1fr; }
+.mnav__panel > div { overflow: hidden; }
+.mnav__panel ul { padding: 0.35rem 0 1.1rem; }
+.mnav__panel li a {
+  display: block;
+  /* 0.62rem leva a linha a ~44px: compacto, mas confortável para o polegar */
+  padding: 0.62rem 0 0.62rem 1.1rem;
+  font-size: 0.93rem;
+  color: var(--text-muted);
+  border-left: 1px solid var(--rule);
+  transition: color 0.2s, border-color 0.2s;
+}
+.mnav__panel li a:hover { color: #fff; border-color: var(--accent); }
+.mnav__panel .mnav__all {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px; /* a fonte menor encolhia a linha abaixo do alvo de toque */
+  gap: 0.4rem;
+  margin-top: 0.35rem;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--accent);
-  margin-bottom: 0.9rem;
+  border-left-color: transparent;
 }
-.mobile-menu__group + .mobile-menu__group { margin-top: 2.25rem; }
-.mobile-menu__group li + li { margin-top: 0.55rem; }
-.mobile-menu__group a { color: hsl(225 30% 84%); font-size: 1.05rem; }
-.mobile-menu__group a:hover { color: var(--accent); }
-.mobile-menu__top a {
-  display: block;
-  font-family: var(--font-display);
-  font-size: 1.9rem;
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  color: #fff;
-  padding-block: 0.35rem;
+
+.mobile-menu__foot { margin-top: 2rem; display: grid; gap: 0.75rem; }
+/* Só o orçamento é botão sólido; o WhatsApp fica em contorno para não
+   competir. O ícone mantém o verde, que é o que identifica o canal. */
+.mobile-menu__foot .btn--ghost-light svg { color: var(--whatsapp); }
+.mnav__contato {
+  margin-top: 1.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--rule);
+  display: grid;
+  gap: 0.75rem;
+  font-size: 0.92rem;
 }
-.mobile-menu__cta { margin-top: 2.5rem; display: grid; gap: 0.75rem; }
+.mnav__contato a { display: inline-flex; align-items: center; gap: 0.6rem; color: var(--text-muted); }
+.mnav__contato a:hover { color: var(--accent); }
+.mnav__contato svg { color: var(--accent); flex: none; }
 
 /* Barra de progresso de leitura */
 .read-progress {

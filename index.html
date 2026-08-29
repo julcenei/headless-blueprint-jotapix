@@ -132,30 +132,58 @@
     </div>
   </header>
 
-  <!-- Menu mobile fullscreen: mesmos grupos de links dos dropdowns -->
+  <!-- Menu mobile: acordeão. Só os 5 destinos principais ficam à vista;
+       cada grupo abre sob demanda, um de cada vez. -->
   <div class="mobile-menu" id="mobile-menu" data-open="false">
-    <nav class="mobile-menu__top" aria-label="Navegação principal (mobile)">
-      <a href="index.html">Início</a>
-      <a href="a-elotec.html">A Elotec</a>
-      <a href="produtos.html">Produtos</a>
-      <a href="servicos.html">Serviços</a>
-      <a href="setores.html">Setores Atendidos</a>
+    <nav class="mnav" aria-label="Navegação principal (mobile)">
+      <a class="mnav__row" href="index.html">Início</a>
+      <a class="mnav__row" href="a-elotec.html">A Elotec</a>
+      
+      <div class="mnav__item">
+        <button class="mnav__row" type="button" aria-expanded="false" aria-controls="m-produtos">
+          Produtos
+          <span class="mnav__chevron" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m6 9 6 6 6-6"/></svg></span>
+        </button>
+        <div class="mnav__panel" id="m-produtos"><div>
+          <ul>
+            <li><a href="produtos.html#correia-pu-sanitaria">Correia PU Sanitária</a></li><li><a href="produtos.html#correia-pu-tracao-positiva">Correia PU de Tração Positiva</a></li><li><a href="produtos.html#correia-pu-lonada">Correia PU Lonada</a></li><li><a href="produtos.html#correia-pvc">Correia PVC</a></li><li><a href="produtos.html#correia-pvc-elevadora-canecas">Correia PVC Elevadora de Canecas</a></li><li><a href="produtos.html#correia-de-borracha">Correia de Borracha</a></li><li><a href="produtos.html#canecas-para-elevadores">Canecas para Elevadores</a></li><li><a href="produtos.html#rolos-e-roletes">Rolos e Roletes Industriais</a></li><li><a href="produtos.html#material-para-revestimento">Material para Revestimento Industrial</a></li>
+            <li><a class="mnav__all" href="produtos.html">Ver todos os produtos <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></li>
+          </ul>
+        </div></div>
+      </div>
+      <div class="mnav__item">
+        <button class="mnav__row" type="button" aria-expanded="false" aria-controls="m-servicos">
+          Serviços
+          <span class="mnav__chevron" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m6 9 6 6 6-6"/></svg></span>
+        </button>
+        <div class="mnav__panel" id="m-servicos"><div>
+          <ul>
+            <li><a href="servicos.html#instalacao-conserto-correias-pu">Correias em PU</a></li><li><a href="servicos.html#instalacao-conserto-correias-pvc">Correias em PVC</a></li><li><a href="servicos.html#instalacao-conserto-correias-borracha">Correias em Borracha</a></li><li><a href="servicos.html#instalacao-conserto-correias-nylon">Correias em Nylon</a></li><li><a href="servicos.html#instalacao-conserto-correias-transmissao">Correias de Transmissão</a></li><li><a href="servicos.html#revestimento-de-rolos">Revestimento de Rolos</a></li><li><a href="servicos.html#aplicacao-guias-taliscas">Guias e Taliscas</a></li><li><a href="servicos.html#consultoria-acompanhamento-preventivo">Consultoria Preventiva</a></li>
+            <li><a class="mnav__all" href="servicos.html">Ver todos os serviços <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></li>
+          </ul>
+        </div></div>
+      </div>
+      <div class="mnav__item">
+        <button class="mnav__row" type="button" aria-expanded="false" aria-controls="m-setores">
+          Setores Atendidos
+          <span class="mnav__chevron" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m6 9 6 6 6-6"/></svg></span>
+        </button>
+        <div class="mnav__panel" id="m-setores"><div>
+          <ul>
+            <li><a href="setores.html#frigorificos">Frigoríficos</a></li><li><a href="setores.html#industria-farmaceutica">Indústria Farmacêutica</a></li><li><a href="setores.html#panificacao-biscoitos">Panificação e Biscoitos</a></li><li><a href="setores.html#cerealistas">Cerealistas</a></li><li><a href="setores.html#britadores">Britadores</a></li><li><a href="setores.html#industria-moveis">Indústria de Móveis</a></li><li><a href="setores.html#fabricantes-equipamentos">Fabricantes de Equipamentos</a></li><li><a href="setores.html#lenha-cavacos">Lenha e Cavacos</a></li>
+            <li><a class="mnav__all" href="setores.html">Ver todos os setores <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></li>
+          </ul>
+        </div></div>
+      </div>
     </nav>
-    <div class="mobile-menu__group">
-      <h2>Produtos</h2>
-      <ul><li><a href="produtos.html#correia-pu-sanitaria">Correia PU Sanitária</a></li><li><a href="produtos.html#correia-pu-tracao-positiva">Correia PU de Tração Positiva</a></li><li><a href="produtos.html#correia-pu-lonada">Correia PU Lonada</a></li><li><a href="produtos.html#correia-pvc">Correia PVC</a></li><li><a href="produtos.html#correia-pvc-elevadora-canecas">Correia PVC Elevadora de Canecas</a></li><li><a href="produtos.html#correia-de-borracha">Correia de Borracha</a></li><li><a href="produtos.html#canecas-para-elevadores">Canecas para Elevadores</a></li><li><a href="produtos.html#rolos-e-roletes">Rolos e Roletes Industriais</a></li><li><a href="produtos.html#material-para-revestimento">Material para Revestimento Industrial</a></li></ul>
-    </div>
-    <div class="mobile-menu__group">
-      <h2>Serviços</h2>
-      <ul><li><a href="servicos.html#instalacao-conserto-correias-pu">Correias em PU</a></li><li><a href="servicos.html#instalacao-conserto-correias-pvc">Correias em PVC</a></li><li><a href="servicos.html#instalacao-conserto-correias-borracha">Correias em Borracha</a></li><li><a href="servicos.html#instalacao-conserto-correias-nylon">Correias em Nylon</a></li><li><a href="servicos.html#instalacao-conserto-correias-transmissao">Correias de Transmissão</a></li><li><a href="servicos.html#revestimento-de-rolos">Revestimento de Rolos</a></li><li><a href="servicos.html#aplicacao-guias-taliscas">Guias e Taliscas</a></li><li><a href="servicos.html#consultoria-acompanhamento-preventivo">Consultoria Preventiva</a></li></ul>
-    </div>
-    <div class="mobile-menu__group">
-      <h2>Setores atendidos</h2>
-      <ul><li><a href="setores.html#frigorificos">Frigoríficos</a></li><li><a href="setores.html#industria-farmaceutica">Indústria Farmacêutica</a></li><li><a href="setores.html#panificacao-biscoitos">Panificação e Biscoitos</a></li><li><a href="setores.html#cerealistas">Cerealistas</a></li><li><a href="setores.html#britadores">Britadores</a></li><li><a href="setores.html#industria-moveis">Indústria de Móveis</a></li><li><a href="setores.html#fabricantes-equipamentos">Fabricantes de Equipamentos</a></li><li><a href="setores.html#lenha-cavacos">Lenha e Cavacos</a></li></ul>
-    </div>
-    <div class="mobile-menu__cta">
+
+    <div class="mobile-menu__foot">
       <a class="btn btn--primary btn--block" href="solicitar-orcamento.html">Solicitar orçamento <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-      <a class="btn btn--whats btn--block" href="https://wa.me/5549999551100?text=Ol%C3%A1!%20Vim%20pelo%20site%20da%20Elotec%20e%20gostaria%20de%20atendimento." target="_blank" rel="noopener"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 3a9 9 0 0 0-7.7 13.6L3 21l4.5-1.2A9 9 0 1 0 12 3Z"/><path d="M8.8 8.4c.3-.7 1.5-.6 1.7-.1l.5 1.2c.1.4-.4.8-.6 1 .5 1 1.3 1.8 2.3 2.3.2-.2.6-.7 1-.6l1.2.5c.5.2.6 1.4-.1 1.7-1.4.6-3.5-.4-4.6-1.5-1.1-1.1-2-3.1-1.4-4.5Z"/></svg> Falar no WhatsApp</a>
+      <a class="btn btn--ghost-light btn--block" href="https://wa.me/5549999551100?text=Ol%C3%A1!%20Vim%20pelo%20site%20da%20Elotec%20e%20gostaria%20de%20atendimento." target="_blank" rel="noopener"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 3a9 9 0 0 0-7.7 13.6L3 21l4.5-1.2A9 9 0 1 0 12 3Z"/><path d="M8.8 8.4c.3-.7 1.5-.6 1.7-.1l.5 1.2c.1.4-.4.8-.6 1 .5 1 1.3 1.8 2.3 2.3.2-.2.6-.7 1-.6l1.2.5c.5.2.6 1.4-.1 1.7-1.4.6-3.5-.4-4.6-1.5-1.1-1.1-2-3.1-1.4-4.5Z"/></svg> Falar no WhatsApp</a>
+      <div class="mnav__contato">
+        <a href="tel:+5549999551100"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.2a2 2 0 0 1 2.1-.5c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2Z"/></svg> (49) 9 9955-1100</a>
+        <a href="mailto:elotec@elotec.ind.br"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 5h16a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Z"/><path d="m3.5 6.5 8.5 6 8.5-6"/></svg> elotec@elotec.ind.br</a>
+      </div>
     </div>
   </div>
   <main id="conteudo">

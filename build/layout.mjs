@@ -219,30 +219,42 @@ export function header(page) {
     </div>
   </header>
 
-  <!-- Menu mobile fullscreen: mesmos grupos de links dos dropdowns -->
+  <!-- Menu mobile: acordeão. Só os 5 destinos principais ficam à vista;
+       cada grupo abre sob demanda, um de cada vez. -->
   <div class="mobile-menu" id="mobile-menu" data-open="false">
-    <nav class="mobile-menu__top" aria-label="Navegação principal (mobile)">
-      <a href="index.html">Início</a>
-      <a href="a-elotec.html">A Elotec</a>
-      <a href="produtos.html">Produtos</a>
-      <a href="servicos.html">Serviços</a>
-      <a href="setores.html">Setores Atendidos</a>
+    <nav class="mnav" aria-label="Navegação principal (mobile)">
+      <a class="mnav__row" href="index.html">Início</a>
+      <a class="mnav__row" href="a-elotec.html">A Elotec</a>
+      ${[
+        { id: 'produtos', label: 'Produtos', pagina: 'produtos.html', todos: 'Ver todos os produtos', itens: data.products.map((p) => ({ href: `produtos.html#${p.slug}`, nome: p.name })) },
+        { id: 'servicos', label: 'Serviços', pagina: 'servicos.html', todos: 'Ver todos os serviços', itens: data.services.map((s) => ({ href: `servicos.html#${s.slug}`, nome: s.shortName || s.name })) },
+        { id: 'setores', label: 'Setores Atendidos', pagina: 'setores.html', todos: 'Ver todos os setores', itens: data.sectors.map((s) => ({ href: `setores.html#${s.slug}`, nome: s.name })) },
+      ]
+        .map(
+          (g) => `
+      <div class="mnav__item">
+        <button class="mnav__row" type="button" aria-expanded="false" aria-controls="m-${g.id}">
+          ${esc(g.label)}
+          <span class="mnav__chevron" aria-hidden="true">${icon('chevronDown', 18, 2)}</span>
+        </button>
+        <div class="mnav__panel" id="m-${g.id}"><div>
+          <ul>
+            ${g.itens.map((i) => `<li><a href="${i.href}">${esc(i.nome)}</a></li>`).join('')}
+            <li><a class="mnav__all" href="${g.pagina}">${esc(g.todos)} ${icon('arrowRight', 14, 2.4)}</a></li>
+          </ul>
+        </div></div>
+      </div>`
+        )
+        .join('')}
     </nav>
-    <div class="mobile-menu__group">
-      <h2>Produtos</h2>
-      <ul>${data.products.map((p) => `<li><a href="produtos.html#${p.slug}">${esc(p.name)}</a></li>`).join('')}</ul>
-    </div>
-    <div class="mobile-menu__group">
-      <h2>Serviços</h2>
-      <ul>${data.services.map((s) => `<li><a href="servicos.html#${s.slug}">${esc(s.shortName || s.name)}</a></li>`).join('')}</ul>
-    </div>
-    <div class="mobile-menu__group">
-      <h2>Setores atendidos</h2>
-      <ul>${data.sectors.map((s) => `<li><a href="setores.html#${s.slug}">${esc(s.name)}</a></li>`).join('')}</ul>
-    </div>
-    <div class="mobile-menu__cta">
+
+    <div class="mobile-menu__foot">
       <a class="btn btn--primary btn--block" href="solicitar-orcamento.html">Solicitar orçamento ${icon('arrowRight', 16, 2.4)}</a>
-      <a class="btn btn--whats btn--block" href="${waLink()}" target="_blank" rel="noopener">${icon('whatsapp', 18, 1.7)} Falar no WhatsApp</a>
+      <a class="btn btn--ghost-light btn--block" href="${waLink()}" target="_blank" rel="noopener">${icon('whatsapp', 18, 1.7)} Falar no WhatsApp</a>
+      <div class="mnav__contato">
+        <a href="${telLink(c.whatsappDisplay)}">${icon('phone', 16, 1.8)} ${esc(c.whatsappDisplay)}</a>
+        <a href="mailto:${c.email}">${icon('mail', 16, 1.8)} ${esc(c.email)}</a>
+      </div>
     </div>
   </div>`;
 }

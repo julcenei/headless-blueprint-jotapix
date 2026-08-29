@@ -92,6 +92,27 @@ categorias de card, selos e títulos de coluna. Botões, links e títulos ficam 
 caixa de frase; junto com a caixa alta saiu o `letter-spacing` positivo, que só
 existe para tornar versal legível e em caixa de frase apenas estica o texto.
 
+## Contorno e foco em elementos chanfrados
+
+`border`, `box-shadow: inset` e `outline` são pintados no retângulo e só depois
+recortados pelo `clip-path`: na aresta diagonal do chanfro não sobra linha
+nenhuma. Isso deixava os botões de contorno com a borda aberta e — mais grave —
+o **anel de foco do teclado invisível** em tudo que é chanfrado, apesar de o
+`outline-width` computado dizer 3px.
+
+A solução é uma pintura só: um anel (polígono com furo, o miolo percorrido no
+sentido inverso) num pseudo-elemento que recebe o mesmo recorte. Serve para o
+contorno permanente e para o foco, e continua correto com cor translúcida,
+porque não são duas camadas se somando. Vale para `.btn`, `.float-btn`,
+`.hero__eyebrow`, `.hero__arrow`, `.rail-arrow`, `.nav-toggle` e
+`.product-card`; a espessura é `--contorno` e a cor, `--contorno-cor`.
+
+A cor do foco é o token `--foco`: azul-marinho no claro, amarelo no escuro.
+Amarelo sobre branco dá 1,7:1, abaixo dos 3:1 que a WCAG 2.4.11 exige para o
+indicador de foco. Sobre o amarelo e sobre o verde do WhatsApp o anel volta a
+ser escuro por `--foco-cor`. Medido: 9,34:1 no CTA amarelo, 14,41:1 no botão de
+contorno, 10,61:1 no botão fantasma do hero, 7,27:1 no botão do WhatsApp.
+
 ## Regras de uso do amarelo e do movimento
 
 **Amarelo** é reservado a três papéis: **ação** (botões, links em hover),

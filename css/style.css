@@ -37,6 +37,7 @@
   /* Régua estrutural. O amarelo é reservado a ação, estado e marca;
      divisórias e filetes decorativos usam este tom neutro. */
   --rule: hsl(225 18% 86%);
+  --foco: var(--navy);
 
   /* Estados semânticos (antes eram literais soltos no formulário) */
   --danger: #c0392b;
@@ -128,7 +129,7 @@ button, input, select, textarea { font: inherit; color: inherit; }
 ul, ol { list-style: none; padding: 0; }
 
 :focus-visible {
-  outline: 3px solid var(--accent);
+  outline: 3px solid var(--foco);
   outline-offset: 3px;
   border-radius: 2px;
 }
@@ -225,6 +226,7 @@ h1, h2, h3, h4 {
   --rule: hsl(0 0% 100% / 0.22);
   --text-muted: var(--on-dark-muted);
   --accent-ink: var(--accent);
+  --foco: var(--accent);
 }
 
 /* Título de seção em duas linhas: "nossos" apagado / "produtos" navy bold */
@@ -273,13 +275,91 @@ h1, h2, h3, h4 {
   clip-path: polygon(0 0, calc(100% - var(--cut)) 0, 100% 100%, 0 100%);
 }
 
-/* ==========================================================================
-   04. BOTÕES, LINKS E CHIPS
-   ========================================================================== */
-.btn,
-.float-btn {
-  clip-path: polygon(0 0, calc(100% - var(--cut)) 0, 100% 100%, 0 100%);
+/* -- Contorno e anel de foco que acompanham o chanfro -----------------------
+   `border`, `box-shadow: inset` e `outline` são pintados no retângulo e só
+   depois recortados pelo clip-path: na aresta diagonal não sobra linha
+   nenhuma. Era isso que deixava os botões de contorno com a borda aberta —
+   e, pior, o anel de foco do teclado invisível em tudo que é chanfrado.
+
+   A solução é uma pintura só: um anel — polígono com furo, o miolo percorrido
+   no sentido inverso — num pseudo-elemento que recebe o mesmo recorte. Serve
+   tanto para o contorno permanente quanto para o foco, e continua certo com
+   cor translúcida, porque não são duas camadas se somando. */
+.btn::after,
+.float-btn::after,
+.hero__eyebrow::after,
+.hero__arrow::after,
+.rail-arrow::after,
+.nav-toggle::after,
+.product-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--contorno-cor, transparent);
+  /* acima do conteúdo: o anel é vazado, então não cobre nada — e em z-index
+     negativo ele ficaria atrás da foto do card */
+  z-index: 2;
+  pointer-events: none;
+  transition: opacity 0.3s var(--ease);
 }
+/* anel da forma do botão (aresta direita inclinada) */
+.btn::after,
+.float-btn::after {
+  clip-path: polygon(
+    0 0, calc(100% - var(--cut)) 0, 100% 100%, 0 100%, 0 0,
+    var(--contorno) var(--contorno),
+    var(--contorno) calc(100% - var(--contorno)),
+    calc(100% - var(--contorno)) calc(100% - var(--contorno)),
+    calc(100% - var(--cut) - var(--contorno)) var(--contorno),
+    var(--contorno) var(--contorno)
+  );
+}
+/* anel da forma dos blocos (canto inferior direito cortado) */
+.hero__eyebrow::after,
+.hero__arrow::after,
+.rail-arrow::after,
+.nav-toggle::after,
+.product-card::after {
+  clip-path: polygon(
+    0 0, 100% 0, 100% calc(100% - var(--cut)), calc(100% - var(--cut)) 100%, 0 100%, 0 0,
+    var(--contorno) var(--contorno),
+    var(--contorno) calc(100% - var(--contorno)),
+    calc(100% - var(--cut) - var(--contorno)) calc(100% - var(--contorno)),
+    calc(100% - var(--contorno)) calc(100% - var(--cut) - var(--contorno)),
+    calc(100% - var(--contorno)) var(--contorno),
+    var(--contorno) var(--contorno)
+  );
+}
+/* O contorno permanente some no hover, quando o botão fica sólido. */
+.btn--outline:hover::after,
+.btn--ghost-light:hover::after { opacity: 0; }
+
+/* Foco pelo teclado: vem depois do hover para vencer quando os dois valem.
+   O anel é de 3px, como o `outline` que ele substitui. */
+.btn:focus-visible,
+.float-btn:focus-visible,
+.hero__arrow:focus-visible,
+.rail-arrow:focus-visible,
+.nav-toggle:focus-visible,
+.product-card:focus-visible {
+  outline: none;
+  --contorno: 3px;
+  --contorno-cor: var(--foco-cor, var(--foco));
+}
+.btn:focus-visible::after,
+.float-btn:focus-visible::after,
+.hero__arrow:focus-visible::after,
+.rail-arrow:focus-visible::after,
+.nav-toggle:focus-visible::after,
+.product-card:focus-visible::after { opacity: 1; }
+/* Sobre o amarelo e sobre o verde o anel precisa ser escuro, mesmo quando o
+   botão está numa seção escura. */
+.btn--primary:focus-visible,
+.btn--whats:focus-visible,
+.float-btn--whats:focus-visible { --foco-cor: var(--navy); }
+
+/* O anel é posicionado: estes precisam de contexto de posicionamento. */
+.rail-arrow { position: relative; }
 
 /* ==========================================================================
    04. BOTÕES, LINKS E CHIPS
@@ -326,17 +406,19 @@ h1, h2, h3, h4 {
 .btn--outline {
   background: transparent;
   color: var(--navy);
-  box-shadow: inset 0 0 0 2px currentColor;
+  --contorno: 2px;
+  --contorno-cor: var(--navy);
 }
-.btn--outline:hover { background: var(--navy); color: #fff; box-shadow: none; }
+.btn--outline:hover { background: var(--navy); color: #fff; }
 
 .btn--ghost-light {
   background: hsl(0 0% 100% / 0.06);
   color: #fff;
-  box-shadow: inset 0 0 0 1.5px hsl(0 0% 100% / 0.45);
+  --contorno: 1.5px;
+  --contorno-cor: hsl(0 0% 100% / 0.45);
   backdrop-filter: blur(6px);
 }
-.btn--ghost-light:hover { background: #fff; color: var(--navy); box-shadow: none; }
+.btn--ghost-light:hover { background: #fff; color: var(--navy); }
 .btn--ghost-light::before { background: linear-gradient(100deg, transparent, hsl(0 0% 100% / 0.25), transparent); }
 
 .btn--whats { background: var(--whatsapp); color: #06331a; }
@@ -848,6 +930,9 @@ a.chip:hover { background: var(--accent); border-color: var(--accent); transform
 .hero__eyebrow {
   font-family: var(--font-display);
   display: inline-block;
+  /* o anel do contorno é um ::after posicionado: precisa de contexto próprio */
+  position: relative;
+  isolation: isolate;
   background: var(--accent);
   color: var(--navy);
   font-size: 0.75rem;
@@ -864,8 +949,11 @@ a.chip:hover { background: var(--accent); border-color: var(--accent); transform
 .unit__badge {
   background: transparent;
   color: var(--accent);
-  box-shadow: inset 0 0 0 1.5px hsl(48 96% 52% / 0.5);
+  --contorno: 1.5px;
+  --contorno-cor: hsl(48 96% 52% / 0.5);
 }
+/* .unit__badge não é recortado, então a borda simples já acompanha a forma */
+.unit__badge { box-shadow: inset 0 0 0 1.5px var(--contorno-cor); }
 
 .hero__title {
   color: #fff;
@@ -917,11 +1005,14 @@ a.chip:hover { background: var(--accent); border-color: var(--accent); transform
   z-index: 3;
 }
 .hero__arrow {
+  position: relative;
+  isolation: isolate;
   width: 52px; height: 52px;
   display: grid;
   place-items: center;
   background: hsl(0 0% 100% / 0.08);
-  box-shadow: inset 0 0 0 1px hsl(0 0% 100% / 0.3);
+  --contorno: 1px;
+  --contorno-cor: hsl(0 0% 100% / 0.3);
   color: #fff;
   border: 0;
   cursor: pointer;

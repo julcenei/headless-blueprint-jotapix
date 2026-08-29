@@ -371,31 +371,40 @@
       var startScroll = 0;
       var moved = 0;
 
+      // Nada de marcar arrasto no pointerdown: `is-dragging` zera o
+      // pointer-events dos links e a captura de ponteiro reentrega o clique ao
+      // trilho — as duas coisas juntas faziam um clique simples no card nunca
+      // chegar ao <a>. O arrasto só começa quando o ponteiro anda de verdade.
+      var LIMIAR = 6;
       track.addEventListener('pointerdown', function (e) {
         if (e.pointerType === 'touch') return;
         dragging = true;
         moved = 0;
         startX = e.clientX;
         startScroll = track.scrollLeft;
-        track.setPointerCapture(e.pointerId);
-        track.classList.add('is-dragging');
       });
       track.addEventListener('pointermove', function (e) {
         if (!dragging) return;
         var dx = e.clientX - startX;
         moved = Math.abs(dx);
+        if (moved <= LIMIAR) return;
+        if (!track.hasPointerCapture(e.pointerId)) {
+          track.setPointerCapture(e.pointerId);
+          track.classList.add('is-dragging');
+        }
         track.scrollLeft = startScroll - dx;
       });
       ['pointerup', 'pointercancel'].forEach(function (evt) {
-        track.addEventListener(evt, function () {
+        track.addEventListener(evt, function (e) {
           if (!dragging) return;
           dragging = false;
+          if (track.hasPointerCapture(e.pointerId)) track.releasePointerCapture(e.pointerId);
           track.classList.remove('is-dragging');
         });
       });
       // um arrasto não deve virar clique no card
       track.addEventListener('click', function (e) {
-        if (moved > 6) { e.preventDefault(); moved = 0; }
+        if (moved > LIMIAR) { e.preventDefault(); moved = 0; }
       }, true);
 
       // O trilho não anda sozinho: o marquee de setores, logo acima, já é o

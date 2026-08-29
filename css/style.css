@@ -1620,7 +1620,10 @@ a.chip:hover { background: var(--accent); border-color: var(--accent); transform
 .anchor-item.is-current svg { opacity: 1; color: var(--accent-ink); }
 
 /* Seção numerada */
-.entry { padding-block: clamp(3.5rem, 7vw, 6.5rem); scroll-margin-top: calc(var(--header-h) + 84px); }
+/* `scroll-padding-top` no documento já desconta o header fixo; um
+   `scroll-margin-top` do mesmo tamanho se somava a ele e a ficha caía
+   300px abaixo da dobra. Aqui basta compensar o padding da própria ficha. */
+.entry { padding-block: clamp(3.5rem, 7vw, 6.5rem); scroll-margin-top: 1.5rem; }
 .entry:nth-child(even) { background: var(--surface-alt); }
 .entry__grid {
   display: grid;

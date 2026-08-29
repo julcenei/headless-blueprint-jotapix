@@ -266,13 +266,10 @@ h1, h2, h3, h4 {
 .mini-card,
 .step,
 .form-card,
-.aside-card {
-  clip-path: polygon(0 0, 100% 0, 100% calc(100% - var(--cut)), calc(100% - var(--cut)) 100%, 0 100%);
-}
-
+.aside-card,
 .btn,
 .float-btn {
-  clip-path: polygon(0 0, calc(100% - var(--cut)) 0, 100% 100%, 0 100%);
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - var(--cut)), calc(100% - var(--cut)) 100%, 0 100%);
 }
 
 /* -- Contorno e anel de foco que acompanham o chanfro -----------------------
@@ -302,19 +299,10 @@ h1, h2, h3, h4 {
   pointer-events: none;
   transition: opacity 0.3s var(--ease);
 }
-/* anel da forma do botão (aresta direita inclinada) */
+/* Um anel só, porque agora todo elemento chanfrado tem a mesma forma:
+   o canto inferior direito cortado. */
 .btn::after,
-.float-btn::after {
-  clip-path: polygon(
-    0 0, calc(100% - var(--cut)) 0, 100% 100%, 0 100%, 0 0,
-    var(--contorno) var(--contorno),
-    var(--contorno) calc(100% - var(--contorno)),
-    calc(100% - var(--contorno)) calc(100% - var(--contorno)),
-    calc(100% - var(--cut) - var(--contorno)) var(--contorno),
-    var(--contorno) var(--contorno)
-  );
-}
-/* anel da forma dos blocos (canto inferior direito cortado) */
+.float-btn::after,
 .hero__eyebrow::after,
 .hero__arrow::after,
 .rail-arrow::after,
@@ -365,13 +353,13 @@ h1, h2, h3, h4 {
    04. BOTÕES, LINKS E CHIPS
    ========================================================================== */
 .btn {
-  --btn-skew: 20px;
+  --btn-cut: 14px;
   position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 0.7rem;
-  padding: 1rem 2rem 1rem 1.6rem;
+  padding: 1rem 1.8rem;
   font-weight: 700;
   font-size: 1rem;
   letter-spacing: normal;
@@ -379,7 +367,7 @@ h1, h2, h3, h4 {
   border: 0;
   isolation: isolate;
   overflow: hidden;
-  --cut: var(--btn-skew);
+  --cut: var(--btn-cut);
   transition: transform var(--dur) var(--ease), color 0.3s var(--ease), background-color 0.3s var(--ease);
 }
 .btn:hover { transform: translateY(-2px); }
@@ -424,7 +412,7 @@ h1, h2, h3, h4 {
 .btn--whats { background: var(--whatsapp); color: #06331a; }
 .btn--whats:hover { background: #1fbc5b; }
 
-.btn--sm { padding: 0.75rem 1.5rem 0.75rem 1.15rem; font-size: 0.875rem; --btn-skew: 14px; }
+.btn--sm { padding: 0.75rem 1.35rem; font-size: 0.875rem; --btn-cut: 10px; }
 .btn--block { width: 100%; }
 
 /* Link com seta e sublinhado animado */
@@ -984,7 +972,7 @@ a.chip:hover { background: var(--accent); border-color: var(--accent); transform
   .hero__text { margin-top: 1rem; }
   .hero__actions { margin-top: 1.35rem; }
 }
-.hero__actions .btn { padding: 0.9rem 1.7rem 0.9rem 1.35rem; font-size: 1rem; }
+.hero__actions .btn { padding: 0.9rem 1.55rem; font-size: 1rem; }
 
 /* Entrada em cascata do texto do slide ativo */
 .hero__slide .anim { opacity: 0; transform: translateY(28px); }

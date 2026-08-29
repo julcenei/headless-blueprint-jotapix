@@ -122,9 +122,14 @@ marcadores de conteúdo usam o token `--rule`, que é neutro no claro e
 translúcido no escuro. A única exceção é o filete dos 5 passos do orçamento,
 onde a numeração é uma sequência de verdade.
 
-**Assinatura**: o chanfro. Ele aparece em escala grande uma vez — no painel do
-hero — e miúdo nos componentes. O painel também entrega a quebra de grid que o
-brief pedia: o texto sobrepõe a foto em vez de flutuar sobre um véu.
+**Assinatura**: o chanfro, e ele tem **uma forma só** — o canto inferior direito
+cortado. Vale para blocos, selos, setas e botões; os botões tinham a aresta
+direita inteira inclinada, o que os fazia gritar mais alto que todo o resto e
+exigia padding assimétrico para compensar. O corte é proporcional à altura:
+`--btn-cut` de 14px no botão normal e 10px no pequeno, na mesma família dos
+10–14px dos outros componentes. Em escala grande o chanfro aparece uma vez só,
+no painel do hero — que também entrega a quebra de grid que o brief pedia: o
+texto sobrepõe a foto em vez de flutuar sobre um véu.
 
 **Movimento**: a página tem um único loop ambiente — a faixa de setores, que o
 brief pede — e um momento orquestrado, o hero. Todo o resto responde a uma ação

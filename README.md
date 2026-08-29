@@ -75,6 +75,23 @@ três layouts, e `#/teste-tipografia` (`build/page-tipografia.mjs`) com quatro
 pareamentos de fonte. A tipografia inteira passa por dois tokens —
 `--font-display` e `--font-body` — então trocar de pareamento são duas linhas.
 
+## Escala tipográfica
+
+O CSS declara **8 tamanhos** abaixo dos títulos — `0.6875 / 0.75 / 0.8125 /
+0.875 / 1 / 1.125 / 1.375 / 1.5rem` — e nada fora deles. Os títulos usam
+`clamp()` em `.h-1` … `.h-4`. Antes eram 19 tamanhos escolhidos caso a caso
+(`0.92`, `0.93`, `0.94`, `0.95`, `0.97`, `0.98`…), o que produzia uma rampa
+contínua sem hierarquia perceptível e um corpo de texto de 15px.
+
+São **3 pesos**: 400 e 700 no Cabin, 800 no Archivo para o display. A fonte é
+carregada só com esses pesos. A hierarquia é feita por **tamanho e espaço**,
+não por peso — é o que separa um layout calmo de um layout que grita.
+
+**Caixa alta é rótulo, nunca ação nem título.** Vale para sobrelinhas,
+categorias de card, selos e títulos de coluna. Botões, links e títulos ficam em
+caixa de frase; junto com a caixa alta saiu o `letter-spacing` positivo, que só
+existe para tornar versal legível e em caixa de frase apenas estica o texto.
+
 ## Regras de uso do amarelo e do movimento
 
 **Amarelo** é reservado a três papéis: **ação** (botões, links em hover),

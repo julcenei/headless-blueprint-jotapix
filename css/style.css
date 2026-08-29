@@ -56,7 +56,7 @@
   /* Espaço e ritmo */
   --font-display: 'Archivo', 'Cabin', system-ui, sans-serif;
   --font-body: 'Cabin', system-ui, -apple-system, 'Segoe UI', sans-serif;
-  --container: 1240px;
+  --container: 1280px;
   --gutter: clamp(1.25rem, 4vw, 3rem);
   --section-y: clamp(4.5rem, 9vw, 8.5rem);
   --radius-sm: 4px;
@@ -99,7 +99,7 @@ html {
 
 body {
   font-family: var(--font-body);
-  font-size: clamp(1rem, 0.96rem + 0.2vw, 1.0625rem);
+  font-size: 1rem;
   line-height: 1.65;
   color: var(--text);
   background: var(--surface);
@@ -167,10 +167,10 @@ h1, h2, h3, h4 {
   text-wrap: balance;
 }
 
-.h-1 { font-size: clamp(2.25rem, 1.4rem + 3.4vw, 4rem); }
-.h-2 { font-size: clamp(1.9rem, 1.4rem + 2.1vw, 3rem); }
-.h-3 { font-size: clamp(1.35rem, 1.15rem + 0.8vw, 1.75rem); line-height: 1.15; }
-.h-4 { font-size: clamp(1.1rem, 1rem + 0.4vw, 1.3rem); line-height: 1.25; }
+.h-1 { font-size: clamp(2.25rem, 1.25rem + 4vw, 4.5rem); }
+.h-2 { font-size: clamp(2rem, 1.3rem + 2.9vw, 3.75rem); }
+.h-3 { font-size: clamp(1.4rem, 1.15rem + 1.05vw, 2rem); line-height: 1.15; }
+.h-4 { font-size: clamp(1.125rem, 1.05rem + 0.35vw, 1.375rem); line-height: 1.25; }
 
 .lead {
   font-size: clamp(1.0625rem, 1rem + 0.4vw, 1.3125rem);
@@ -293,9 +293,8 @@ h1, h2, h3, h4 {
   gap: 0.7rem;
   padding: 1rem 2rem 1rem 1.6rem;
   font-weight: 700;
-  font-size: 0.875rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  font-size: 1rem;
+  letter-spacing: normal;
   cursor: pointer;
   border: 0;
   isolation: isolate;
@@ -343,7 +342,7 @@ h1, h2, h3, h4 {
 .btn--whats { background: var(--whatsapp); color: #06331a; }
 .btn--whats:hover { background: #1fbc5b; }
 
-.btn--sm { padding: 0.75rem 1.5rem 0.75rem 1.15rem; font-size: 0.78rem; --btn-skew: 14px; }
+.btn--sm { padding: 0.75rem 1.5rem 0.75rem 1.15rem; font-size: 0.875rem; --btn-skew: 14px; }
 .btn--block { width: 100%; }
 
 /* Link com seta e sublinhado animado */
@@ -352,9 +351,8 @@ h1, h2, h3, h4 {
   align-items: center;
   gap: 0.5rem;
   font-weight: 700;
-  font-size: 0.9rem;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
+  font-size: 1rem;
+  letter-spacing: normal;
   color: var(--navy);
   padding-bottom: 3px;
   background-image: linear-gradient(var(--accent), var(--accent));
@@ -373,8 +371,8 @@ h1, h2, h3, h4 {
   align-items: center;
   gap: 0.4rem;
   padding: 0.5rem 0.95rem;
-  font-size: 0.82rem;
-  font-weight: 600;
+  font-size: 0.8125rem;
+  font-weight: 700;
   color: var(--navy);
   background: hsl(232 58% 24% / 0.06);
   border: 1px solid transparent;
@@ -394,7 +392,7 @@ a.chip:hover { background: var(--accent); border-color: var(--accent); transform
   grid-template-columns: 22px 1fr;
   gap: 0.7rem;
   align-items: start;
-  font-size: 0.97rem;
+  font-size: 1rem;
 }
 .check-list li::before {
   content: '';
@@ -418,8 +416,8 @@ a.chip:hover { background: var(--accent); border-color: var(--accent); transform
   display: inline-flex;
   align-items: center;
   gap: 0.55rem;
-  font-size: 0.8rem;
-  font-weight: 600;
+  font-size: 0.8125rem;
+  font-weight: 700;
   letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--text-muted);
@@ -531,7 +529,7 @@ a.chip:hover { background: var(--accent); border-color: var(--accent); transform
 }
 .logo__word {
   font-family: var(--font-display);
-  font-size: 1.55rem;
+  font-size: 1.5rem;
   font-weight: 800;
   letter-spacing: -0.045em;
   line-height: 1;
@@ -540,8 +538,8 @@ a.chip:hover { background: var(--accent); border-color: var(--accent); transform
 }
 .logo__desc {
   display: block;
-  font-size: 0.5625rem;
-  font-weight: 600;
+  font-size: 0.6875rem;
+  font-weight: 700;
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--text-muted);
@@ -549,6 +547,9 @@ a.chip:hover { background: var(--accent); border-color: var(--accent); transform
 }
 .logo--light .logo__word { color: #fff; }
 .logo--light .logo__desc { color: hsl(225 30% 72%); }
+/* A 11px a assinatura quebra em duas linhas e estica o header no celular;
+   a marca já está dita pelo logotipo ao lado. */
+@media (max-width: 420px) { .logo__desc { display: none; } }
 
 /* Navegação principal */
 .nav { margin-left: auto; }
@@ -558,8 +559,8 @@ a.chip:hover { background: var(--accent); border-color: var(--accent); transform
   align-items: center;
   gap: 0.35rem;
   padding: 0.65rem 0.85rem;
-  font-size: 0.95rem;
-  font-weight: 600;
+  font-size: 1rem;
+  font-weight: 400;
   color: var(--navy);
   background: none;
   border: 0;
@@ -611,7 +612,7 @@ a.chip:hover { background: var(--accent); border-color: var(--accent); transform
 }
 .dropdown__col-title {
   font-family: var(--font-display);
-  font-size: 0.72rem;
+  font-size: 0.75rem;
   font-weight: 800;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -623,7 +624,7 @@ a.chip:hover { background: var(--accent); border-color: var(--accent); transform
 .dropdown__col li + li { margin-top: 0.6rem; }
 .dropdown__col a {
   display: block;
-  font-size: 0.925rem;
+  font-size: 1rem;
   color: var(--text-muted);
   transition: color 0.25s, transform 0.25s var(--ease);
 }
@@ -694,7 +695,7 @@ a.chip:hover { background: var(--accent); border-color: var(--accent); transform
   text-align: left;
   cursor: pointer;
   font-family: var(--font-display);
-  font-size: 1.15rem;
+  font-size: 1.125rem;
   font-weight: 700;
   letter-spacing: -0.015em;
   transition: color 0.25s var(--ease);
@@ -721,7 +722,7 @@ a.chip:hover { background: var(--accent); border-color: var(--accent); transform
   display: block;
   /* 0.62rem leva a linha a ~44px: compacto, mas confortável para o polegar */
   padding: 0.62rem 0 0.62rem 1.1rem;
-  font-size: 0.93rem;
+  font-size: 0.875rem;
   color: var(--text-muted);
   border-left: 1px solid var(--rule);
   transition: color 0.2s, border-color 0.2s;
@@ -733,10 +734,9 @@ a.chip:hover { background: var(--accent); border-color: var(--accent); transform
   min-height: 44px; /* a fonte menor encolhia a linha abaixo do alvo de toque */
   gap: 0.4rem;
   margin-top: 0.35rem;
-  font-size: 0.78rem;
+  font-size: 0.875rem;
   font-weight: 800;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
+  letter-spacing: normal;
   color: var(--accent);
   border-left-color: transparent;
 }
@@ -751,7 +751,7 @@ a.chip:hover { background: var(--accent); border-color: var(--accent); transform
   border-top: 1px solid var(--rule);
   display: grid;
   gap: 0.75rem;
-  font-size: 0.92rem;
+  font-size: 0.875rem;
 }
 .mnav__contato a { display: inline-flex; align-items: center; gap: 0.6rem; color: var(--text-muted); }
 .mnav__contato a:hover { color: var(--accent); }
@@ -842,7 +842,7 @@ a.chip:hover { background: var(--accent); border-color: var(--accent); transform
   display: inline-block;
   background: var(--accent);
   color: var(--navy);
-  font-size: 0.72rem;
+  font-size: 0.75rem;
   font-weight: 800;
   letter-spacing: 0.18em;
   text-transform: uppercase;
@@ -864,7 +864,7 @@ a.chip:hover { background: var(--accent); border-color: var(--accent); transform
   margin-top: 1.25rem;
   /* O título do hero é limitado pela altura da tela, não só pela largura:
      em notebook de 720px o painel estourava a dobra e cortava o chanfro. */
-  font-size: min(clamp(1.95rem, 0.9rem + 3.3vw, 3.35rem), 5.4vh);
+  font-size: min(clamp(2rem, 0.85rem + 3.9vw, 4.25rem), 6.6vh);
   font-weight: 800;
   line-height: 0.98;
   letter-spacing: -0.035em;
@@ -873,11 +873,22 @@ a.chip:hover { background: var(--accent); border-color: var(--accent); transform
 .hero__text {
   margin-top: 1.4rem;
   max-width: 34rem;
-  font-size: clamp(1.0625rem, 1rem + 0.4vw, 1.25rem);
+  font-size: clamp(1.0625rem, 1rem + 0.4vw, 1.3125rem);
+  line-height: 1.6;
   color: hsl(225 40% 88%);
 }
 .hero__actions { margin-top: 2rem; display: flex; flex-wrap: wrap; gap: 0.85rem; }
-.hero__actions .btn { padding: 0.9rem 1.7rem 0.9rem 1.35rem; font-size: 0.82rem; }
+
+/* Telas de notebook: o painel do hero precisa caber na dobra sem cortar o
+   chanfro. Aperta os intervalos em vez de encolher o título — o título é o
+   que carrega a hierarquia da página. */
+@media (max-height: 1000px) and (min-width: 861px) {
+  .hero__content { padding-top: 1.6rem; padding-bottom: 1.9rem; }
+  .hero__title { margin-top: 0.85rem; }
+  .hero__text { margin-top: 1rem; }
+  .hero__actions { margin-top: 1.35rem; }
+}
+.hero__actions .btn { padding: 0.9rem 1.7rem 0.9rem 1.35rem; font-size: 1rem; }
 
 /* Entrada em cascata do texto do slide ativo */
 .hero__slide .anim { opacity: 0; transform: translateY(28px); }
@@ -1006,7 +1017,7 @@ a.chip:hover { background: var(--accent); border-color: var(--accent); transform
   right: 0.5rem;
   top: 50%;
   transform: translateY(-50%);
-  width: 34px; height: 34px;
+  width: 44px; height: 44px;
   display: grid;
   place-items: center;
   background: var(--navy);
@@ -1076,7 +1087,7 @@ a.chip:hover { background: var(--accent); border-color: var(--accent); transform
   color: #fff;
 }
 .product-card__cat {
-  font-size: 0.68rem;
+  font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.16em;
   text-transform: uppercase;
@@ -1085,7 +1096,7 @@ a.chip:hover { background: var(--accent); border-color: var(--accent); transform
 }
 .product-card__name {
   font-family: var(--font-display);
-  font-size: 1.2rem;
+  font-size: 1.375rem;
   font-weight: 700;
   line-height: 1.15;
   letter-spacing: -0.02em;
@@ -1102,7 +1113,7 @@ a.chip:hover { background: var(--accent); border-color: var(--accent); transform
 .product-card:focus-visible .product-card__more { grid-template-rows: 1fr; opacity: 1; }
 .product-card__more > div { overflow: hidden; }
 .product-card__summary {
-  font-size: 0.9rem;
+  font-size: 1rem;
   line-height: 1.5;
   color: hsl(225 35% 86%);
   margin-top: 0.7rem;
@@ -1113,10 +1124,9 @@ a.chip:hover { background: var(--accent); border-color: var(--accent); transform
   align-items: center;
   gap: 0.45rem;
   margin-top: 0.9rem;
-  font-size: 0.78rem;
+  font-size: 0.875rem;
   font-weight: 800;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
+  letter-spacing: normal;
   color: var(--accent);
 }
 
@@ -1126,12 +1136,12 @@ a.chip:hover { background: var(--accent); border-color: var(--accent); transform
   grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
   gap: clamp(1.5rem, 4vw, 4.5rem);
   align-items: end;
-  margin-bottom: clamp(2.5rem, 5vw, 4rem);
+  margin-bottom: clamp(3rem, 6.5vw, 6.5rem);
 }
-.section-head__main { border-left: 3px solid var(--rule); padding-left: clamp(1rem, 1.6vw, 1.5rem); }
+.section-head__main { border-left: 2px solid var(--rule); padding-left: clamp(1rem, 1.6vw, 1.5rem); }
 .section-head__main .eyebrow::before { display: none; }
 .section-head__aside { padding-bottom: 0.35rem; }
-.section-head__aside .lead { font-size: 1.0625rem; }
+.section-head__aside .lead { font-size: 1.125rem; }
 @media (max-width: 860px) {
   .section-head { grid-template-columns: 1fr; align-items: start; }
   .section-head__aside { padding-bottom: 0; }
@@ -1241,14 +1251,15 @@ a.chip:hover { background: var(--accent); border-color: var(--accent); transform
 }
 .stats {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-  gap: 1.75rem 1rem;
-  margin-top: 2.75rem;
+  /* Com o número a 72px, colunas de 140px encostam um algarismo no outro. */
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr));
+  gap: 2.5rem 2.25rem;
+  margin-top: 3.25rem;
 }
-.stat { padding-left: 1.15rem; border-left: 3px solid var(--rule); }
+.stat { padding-left: 1.35rem; border-left: 2px solid var(--rule); }
 .stat__num {
   font-family: var(--font-display);
-  font-size: clamp(2rem, 1.4rem + 1.8vw, 2.9rem);
+  font-size: clamp(2.75rem, 1.7rem + 4.4vw, 4.5rem);
   font-weight: 800;
   line-height: 1;
   letter-spacing: -0.03em;
@@ -1257,8 +1268,8 @@ a.chip:hover { background: var(--accent); border-color: var(--accent); transform
   color: var(--heading);
 }
 .stat__label {
-  margin-top: 0.5rem;
-  font-size: 0.85rem;
+  margin-top: 0.7rem;
+  font-size: 1.125rem;
   color: var(--text-muted);
   line-height: 1.35;
 }
@@ -1285,7 +1296,7 @@ a.chip:hover { background: var(--accent); border-color: var(--accent); transform
 }
 .feature-card__icon { color: var(--accent); display: block; }
 .feature-card h3 { margin-top: 1rem; }
-.feature-card p { margin-top: 0.6rem; font-size: 0.94rem; color: var(--text-muted); }
+.feature-card p { margin-top: 0.6rem; font-size: 1rem; color: var(--text-muted); }
 
 /* -- Cards de serviço -- */
 .service-card {
@@ -1301,7 +1312,7 @@ a.chip:hover { background: var(--accent); border-color: var(--accent); transform
 .service-card .media { aspect-ratio: 16 / 10; }
 .service-card:hover .media img { transform: scale(1.07); }
 .service-card__body { padding: 1.6rem 1.5rem 1.9rem; display: flex; flex-direction: column; gap: 0.7rem; flex: 1; }
-.service-card__body p { font-size: 0.94rem; color: var(--text-muted); flex: 1; }
+.service-card__body p { font-size: 1rem; color: var(--text-muted); flex: 1; }
 .service-card__icon {
   position: absolute;
   top: 0; right: 0;
@@ -1347,7 +1358,7 @@ a.chip:hover { background: var(--accent); border-color: var(--accent); transform
 .unit__badge {
   font-family: var(--font-display);
   display: inline-block;
-  font-size: 0.68rem;
+  font-size: 0.75rem;
   font-weight: 800;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -1359,9 +1370,9 @@ a.chip:hover { background: var(--accent); border-color: var(--accent); transform
 .unit address { font-style: normal; color: var(--on-dark-muted); line-height: 1.7; }
 
 .contact-lines { display: grid; gap: 0.85rem; margin-block: 1.75rem; }
-.contact-line { display: flex; align-items: center; gap: 0.85rem; font-weight: 600; }
+.contact-line { display: flex; align-items: center; gap: 0.85rem; font-weight: 700; }
 .contact-line svg { color: var(--accent-ink); flex: none; }
-.contact-line span { font-size: 0.75rem; display: block; font-weight: 500; color: var(--text-muted); letter-spacing: 0.1em; text-transform: uppercase; }
+.contact-line span { font-size: 0.75rem; display: block; font-weight: 400; color: var(--text-muted); letter-spacing: 0.1em; text-transform: uppercase; }
 
 /* ==========================================================================
    09. PÁGINAS DE CATÁLOGO
@@ -1396,7 +1407,8 @@ a.chip:hover { background: var(--accent); border-color: var(--accent); transform
 
 .page-hero__text { margin-top: 1.5rem; max-width: 46rem; color: hsl(225 40% 86%); }
 
-.breadcrumb { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; font-size: 0.82rem; color: hsl(225 30% 74%); }
+.breadcrumb { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; font-size: 0.875rem; color: hsl(225 30% 74%); }
+.breadcrumb a { display: inline-flex; align-items: center; min-height: 26px; }
 .breadcrumb a:hover { color: var(--accent); }
 .breadcrumb li + li::before { content: '/'; margin-right: 0.5rem; color: hsl(225 30% 50%); }
 .breadcrumb li { display: flex; align-items: center; }
@@ -1429,8 +1441,8 @@ a.chip:hover { background: var(--accent); border-color: var(--accent); transform
   width: 120px;
   padding: 0.65rem 0.5rem;
   text-align: center;
-  font-size: 0.72rem;
-  font-weight: 600;
+  font-size: 0.75rem;
+  font-weight: 700;
   line-height: 1.25;
   color: var(--text-muted);
   border-bottom: 2px solid transparent;
@@ -1457,14 +1469,13 @@ a.chip:hover { background: var(--accent); border-color: var(--accent); transform
   font-weight: 800;
 }
 .entry__title { margin-top: 0.75rem; }
-.entry__summary { margin-top: 1.1rem; font-size: 1.1rem; font-weight: 600; color: var(--navy-soft); }
+.entry__summary { margin-top: 1.1rem; font-size: 1.125rem; font-weight: 400; color: var(--navy-soft); }
 .entry__desc { margin-top: 1.1rem; color: var(--text-muted); }
 .entry__block { margin-top: 2.25rem; }
 .entry__block h3 {
-  font-size: 0.78rem;
+  font-size: 1.125rem;
   font-weight: 800;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
+  letter-spacing: -0.02em;
   color: var(--navy);
   margin-bottom: 1.1rem;
   display: flex;
@@ -1488,7 +1499,7 @@ a.chip:hover { background: var(--accent); border-color: var(--accent); transform
   gap: 0.5rem;
   background: var(--accent);
   color: var(--navy);
-  font-size: 0.72rem;
+  font-size: 0.75rem;
   font-weight: 800;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -1511,7 +1522,7 @@ a.chip:hover { background: var(--accent); border-color: var(--accent); transform
 .mini-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
 .mini-card__thumb { width: 52px; height: 52px; flex: none; overflow: hidden; background: var(--navy-deep); }
 .mini-card__thumb img { width: 100%; height: 100%; object-fit: cover; }
-.mini-card__name { font-size: 0.88rem; font-weight: 700; color: var(--navy); line-height: 1.25; }
+.mini-card__name { font-size: 0.875rem; font-weight: 700; color: var(--navy); line-height: 1.25; }
 
 /* CTA final navy */
 .cta-band {
@@ -1567,13 +1578,13 @@ a.chip:hover { background: var(--accent); border-color: var(--accent); transform
 }
 .step__num {
   font-family: var(--font-display);
-  font-size: 0.8rem;
+  font-size: 0.8125rem;
   font-weight: 800;
   letter-spacing: 0.1em;
   color: var(--accent-ink);
 }
 .step h3 { font-size: 1rem; margin-top: 0.4rem; }
-.step p { font-size: 0.88rem; color: var(--text-muted); margin-top: 0.45rem; }
+.step p { font-size: 1rem; color: var(--text-muted); margin-top: 0.45rem; }
 /* linha do tempo ligando os passos (desktop) */
 .step::after {
   content: '';
@@ -1601,7 +1612,7 @@ a.chip:hover { background: var(--accent); border-color: var(--accent); transform
 .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); gap: 1.15rem; }
 .field { display: grid; gap: 0.4rem; }
 .field--full { grid-column: 1 / -1; }
-.field label { font-size: 0.8rem; font-weight: 700; letter-spacing: 0.04em; color: var(--navy); }
+.field label { font-size: 0.8125rem; font-weight: 700; letter-spacing: 0.04em; color: var(--navy); }
 .field label .req { color: var(--accent-ink); }
 .field input,
 .field select,
@@ -1612,7 +1623,7 @@ a.chip:hover { background: var(--accent); border-color: var(--accent); transform
   border: 1.5px solid transparent;
   border-bottom-color: var(--surface-line);
   transition: border-color 0.25s, background-color 0.25s;
-  font-size: 0.97rem;
+  font-size: 1rem;
 }
 .field textarea { min-height: 140px; resize: vertical; }
 .field select { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23232A5C' stroke-width='2.4' stroke-linecap='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 1rem center; padding-right: 2.5rem; }
@@ -1622,7 +1633,7 @@ a.chip:hover { background: var(--accent); border-color: var(--accent); transform
 .field[data-invalid='true'] input,
 .field[data-invalid='true'] select,
 .field[data-invalid='true'] textarea { border-color: var(--danger); background: var(--danger-surface); }
-.field__error { font-size: 0.78rem; color: var(--danger); min-height: 0; }
+.field__error { font-size: 0.8125rem; color: var(--danger); min-height: 0; }
 
 .field-note {
   display: flex;
@@ -1631,13 +1642,15 @@ a.chip:hover { background: var(--accent); border-color: var(--accent); transform
   padding: 1rem 1.15rem;
   background: hsl(48 96% 52% / 0.12);
   border-left: 3px solid var(--accent);
-  font-size: 0.88rem;
+  font-size: 0.875rem;
   color: var(--text-muted);
 }
 .field-note svg { color: var(--accent-ink); flex: none; margin-top: 2px; }
 
-.checkbox-field { display: grid; grid-template-columns: auto 1fr; gap: 0.75rem; align-items: start; font-size: 0.88rem; color: var(--text-muted); }
-.checkbox-field input { width: 20px; height: 20px; margin-top: 2px; accent-color: var(--navy); }
+/* Precisa de `.field` no seletor para vencer `.field label`, que é negrito. */
+.field .checkbox-field { display: grid; grid-template-columns: auto 1fr; gap: 0.75rem; align-items: start;
+  font-size: 0.875rem; font-weight: 400; letter-spacing: normal; color: var(--text-muted); }
+.field .checkbox-field input { width: 24px; height: 24px; margin-top: 0; accent-color: var(--navy); }
 .field[data-invalid='true'] .checkbox-field input { outline: 2px solid var(--danger); outline-offset: 2px; }
 .field[data-invalid='true'] .checkbox-field { color: var(--danger-ink); }
 .checkbox-field a { color: var(--navy); font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
@@ -1653,8 +1666,8 @@ a.chip:hover { background: var(--accent); border-color: var(--accent); transform
   background: var(--danger-surface);
   border-left: 4px solid var(--danger);
   color: var(--danger-ink);
-  font-size: 0.92rem;
-  font-weight: 600;
+  font-size: 1rem;
+  font-weight: 700;
 }
 .form-alert[data-visible='true'] { display: flex; }
 
@@ -1669,8 +1682,8 @@ a.chip:hover { background: var(--accent); border-color: var(--accent); transform
 }
 .form-success[data-visible='true'] { display: flex; }
 .form-success svg { color: var(--success); flex: none; }
-.form-success h3 { font-size: 1.05rem; }
-.form-success p { font-size: 0.92rem; color: var(--text-muted); margin-top: 0.35rem; }
+.form-success h3 { font-size: 1.125rem; }
+.form-success p { font-size: 1rem; color: var(--text-muted); margin-top: 0.35rem; }
 
 .aside-card {
   background: var(--navy);
@@ -1695,7 +1708,7 @@ a.chip:hover { background: var(--accent); border-color: var(--accent); transform
   cursor: pointer;
   text-align: left;
   font-weight: 700;
-  font-size: 0.98rem;
+  font-size: 1.125rem;
   color: var(--navy);
 }
 .faq-item__btn .ico {
@@ -1711,7 +1724,7 @@ a.chip:hover { background: var(--accent); border-color: var(--accent); transform
 .faq-item__panel { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.4s var(--ease); }
 .faq-item__btn[aria-expanded='true'] + .faq-item__panel { grid-template-rows: 1fr; }
 .faq-item__panel > div { overflow: hidden; }
-.faq-item__panel p { font-size: 0.93rem; color: var(--text-muted); padding-bottom: 1.2rem; }
+.faq-item__panel p { font-size: 1rem; color: var(--text-muted); padding-bottom: 1.2rem; }
 
 /* ==========================================================================
    11. PÁGINAS AUXILIARES
@@ -1773,10 +1786,10 @@ a.chip:hover { background: var(--accent); border-color: var(--accent); transform
   border-bottom: 1px solid hsl(0 0% 100% / 0.14);
 }
 .footer-col li + li { margin-top: 0.55rem; }
-.footer-col a { font-size: 0.92rem; transition: color 0.25s, transform 0.25s var(--ease); display: inline-block; }
+.footer-col a { font-size: 1rem; transition: color 0.25s, transform 0.25s var(--ease); display: inline-block; }
 .footer-col a:hover { color: var(--accent); transform: translateX(3px); }
-.footer-col .all-link { color: var(--accent); font-weight: 700; font-size: 0.85rem; margin-top: 0.9rem; display: inline-block; }
-.footer-brand address { font-style: normal; line-height: 1.7; font-size: 0.92rem; margin-top: 1.25rem; }
+.footer-col .all-link { color: var(--accent); font-weight: 700; font-size: 1rem; margin-top: 0.9rem; display: inline-block; }
+.footer-brand address { font-style: normal; line-height: 1.7; font-size: 1rem; margin-top: 1.25rem; }
 .footer-bottom {
   margin-top: clamp(2.5rem, 5vw, 4rem);
   border-top: 1px solid hsl(0 0% 100% / 0.14);
@@ -1786,7 +1799,7 @@ a.chip:hover { background: var(--accent); border-color: var(--accent); transform
   gap: 0.75rem 1.75rem;
   align-items: center;
   justify-content: space-between;
-  font-size: 0.85rem;
+  font-size: 0.875rem;
 }
 .footer-bottom nav { display: flex; flex-wrap: wrap; gap: 1.5rem; }
 .footer-bottom a:hover { color: var(--accent); }
@@ -1806,10 +1819,9 @@ a.chip:hover { background: var(--accent); border-color: var(--accent); transform
   align-items: center;
   gap: 0.6rem;
   padding: 0.85rem 1.15rem;
-  font-size: 0.82rem;
+  font-size: 0.875rem;
   font-weight: 700;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+  letter-spacing: normal;
   box-shadow: var(--shadow-md);
   transition: transform 0.35s var(--ease), opacity 0.35s var(--ease);
   --cut: 14px;
@@ -1881,7 +1893,7 @@ a.chip:hover { background: var(--accent); border-color: var(--accent); transform
   :root { --navbar-h: 72px; }
   .topbar__msg { display: none; }
   .topbar .container { justify-content: center; }
-  .topbar__links { gap: 1.1rem; font-size: 0.78rem; }
+  .topbar__links { gap: 1.1rem; font-size: 0.75rem; }
   .hero__viewport { min-height: 620px; }
   .hero__content { max-width: none; --cut: 24px; }
   .hero__dots { bottom: 1.5rem; }

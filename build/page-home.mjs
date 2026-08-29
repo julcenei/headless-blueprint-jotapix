@@ -72,13 +72,14 @@ function marquee() {
 }
 
 /* Card de produto reutilizado na home e nos blocos de relacionados. */
-export function productCard(p, i = 0, feature = false) {
+export function productCard(p, i = 0, feature = false, variante = '') {
+  const legenda = variante === 'legenda';
   return `
-        <a class="product-card${feature ? ' product-card--feature' : ''} reveal" style="--i:${i}" href="produtos.html#${p.slug}">
+        <a class="product-card${feature ? ' product-card--feature' : ''}${legenda ? ' product-card--legenda' : ''} reveal" style="--i:${i}" href="produtos.html#${p.slug}">
           <img src="${img(p.image)}" alt="${esc(p.name)}" loading="lazy" width="640" height="480">
           <div class="product-card__body">
             <p class="product-card__cat">${esc(p.categoryLabel)}</p>
-            <h3 class="product-card__name">${esc(p.name)}</h3>
+            <h3 class="product-card__name">${esc(p.name)}${legenda ? `<span class="product-card__seta" aria-hidden="true">${icon('arrowRight', 18, 2.4)}</span>` : ''}</h3>
             <div class="product-card__more"><div>
               <p class="product-card__summary">${esc(p.summary)}</p>
               <span class="product-card__cta">Ver detalhes ${icon('arrowRight', 14, 2.4)}</span>

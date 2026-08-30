@@ -71,8 +71,8 @@ Existem três tratamentos prontos em `build/page-home.mjs`; a constante
 
 As páginas de comparação existem apenas na versão single-file e não são
 geradas no site publicado: `#/teste-produtos` (`build/page-teste.mjs`) com os
-três layouts, e `#/teste-tipografia` (`build/page-tipografia.mjs`) com quatro
-pareamentos de fonte. A tipografia inteira passa por dois tokens —
+três layouts da seção de produtos e `#/teste-cards` (`build/page-cards.mjs`) com
+os dois tratamentos do card. A tipografia inteira passa por dois tokens —
 `--font-display` e `--font-body` — então trocar de pareamento são duas linhas.
 
 ## Escala tipográfica
@@ -83,9 +83,9 @@ O CSS declara **8 tamanhos** abaixo dos títulos — `0.6875 / 0.75 / 0.8125 /
 (`0.92`, `0.93`, `0.94`, `0.95`, `0.97`, `0.98`…), o que produzia uma rampa
 contínua sem hierarquia perceptível e um corpo de texto de 15px.
 
-São **3 pesos**: 400 e 700 no Cabin, 800 no Archivo para o display. A fonte é
-carregada só com esses pesos. A hierarquia é feita por **tamanho e espaço**,
-não por peso — é o que separa um layout calmo de um layout que grita.
+São **2 pesos**: 400 e 700, nas duas famílias. A fonte é carregada só com
+esses pesos. A hierarquia é feita por **tamanho e espaço**, não por peso — é o
+que separa um layout calmo de um layout que grita.
 
 **Caixa alta é rótulo, nunca ação nem título.** Vale para sobrelinhas,
 categorias de card, selos e títulos de coluna. Botões, links e títulos ficam em
@@ -141,9 +141,16 @@ e scroll-snap.
 - **Marca preservada, apresentação reconstruída.** Azul-marinho + amarelo, chanfros por
   `clip-path` e o logotipo continuam iguais. O que mudou foi a escala: tipografia display
   fluida, espaço negativo generoso e hierarquia mais firme entre título, resumo e detalhe.
-- **Pareamento tipográfico.** Cabin ficou no corpo (mantém a voz da marca) e entrou
-  **Archivo** nos títulos — grotesca industrial, mais densa e contemporânea, com
-  `letter-spacing` negativo e `clamp()` em todos os tamanhos, sem breakpoints de fonte.
+- **Pareamento tipográfico.** **Familjen Grotesk** nos títulos e **Public Sans** no
+  corpo, com `letter-spacing` negativo e `clamp()` em todos os tamanhos, sem breakpoints
+  de fonte. A Familjen Grotesk vai só até 700 — pedir 800 faz a API do Google devolver
+  HTTP 400 e o navegador sintetizar um falso negrito —, então o display desceu de 800
+  para 700 e o site passou a ter dois pesos. Como a Familjen 700 tem caixa alta 6% menor
+  que a Archivo 800, os títulos com `clamp()` subiram 6% para manter a mesma presença; os
+  tamanhos fixos ficaram na escala, porque 6% num rótulo de 12px é 0,7px. No corpo o
+  movimento é o inverso: a Public Sans tem altura de x 6% maior que a Cabin, então 16px
+  continua 16px e apenas lê melhor — mas é 13% mais larga, e por isso a medida do
+  `.prose` foi de 57ch para 62ch, o que devolve ~73 caracteres por linha.
 - **Hero cinematográfico.** Crossfade entre os 3 slides + ken burns lento na foto,
   entrada do texto em cascata e gradiente navy diagonal (em vez do véu uniforme). Setas,
   indicadores com barra de progresso, teclado, swipe e pausa automática no hover/foco/aba

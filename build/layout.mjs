@@ -91,10 +91,10 @@ export function head(page) {
   <!-- Favicon inline: losango amarelo com o "e" da marca -->
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M16 1l11 4 3 11-4 11-11 4-11-4-3-11 4-11z' fill='%23F7C90C'/%3E%3Ctext x='16' y='23' font-family='Arial,sans-serif' font-size='19' font-weight='700' fill='%23232A5C' text-anchor='middle'%3Ee%3C/text%3E%3C/svg%3E">
 
-  <!-- Tipografia: Archivo (display) + Cabin (corpo) -->
+  <!-- Tipografia: Familjen Grotesk (display) + Public Sans (corpo) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;700;800&family=Cabin:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@400;700&family=Public+Sans:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
 
   ${jsonLd(page)}

@@ -18,12 +18,11 @@ import { homePage } from './page-home.mjs';
 import { produtosPage, servicosPage, setoresPage } from './page-catalog.mjs';
 import { aElotecPage, orcamentoPage, privacidadePage, naoEncontradaPage } from './page-misc.mjs';
 import { testePage } from './page-teste.mjs';
-import { tipografiaPage } from './page-tipografia.mjs';
 import { cardsPage } from './page-cards.mjs';
 
 // testePage só existe aqui: é a página de comparação de layouts, não faz
 // parte do site publicado.
-const PAGES = [homePage, aElotecPage, produtosPage, servicosPage, setoresPage, orcamentoPage, privacidadePage, testePage, tipografiaPage, cardsPage, naoEncontradaPage];
+const PAGES = [homePage, aElotecPage, produtosPage, servicosPage, setoresPage, orcamentoPage, privacidadePage, testePage, cardsPage, naoEncontradaPage];
 
 const routeOf = (file) => (file === 'index.html' ? '/' : '/' + file.replace(/\.html$/, ''));
 
@@ -132,7 +131,7 @@ const html = `<meta charset="utf-8">
 <meta name="description" content="Redesign premium do site da Elotec — Serviços Técnicos em Correias. Versão navegável em arquivo único.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;700;800&family=Barlow+Condensed:wght@400;700;800&family=Barlow:wght@400;500;600;700&family=Cabin:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@400;700&family=Public+Sans:wght@400;700&display=swap" rel="stylesheet">
 <style>
 ${css}
 

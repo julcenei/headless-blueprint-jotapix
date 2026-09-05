@@ -538,17 +538,7 @@ a.chip:hover { background: var(--accent); border-color: var(--accent); transform
   gap: 1rem;
   min-height: var(--topbar-h);
 }
-.topbar__msg { display: flex; align-items: center; gap: 0.55rem; }
-.topbar__msg .pulse {
-  width: 7px; height: 7px; border-radius: 50%;
-  background: var(--accent);
-  box-shadow: 0 0 0 0 hsl(48 96% 52% / 0.7);
-  animation: pulse 2.6s infinite;
-}
-@keyframes pulse {
-  70% { box-shadow: 0 0 0 9px hsl(48 96% 52% / 0); }
-  100% { box-shadow: 0 0 0 0 hsl(48 96% 52% / 0); }
-}
+.topbar__msg { display: flex; align-items: center; }
 .topbar__links { display: flex; gap: 1.5rem; }
 .topbar__links a { display: inline-flex; align-items: center; gap: 0.45rem; transition: color 0.25s; }
 .topbar__links a:hover { color: var(--accent); }

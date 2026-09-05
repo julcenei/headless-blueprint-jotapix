@@ -190,7 +190,7 @@ export function header(page) {
   <header class="site-header">
     <div class="topbar">
       <div class="container">
-        <p class="topbar__msg"><span class="pulse" aria-hidden="true"></span> Atendimento em todo o Brasil · Assistência técnica 24h</p>
+        <p class="topbar__msg">Atendimento em todo o Brasil · Assistência técnica 24h</p>
         <div class="topbar__links">
           <a href="tel:+55${c.whatsapp.slice(2)}">${icon('phone', 15, 1.8)} ${esc(c.whatsappDisplay)}</a>
           <a href="mailto:${c.email}">${icon('mail', 15, 1.8)} ${esc(c.email)}</a>
@@ -276,7 +276,7 @@ export function footer() {
           ${logo(true)}
           <address>
             ${esc(c.address.street)}<br>
-            ${esc(c.address.district)} — ${esc(c.address.city)}/${esc(c.address.state)}<br>
+            ${esc(c.address.district)}, ${esc(c.address.city)}/${esc(c.address.state)}<br>
             CEP ${esc(c.address.zip)}<br><br>
             <a href="https://wa.me/${c.whatsapp}" target="_blank" rel="noopener">WhatsApp ${esc(c.whatsappDisplay)}</a><br>
             <a href="${telLink(c.phoneAdmin)}">Adm ${esc(c.phoneAdmin)}</a><br>
@@ -342,7 +342,6 @@ export function ctaBand(title, text, primaryLabel = 'Solicitar orçamento') {
   <section class="cta-band">
     <div class="container cta-band__inner">
       <div class="reveal">
-        <p class="eyebrow">Fale com a equipe técnica</p>
         <h2 class="h-2" style="margin-top:1rem">${title}</h2>
         <p class="lead" style="margin-top:1.25rem">${esc(text)}</p>
       </div>
@@ -391,7 +390,7 @@ export function statsBlock(style = '') {
   const stats = [
     { to: '2001', label: 'início das atividades' },
     { to: '24', suffix: 'h', label: 'assistência técnica' },
-    { to: '2', label: 'unidades: Chapecó–SC e Toledo–PR' },
+    { to: '2', label: 'unidades: Chapecó/SC e Toledo/PR' },
     { to: '8', suffix: '+', label: 'setores industriais atendidos' },
   ];
   return `

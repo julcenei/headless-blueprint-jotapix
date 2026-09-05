@@ -64,7 +64,6 @@ export const aElotecPage = {
     <section class="section section--navy">
       <div class="container">
         <div class="reveal" style="max-width:44rem">
-          <p class="eyebrow">Diferenciais</p>
           <h2 class="h-2" style="margin-top:1.25rem">Por que as indústrias chamam a Elotec</h2>
         </div>
         <div class="card-grid" style="margin-top:3rem">
@@ -85,7 +84,6 @@ export const aElotecPage = {
     <section class="section section--alt">
       <div class="container">
         <div class="reveal" style="max-width:44rem">
-          <p class="eyebrow">Onde atuamos</p>
           <h2 class="h-2" style="margin-top:1.25rem">Setores atendidos</h2>
           <p class="lead" style="margin-top:1.25rem">Da linha de abate ao elevador de grãos, cada setor tem uma exigência diferente de material, higiene e resistência.</p>
         </div>
@@ -302,8 +300,8 @@ export const orcamentoPage = {
 
           <div class="aside-card aside-card--light">
             <h2 class="h-4">Unidades</h2>
-            <p style="margin-top:0.9rem;font-size:0.94rem"><strong>Chapecó — SC (matriz)</strong><br>${esc(c.address.street)}<br>${esc(c.address.district)} — CEP ${esc(c.address.zip)}</p>
-            <p style="margin-top:1rem;font-size:0.94rem"><strong>Toledo — PR (unidade)</strong><br>Atendimento técnico regional.</p>
+            <p style="margin-top:0.9rem;font-size:0.94rem"><strong>Chapecó/SC (matriz)</strong><br>${esc(c.address.street)}<br>${esc(c.address.district)}, CEP ${esc(c.address.zip)}</p>
+            <p style="margin-top:1rem;font-size:0.94rem"><strong>Toledo/PR (unidade)</strong><br>Atendimento técnico regional.</p>
           </div>
         </aside>
       </div>

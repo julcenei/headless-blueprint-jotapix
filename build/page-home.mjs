@@ -98,7 +98,6 @@ export function productCard(p, i = 0, feature = false, variante = '') {
 export const PRODUCTS_LAYOUT = 'carrossel'; // 'mosaico' | 'carrossel' | 'coluna'
 
 const PRODUCTS_TEXT = {
-  eyebrow: 'Catálogo técnico',
   soft: 'nossos',
   strong: 'produtos',
   lead: 'Correias em PU, PVC e borracha, canecas, rolos, roletes e revestimentos para diferentes aplicações industriais.',
@@ -109,7 +108,6 @@ function productsHead(extra = '') {
   return `
       <div class="section-head">
         <div class="section-head__main reveal">
-          <p class="eyebrow">${PRODUCTS_TEXT.eyebrow}</p>
           <h2 class="h-2 section-title" style="margin-top:0.9rem">
             <span class="t-soft">${PRODUCTS_TEXT.soft}</span>
             <span class="t-strong">${PRODUCTS_TEXT.strong}</span>
@@ -168,7 +166,6 @@ export function productsSplit(id = 'produtos') {
   <section class="section" id="${id}">
     <div class="container split-grid">
       <div class="split-grid__aside reveal">
-        <p class="eyebrow">${PRODUCTS_TEXT.eyebrow}</p>
         <h2 class="h-2 section-title" style="margin-top:1.25rem">
           <span class="t-soft">${PRODUCTS_TEXT.soft}</span>
           <span class="t-strong">${PRODUCTS_TEXT.strong}</span>
@@ -248,7 +245,6 @@ function services() {
     <div class="container">
       <div style="display:flex;flex-wrap:wrap;gap:1.5rem;align-items:flex-end;justify-content:space-between">
         <div class="reveal">
-          <p class="eyebrow">Serviços técnicos</p>
           <h2 class="h-2 section-title" style="margin-top:1.25rem">
             <span class="t-soft">nossos</span>
             <span class="t-strong">serviços</span>
@@ -272,17 +268,16 @@ function contact() {
     <div class="container split-panels__grid">
     <div class="panel panel--navy on-dark">
       <div class="reveal">
-        <p class="eyebrow">Onde estamos</p>
         <h2 class="h-3" style="margin-top:1.25rem">Duas unidades, atendimento em todo o Brasil</h2>
 
         <div class="unit" style="margin-top:2rem">
           <span class="unit__badge">Matriz</span>
-          <h3 class="h-4">Chapecó — SC</h3>
-          <address>${esc(c.address.street)}<br>${esc(c.address.district)} — ${esc(c.address.city)}/${esc(c.address.state)}<br>CEP ${esc(c.address.zip)}</address>
+          <h3 class="h-4">Chapecó/SC</h3>
+          <address>${esc(c.address.street)}<br>${esc(c.address.district)}, ${esc(c.address.city)}/${esc(c.address.state)}<br>CEP ${esc(c.address.zip)}</address>
         </div>
         <div class="unit">
           <span class="unit__badge">Unidade</span>
-          <h3 class="h-4">Toledo — PR</h3>
+          <h3 class="h-4">Toledo/PR</h3>
           <address>Atendimento técnico regional para o oeste do Paraná.</address>
         </div>
 
@@ -292,7 +287,6 @@ function contact() {
 
     <div class="panel panel--light">
       <div class="reveal">
-        <p class="eyebrow">Solicite um orçamento</p>
         <h2 class="h-3" style="margin-top:1.25rem">Está com problemas na correia ou no transportador?</h2>
         <p class="lead" style="margin-top:1.25rem">Envie fotos, medidas e informações do equipamento para uma avaliação inicial. Nossa equipe técnica responde com a recomendação mais adequada à sua operação.</p>
 

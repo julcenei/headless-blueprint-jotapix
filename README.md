@@ -113,6 +113,30 @@ indicador de foco. Sobre o amarelo e sobre o verde do WhatsApp o anel volta a
 ser escuro por `--foco-cor`. Medido: 9,34:1 no CTA amarelo, 14,41:1 no botão de
 contorno, 10,61:1 no botão fantasma do hero, 7,27:1 no botão do WhatsApp.
 
+## Skills instaladas
+
+`.claude/skills/` traz duas skills de design, ambas apenas markdown:
+
+- **frontend-design** (Anthropic) — direção visual e tipografia.
+- **taste-skill** (Leonxlnx, MIT) — lista de "AI tells" e um pre-flight de ~60
+  itens. `ORIGEM.md` registra o commit de origem e, mais importante, **quais
+  regras dela ficam suspensas aqui e por quê**: ela pressupõe React/Tailwind e
+  projeto em inglês, então a proibição de SVG feito à mão, a proibição total do
+  travessão e todo o pre-flight de React não se aplicam.
+
+O que a taste-skill encontrou e já foi corrigido, com os números medidos:
+
+| regra | antes | depois |
+|---|---|---|
+| eyebrows por página ≤ `ceil(seções/3)` | 6 na home (teto 2) | 2 |
+| travessão como separador decorativo | 27 nas 8 páginas | 9, todos pontuação de frase |
+| pontinho de status decorativo | 1 (`.pulse` na barra superior) | 0 |
+
+O critério dos eyebrows: **um eyebrow se justifica quando diz o que o título não
+diz.** "CATÁLOGO TÉCNICO" sobre "nossos produtos" é repetição; "QUEM SOMOS"
+sobre "conhecimento de chão de fábrica" não é, porque o título ali é figurado.
+Sobraram o do hero e esse.
+
 ## Regras de uso do amarelo e do movimento
 
 **Amarelo** é reservado a três papéis: **ação** (botões, links em hover),

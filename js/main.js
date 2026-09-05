@@ -609,7 +609,7 @@
       var get = function (k) { return (d.get(k) || '').toString().trim(); };
       var cidade = get('cidade');
       var uf = get('uf');
-      var local = cidade && uf ? cidade + ' – ' + uf : cidade || uf;
+      var local = cidade && uf ? cidade + '/' + uf : cidade || uf;
 
       var msg =
         'Olá! Vim pelo site da Elotec e gostaria de solicitar um orçamento.\n\n' +

@@ -137,6 +137,26 @@ diz.** "CATÁLOGO TÉCNICO" sobre "nossos produtos" é repetição; "QUEM SOMOS"
 sobre "conhecimento de chão de fábrica" não é, porque o título ali é figurado.
 Sobraram o do hero e esse.
 
+Numa segunda passada, o pre-flight inteiro (~60 itens) pegou mais dois:
+**quatro rótulos diferentes para a mesma ação** — "Falar no WhatsApp", "Falar
+agora", "Abrir conversa" e "WhatsApp" abriam todos a mesma conversa —, agora
+unificados em "Falar no WhatsApp" nos 17 botões; e a **navegação em 84px**,
+acima do teto de 80px da regra, agora em 80.
+
+Quatro regras do pre-flight **não** foram aplicadas, e a razão é a mesma nas
+quatro: elas contradizem a Plasmetal, que é a referência escolhida para este
+projeto.
+
+| regra | nosso estado | por que fica |
+|---|---|---|
+| manchete do hero ≤ 2 linhas | 5 linhas | o texto é do brief, palavra por palavra |
+| um tema por página, sem inverter | 4 inversões na home | faixas navy de ponta a ponta são o recurso industrial do projeto, e a Plasmetal faz igual |
+| sem "título à esquerda + apoio à direita" | 1 na home | é o cabeçalho de seção que veio da própria Plasmetal |
+| sem barra de progresso com trilho | 1 no carrossel | a regra mira gráficos de comparação, não indicador de posição |
+
+A numeração ordinal das fichas de produto ("1. Correia PU Sanitária") também
+seria pega pela regra de eyebrows numerados, e fica porque o brief pede.
+
 ## Regras de uso do amarelo e do movimento
 
 **Amarelo** é reservado a três papéis: **ação** (botões, links em hover),

@@ -81,7 +81,7 @@
   /* Alturas do header. O JS sobrescreve --header-h com a medida real;
      este valor é o fallback antes de o script rodar. */
   --topbar-h: 38px;
-  --navbar-h: 84px;
+  --navbar-h: 80px;
   --header-h: calc(var(--topbar-h) + var(--navbar-h));
 }
 

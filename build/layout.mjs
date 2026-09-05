@@ -347,7 +347,7 @@ export function ctaBand(title, text, primaryLabel = 'Solicitar orçamento') {
       </div>
       <div class="cta-band__actions reveal" style="--i:1">
         <a class="btn btn--primary" href="solicitar-orcamento.html">${esc(primaryLabel)} ${icon('arrowRight', 16, 2.4)}</a>
-        <a class="btn btn--ghost-light" href="${waLink()}" target="_blank" rel="noopener">${icon('whatsapp', 18, 1.7)} WhatsApp</a>
+        <a class="btn btn--ghost-light" href="${waLink()}" target="_blank" rel="noopener">${icon('whatsapp', 18, 1.7)} Falar no WhatsApp</a>
       </div>
     </div>
   </section>`;

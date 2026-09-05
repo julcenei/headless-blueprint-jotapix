@@ -21,7 +21,7 @@ function hero() {
               <p class="hero__text anim" style="--d:2">${esc(s.text)}</p>
               <div class="hero__actions anim" style="--d:3">
                 <a class="btn btn--primary" href="${s.cta.to === '/solicitar-orcamento' ? 'solicitar-orcamento.html' : s.cta.to.replace('/setores#', 'setores.html#').replace(/^\/servicos$/, 'servicos.html')}">${esc(s.cta.label)} ${icon('arrowRight', 16, 2.4)}</a>
-                ${i === 0 ? '<a class="btn btn--ghost-light" href="produtos.html">Conhecer soluções</a>' : `<a class="btn btn--ghost-light" href="${waLink()}" target="_blank" rel="noopener">${icon('whatsapp', 18, 1.7)} Falar agora</a>`}
+                ${i === 0 ? '<a class="btn btn--ghost-light" href="produtos.html">Conhecer soluções</a>' : `<a class="btn btn--ghost-light" href="${waLink()}" target="_blank" rel="noopener">${icon('whatsapp', 18, 1.7)} Falar no WhatsApp</a>`}
               </div>
             </div>
           </div>
@@ -298,7 +298,7 @@ function contact() {
 
         <div style="display:flex;flex-wrap:wrap;gap:1rem;margin-top:2.5rem">
           <a class="btn btn--primary" href="solicitar-orcamento.html">Solicitar orçamento ${icon('arrowRight', 16, 2.4)}</a>
-          <a class="btn btn--whats" href="${waLink()}" target="_blank" rel="noopener">${icon('whatsapp', 18, 1.7)} WhatsApp</a>
+          <a class="btn btn--whats" href="${waLink()}" target="_blank" rel="noopener">${icon('whatsapp', 18, 1.7)} Falar no WhatsApp</a>
         </div>
       </div>
     </div>

@@ -279,7 +279,7 @@ export const orcamentoPage = {
             <h2 class="h-4">Precisa de atendimento agora?</h2>
             <p class="muted" style="margin-top:0.75rem;font-size:0.94rem">A assistência técnica funciona 24h para emergências que param a produção.</p>
             ${contactLines(waLink())}
-            <a class="btn btn--whats btn--block" href="${waLink()}" target="_blank" rel="noopener">${icon('whatsapp', 18, 1.7)} Abrir conversa</a>
+            <a class="btn btn--whats btn--block" href="${waLink()}" target="_blank" rel="noopener">${icon('whatsapp', 18, 1.7)} Falar no WhatsApp</a>
           </div>
 
           <div class="aside-card aside-card--light">

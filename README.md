@@ -115,9 +115,13 @@ contorno, 10,61:1 no botão fantasma do hero, 7,27:1 no botão do WhatsApp.
 
 ## Skills instaladas
 
-`.claude/skills/` traz duas skills de design, ambas apenas markdown:
+`.claude/skills/` traz três skills de design:
 
 - **frontend-design** (Anthropic) — direção visual e tipografia.
+- **impeccable** (pbakaus, Apache 2.0) — 23 comandos e um detector determinístico
+  de 196 anti-padrões, em binário próprio que roda offline. `ORIGEM.md` registra
+  como rodar, as cinco classes de falso positivo medidas neste site (126 dos 285
+  achados de uma rodada) e os achados que aceitamos de propósito.
 - **taste-skill** (Leonxlnx, MIT) — lista de "AI tells" e um pre-flight de ~60
   itens. `ORIGEM.md` registra o commit de origem e, mais importante, **quais
   regras dela ficam suspensas aqui e por quê**: ela pressupõe React/Tailwind e
@@ -156,6 +160,20 @@ projeto.
 
 A numeração ordinal das fichas de produto ("1. Correia PU Sanitária") também
 seria pega pela regra de eyebrows numerados, e fica porque o brief pede.
+
+O detector do impeccable rendeu mais três ajustes: as listras diagonais
+decorativas do cabeçalho das páginas internas saíram (decoração pura numa
+superfície escura), o `overflow-x` do body foi de `hidden` para `clip` — recorta
+sem criar contexto de rolagem, então não ameaça o `position: sticky` — e os dois
+filetes decorativos de 3px viraram 2px, alinhando com o que já valia para
+`.section-head__main` e `.stat`. Os filetes de 3-4px que ficaram carregam
+significado: os 5 passos que o brief pede em amarelo, e o erro e o sucesso do
+formulário.
+
+As duas primeiras correções o detector não consegue enxergar: as listras foram
+substituídas na contagem pelo filete tracejado (que é divisória funcional), e a
+regra de recorte não distingue `clip` de `hidden`. Um achado do detector é
+hipótese, não defeito.
 
 ## Regras de uso do amarelo e do movimento
 

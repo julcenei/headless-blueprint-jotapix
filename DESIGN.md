@@ -254,6 +254,18 @@ pseudo-elemento que recebe o mesmo recorte.
 **O chanfro aparece em escala grande uma vez por página**, no painel do hero.
 Nos componentes, é miúdo.
 
+**O painel do hero é um plano, não um cartão.** Ele sangra pela borda esquerda
+e encosta na base do hero; o que aparece dele é a aresta direita e o corte
+diagonal onde encontra o marquee. O recuo interno recompõe a goteira
+(`--sangria: calc(50vw - 50%)`), para o texto continuar alinhado com o resto da
+página, e a largura máxima **soma** a sangria — sem isso, quanto mais larga a
+tela, mais o painel comia da própria medida de texto.
+
+**O texto do hero nunca pousa direto na fotografia.** É a mesma regra que vale
+no resto do site, e aqui ela é mais dura, não menos: as fotos de trabalho real
+ainda vão chegar, tiradas em chão de fábrica com exposição imprevisível, e o
+painel é o que mantém o contraste independente da imagem que entrar.
+
 ### Ícones
 
 Grid 24×24, traço arredondado. Os genéricos vêm da **Lucide v0.469.0** (ISC,

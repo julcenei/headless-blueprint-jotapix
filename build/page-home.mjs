@@ -22,10 +22,11 @@ function hero() {
               <p class="hero__text anim" style="--d:2">${esc(s.text)}</p>
               <div class="hero__actions anim" style="--d:3">
                 <a class="btn btn--primary" href="${s.cta.to === '/solicitar-orcamento' ? 'solicitar-orcamento.html' : s.cta.to.replace('/setores#', 'setores.html#').replace(/^\/servicos$/, 'servicos.html')}">${esc(s.cta.label)} ${icon('arrowRight', 16)}</a>
-                <a class="btn btn--ghost-light" href="${waLink(s.whatsapp)}" target="_blank" rel="noopener">${icon('whatsapp', 18)} Falar no WhatsApp</a>
               </div>
               <p class="hero__urgencia anim" style="--d:4">
-                Linha parada? <a href="${telLink(c.whatsappDisplay)}">${icon('phone', 15)} ${esc(c.whatsappDisplay)}</a>
+                Linha parada?
+                <a href="${telLink(c.whatsappDisplay)}">${icon('phone', 15)} ${esc(c.whatsappDisplay)}</a>
+                <a href="${waLink(s.whatsapp)}" target="_blank" rel="noopener">${icon('whatsapp', 15)} WhatsApp</a>
                 <span>Atendemos emergências fora do horário comercial.</span>
               </p>
             </div>
@@ -45,8 +46,8 @@ function hero() {
   <section class="hero" data-carousel aria-roledescription="carrossel" aria-label="Destaques da Elotec" tabindex="-1">
     <div class="hero__viewport">
       ${slides}
-      <div class="hero__dots" role="tablist" aria-label="Escolher slide">${dots}</div>
       <div class="hero__controls">
+        <div class="hero__dots" role="tablist" aria-label="Escolher slide">${dots}</div>
         <button class="hero__arrow" type="button" data-hero-prev aria-label="Slide anterior">${icon('chevronLeft', 20)}</button>
         <button class="hero__arrow hero__arrow--pausa" type="button" data-hero-toggle aria-pressed="false" aria-label="Pausar troca automática de slides">
           <span class="hero__ico-pausa" aria-hidden="true">${icon('pause', 16)}</span>

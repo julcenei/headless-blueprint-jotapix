@@ -264,7 +264,6 @@ h1, h2, h3, h4 {
 .hero__content,
 .chip,
 .nav-toggle,
-.hero__eyebrow,
 .hero__arrow,
 .product-card,
 .rail-arrow,
@@ -291,7 +290,6 @@ h1, h2, h3, h4 {
    cor translúcida, porque não são duas camadas se somando. */
 .btn::after,
 .float-btn::after,
-.hero__eyebrow::after,
 .hero__arrow::after,
 .rail-arrow::after,
 .nav-toggle::after,
@@ -310,7 +308,6 @@ h1, h2, h3, h4 {
    o canto inferior direito cortado. */
 .btn::after,
 .float-btn::after,
-.hero__eyebrow::after,
 .hero__arrow::after,
 .rail-arrow::after,
 .nav-toggle::after,
@@ -904,37 +901,47 @@ a.chip:hover { background: var(--accent); border-color: var(--accent); transform
 .hero__grid {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
-  padding-block: clamp(2rem, 5vh, 3.5rem);
+  /* Sem respiro embaixo: o painel encosta na base do hero e passa a ler como
+     um plano ancorado no canto, não como um cartão flutuando sobre a foto. */
+  align-content: end;
+  padding-block: clamp(2rem, 5vh, 3.5rem) 0;
 }
 /* O texto deixa de flutuar sobre um véu e passa a ocupar um painel com o
    corte da marca — a maior instância do chanfro no site inteiro. */
 .hero__content {
-  max-width: 44rem;
+  /* Escapa o container pela esquerda e recompõe o recuo por dentro, para o
+     texto continuar alinhado com o resto da página. `50vw - 50%` é a distância
+     da borda da viewport até a borda do container, seja ela a goteira (telas
+     estreitas) ou a sobra da centralização (telas largas). */
+  --sangria: calc(50vw - 50%);
+  margin-left: calc(var(--sangria) * -1);
+  padding-left: calc(var(--sangria) + clamp(1.75rem, 4vw, 3.5rem));
+  /* A largura tem que somar a sangria: sem isso, quanto mais larga a tela,
+     mais o painel comia da propria medida de texto (a 1920 ela caia de 678px
+     para 438px e o titulo estourava a dobra). */
+  max-width: calc(var(--sangria) + min(49.5rem, 72%));
   --cut: clamp(30px, 4.5vw, 64px);
-  background: hsl(232 62% 11% / 0.82);
+  background: hsl(232 62% 11% / 0.88);
   backdrop-filter: blur(10px) saturate(1.15);
-  padding: clamp(1.75rem, 3.5vw, 3rem) clamp(1.75rem, 4vw, 3.5rem) clamp(2.25rem, 4vw, 3.25rem);
+  padding-block: clamp(1.75rem, 3.5vw, 3rem) clamp(2.25rem, 4vw, 3.25rem);
+  padding-right: clamp(1.75rem, 4vw, 3.5rem);
   box-shadow: 0 40px 90px -50px hsl(232 62% 5% / 0.9);
 }
+/* Era uma chapa com contorno: uma parada visual inteira antes do título, e a
+   mais fraca das cinco. Como rótulo travado no título, o conteúdo continua lá
+   e o olho passa a ter três paradas até a ação, não cinco. */
 .hero__eyebrow {
   font-family: var(--font-display);
-  display: inline-block;
-  /* o anel do contorno é um ::after posicionado: precisa de contexto próprio */
-  position: relative;
-  isolation: isolate;
-  background: var(--accent);
-  color: var(--navy);
-  font-size: 0.75rem;
+  display: block;
+  color: var(--accent);
+  font-size: 0.8125rem;
   font-weight: 700;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
-  padding: 0.5rem 1.1rem;
-  --cut: 8px;
 }
 /* Amarelo sólido significa "clicável". Estes dois rotulam, não acionam:
    viram contorno. A exceção é o selo "Principal área de atuação", que o
    brief pede sólido — e agora ele é de fato excepcional. */
-.hero__eyebrow,
 .unit__badge {
   background: transparent;
   color: var(--accent);
@@ -946,18 +953,18 @@ a.chip:hover { background: var(--accent); border-color: var(--accent); transform
 
 .hero__title {
   color: #fff;
-  margin-top: 1.25rem;
+  margin-top: 0.7rem;
   /* O título do hero é limitado pela altura da tela, não só pela largura:
      em notebook de 720px o painel estourava a dobra e cortava o chanfro. */
-  font-size: min(clamp(2.125rem, 0.9rem + 4.15vw, 4.5rem), 7vh);
+  font-size: min(clamp(2.125rem, 0.9rem + 4.3vw, 4.5rem), 8vh);
   font-weight: 700;
   line-height: 0.98;
   letter-spacing: -0.035em;
 }
 .hero__title .accent { color: var(--accent); display: block; }
 .hero__text {
-  margin-top: 1.4rem;
-  max-width: 34rem;
+  margin-top: 1.35rem;
+  max-width: 40rem;
   font-size: clamp(1.0625rem, 1rem + 0.4vw, 1.3125rem);
   line-height: 1.6;
   color: var(--on-dark-forte);
@@ -991,10 +998,11 @@ a.chip:hover { background: var(--accent); border-color: var(--accent); transform
    chanfro. Aperta os intervalos em vez de encolher o título — o título é o
    que carrega a hierarquia da página. */
 @media (max-height: 1000px) and (min-width: 861px) {
-  .hero__content { padding-top: 1.6rem; padding-bottom: 1.9rem; }
-  .hero__title { margin-top: 0.85rem; }
+  .hero__content { padding-top: 1.6rem; padding-bottom: 1.5rem; }
+  .hero__title { margin-top: 0.6rem; }
   .hero__text { margin-top: 1rem; }
   .hero__actions { margin-top: 1.35rem; }
+  .hero__urgencia { margin-top: 1rem; }
 }
 .hero__actions .btn { padding: 0.9rem 1.55rem; font-size: 1rem; }
 
@@ -1046,12 +1054,10 @@ a.chip:hover { background: var(--accent); border-color: var(--accent); transform
 .hero__arrow--pausa[aria-pressed='true'] .hero__ico-pausa { display: none; }
 .hero__arrow--pausa[aria-pressed='true'] .hero__ico-play { display: grid; }
 .hero__dots {
-  position: absolute;
-  left: var(--gutter);
-  bottom: clamp(2rem, 6vh, 3.5rem);
   display: flex;
+  align-items: center;
   gap: 0.6rem;
-  z-index: 3;
+  margin-right: 0.5rem;
 }
 .hero__dot {
   width: 46px; height: 24px;
@@ -2152,8 +2158,12 @@ a.chip:hover { background: var(--accent); border-color: var(--accent); transform
   /* No celular os controles saem do canto inferior direito: e' onde ficam os
      botoes flutuantes, e o FAB do WhatsApp cobria a seta e a pausa exatamente
      na tela de chegada. Controles a' esquerda, pontos logo acima. */
-  .hero__dots { bottom: 4.75rem; }
+  /* No toque a troca de slide e' por deslize e pelos pontos: as setas so'
+     alargavam o agrupamento ate' ele encostar no botao flutuante. Fica o que
+     nao tem substituto no toque — os pontos e a pausa. */
   .hero__controls { bottom: 1.5rem; left: var(--gutter); right: auto; }
+  .hero__controls [data-hero-prev],
+  .hero__controls [data-hero-next] { display: none; }
   /* faixa reservada no pe' do painel para os pontos nao cairem sobre o texto */
   .hero__content { padding-bottom: 4.5rem; }
   .hero__arrow { width: 44px; height: 44px; }

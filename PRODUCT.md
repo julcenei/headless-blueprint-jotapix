@@ -49,6 +49,10 @@ o mesmo.
   nada para um servidor; ele monta uma mensagem formatada e abre `wa.me` com os
   dados preenchidos. Anexos (fotos, ficha técnica, desenho) são enviados pelo
   visitante dentro da conversa.
+- **Cada link do WhatsApp abre a conversa com o contexto de onde a pessoa
+  veio** — a página, e no hero o slide — com o cursor depois dos dois-pontos.
+  Não é enfeite: uma pessoa recebe tudo, e cada contexto que o link entrega é
+  uma pergunta que ela não precisa fazer.
 - **Não há triagem: uma pessoa recebe tudo** (confirmado pelo cliente). Não há
   fila, roteamento por setor nem plantão separado. Toda promessa de tempo de
   resposta no site depende dessa única pessoa.
@@ -77,6 +81,11 @@ Vinculantes, do brief e da marca existente:
   `clip-path`.
 - O logotipo existente e a assinatura "Serviços Técnicos em Correias".
 - Marquee amarelo de setores, com itens clicáveis e separador quadradinho.
+- **A promessa de atendimento é "atendimento emergencial fora do horário
+  comercial"** (confirmado pelo cliente). Substituiu "Assistência técnica 24h",
+  que aparecia em 32 pontos do site enquanto uma única pessoa recebe tudo e o
+  próprio JSON-LD publicava horário comercial. Nenhum trabalho futuro volta a
+  escrever 24h sem o cliente pedir.
 - Numeração ordinal nas fichas de produto.
 - Tipografia atual: Familjen Grotesk (títulos) e Public Sans (corpo), em dois
   pesos. Escolha do cliente nesta sessão.
@@ -85,19 +94,28 @@ Vinculantes, do brief e da marca existente:
 
 - `data/dados.json` — produtos, serviços, setores, unidades, telefones e e-mail
   reais.
-- 22 fotos em `images/` (produtos, serviços, setores) e 1 de hero. **São imagens
-  de banco, não registros de trabalhos da Elotec.**
+- 22 imagens em `images/` (produtos, serviços, setores e hero). **São geradas
+  por IA, não registros de trabalhos da Elotec.** Todas traziam a marca d'água
+  `AI生成`, recortada do arquivo de origem; o hero anterior exibia a marca
+  `intralox` — fabricante concorrente — legível no uniforme e na ferramenta, e
+  foi substituído. Uma troca futura de imagem precisa checar as duas coisas.
+- `images/compartilhar.webp` — cartão próprio de 1200×630 servido como
+  `og:image`, para o preview no WhatsApp não ser a foto crua da página.
 - `docs/brief-elotec-premium.md` — o brief que rege conteúdo e arquitetura.
 
-**Ausências que trabalhos futuros não podem preencher com invenção**
-(confirmado pelo cliente: "nada por enquanto"):
+**Ausências que trabalhos futuros não podem preencher com invenção:**
 
 - Nenhum depoimento, nome de cliente citável ou caso de sucesso.
 - Nenhuma certificação, laudo ou norma atendida declarável.
-- Nenhuma foto de trabalho real da equipe — nem de emenda, nem de instalação.
-- Nenhuma foto das duas unidades, incluindo a sede.
 - Nenhum número de clientes atendidos, de metros instalados ou de tempo de
-  resposta.
+  resposta. **Sem esses números, cartão de métrica no hero está fora** — é o
+  padrão mais comum em referências do setor e o que o Princípio 3 proíbe.
+- **Fotos de trabalho real: pendentes, não inexistentes.** O cliente confirmou
+  que vai fornecer registros de emenda, instalação e das unidades. Até
+  chegarem, nenhuma imagem do acervo pode ser descrita como trabalho da
+  Elotec; quando chegarem, substituem as geradas por IA em vez de conviver com
+  elas. O painel do hero garante contraste independente da foto justamente
+  porque essas imagens virão de chão de fábrica, com exposição imprevisível.
 
 O site hoje não tem prova social, e isso é estado de fato, não lacuna a ser
 tapada com placeholder plausível.

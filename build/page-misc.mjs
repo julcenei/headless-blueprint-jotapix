@@ -50,9 +50,9 @@ export const aElotecPage = {
             <p class="muted">Hoje a empresa mantém duas unidades, Chapecó (SC) e Toledo (PR), com atendimento emergencial fora do horário comercial e atendimento em todo o Brasil. Os frigoríficos seguem como principal área de atuação, com correias sanitárias desenvolvidas para higiene, resistência e confiabilidade.</p>
           </div>
           <div class="trust-row" style="margin-top:2.25rem">
-            <p class="trust-badge">${icon('clock', 18, 1.8)} Desde 2001</p>
-            <p class="trust-badge">${icon('bolt', 18, 1.8)} Atendimento emergencial</p>
-            <p class="trust-badge">${icon('pin', 18, 1.8)} Atendimento nacional</p>
+            <p class="trust-badge">${icon('clock', 18)} Desde 2001</p>
+            <p class="trust-badge">${icon('bolt', 18)} Atendimento emergencial</p>
+            <p class="trust-badge">${icon('pin', 18)} Atendimento nacional</p>
           </div>
         </div>
         <div class="about-media reveal" style="--i:1">
@@ -70,7 +70,7 @@ export const aElotecPage = {
           ${DIFERENCIAIS.map(
             (d, i) => `
           <article class="feature-card reveal" style="--i:${i % 3}">
-            <span class="feature-card__icon">${icon(d.ico, 28, 1.6)}</span>
+            <span class="feature-card__icon">${icon(d.ico, 26)}</span>
             <h3 class="h-4">${esc(d.title)}</h3>
             <p>${esc(d.text)}</p>
           </article>`
@@ -89,7 +89,7 @@ export const aElotecPage = {
         </div>
         <div class="chips" style="margin-top:2rem">
           ${data.sectors
-            .map((s) => `<a class="chip" href="setores.html#${s.slug}">${icon(s.slug, 16, 1.7)} ${esc(s.name)}</a>`)
+            .map((s) => `<a class="chip" href="setores.html#${s.slug}">${icon(s.slug, 16)} ${esc(s.name)}</a>`)
             .join('')}
         </div>
       </div>
@@ -178,7 +178,7 @@ export const orcamentoPage = {
       <div class="container form-layout">
         <div class="form-card reveal">
           <div class="form-success" id="form-success" tabindex="-1" role="status">
-            ${icon('check', 26, 2.6)}
+            ${icon('check', 26)}
             <div>
               <h3>Solicitação encaminhada!</h3>
               <p>Abrimos uma conversa no WhatsApp com seus dados preenchidos. Se anexou arquivos, envie-os na conversa. Nossa equipe entrará em contato.</p>
@@ -253,7 +253,7 @@ export const orcamentoPage = {
             </div>
 
             <div class="field-note" style="margin-top:1.5rem">
-              ${icon('paperclip', 20, 1.8)}
+              ${icon('paperclip', 20)}
               <p>Anexar fotos, ficha ou desenho técnico (enviados na conversa do WhatsApp).</p>
             </div>
 
@@ -268,8 +268,8 @@ export const orcamentoPage = {
             </div>
 
             <div style="margin-top:2rem;display:flex;flex-wrap:wrap;gap:1rem;align-items:center">
-              <button class="btn btn--primary" type="submit">Enviar pelo WhatsApp ${icon('arrowRight', 16, 2.4)}</button>
-              <a class="link-arrow" href="mailto:${c.email}">Prefiro enviar por e-mail ${icon('arrowRight', 15, 2.4)}</a>
+              <button class="btn btn--primary" type="submit">Enviar pelo WhatsApp ${icon('arrowRight', 16)}</button>
+              <a class="link-arrow" href="mailto:${c.email}">Prefiro enviar por e-mail ${icon('arrowRight', 15)}</a>
             </div>
           </form>
         </div>
@@ -279,7 +279,7 @@ export const orcamentoPage = {
             <h2 class="h-4">Precisa de atendimento agora?</h2>
             <p class="muted" style="margin-top:0.75rem;font-size:0.94rem">A equipe atende fora do horário comercial quando a emergência para a produção.</p>
             ${contactLines(waLink())}
-            <a class="btn btn--whats btn--block" href="${waLink()}" target="_blank" rel="noopener">${icon('whatsapp', 18, 1.7)} Falar no WhatsApp</a>
+            <a class="btn btn--whats btn--block" href="${waLink()}" target="_blank" rel="noopener">${icon('whatsapp', 18)} Falar no WhatsApp</a>
           </div>
 
           <div class="aside-card aside-card--light">
@@ -290,7 +290,7 @@ export const orcamentoPage = {
               <div class="faq-item">
                 <button class="faq-item__btn" type="button" aria-expanded="${i === 0}" aria-controls="faq-${i}">
                   ${esc(f.q)}
-                  <span class="ico" aria-hidden="true">${icon('plus', 14, 2.6)}</span>
+                  <span class="ico" aria-hidden="true">${icon('plus', 15)}</span>
                 </button>
                 <div class="faq-item__panel" id="faq-${i}"><div><p>${esc(f.a)}</p></div></div>
               </div>`
@@ -388,7 +388,7 @@ export const naoEncontradaPage = {
         <h1 class="h-2" style="margin-top:1.5rem">Esta página saiu da linha de produção</h1>
         <p class="lead" style="margin-top:1.25rem;max-width:38rem;margin-inline:auto">O endereço acessado não existe ou foi movido. Use os atalhos abaixo para encontrar o que procura.</p>
         <div style="display:flex;flex-wrap:wrap;gap:1rem;justify-content:center;margin-top:2.5rem">
-          <a class="btn btn--primary" href="index.html">Voltar para a home ${icon('arrowRight', 16, 2.4)}</a>
+          <a class="btn btn--primary" href="index.html">Voltar para a home ${icon('arrowRight', 16)}</a>
           <a class="btn btn--ghost-light" href="produtos.html">Ver produtos</a>
           <a class="btn btn--ghost-light" href="solicitar-orcamento.html">Solicitar orçamento</a>
         </div>

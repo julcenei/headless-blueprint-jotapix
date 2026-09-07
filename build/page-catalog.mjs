@@ -14,7 +14,7 @@ function anchorBar(items, page) {
     <div class="container anchor-bar__scroller">
       ${items
         .map(
-          (i) => `<a class="anchor-item" href="#${i.slug}">${icon(i.slug, 24, 1.5)}<span>${esc(i.label)}</span></a>`
+          (i) => `<a class="anchor-item" href="#${i.slug}">${icon(i.slug, 26)}<span>${esc(i.label)}</span></a>`
         )
         .join('')}
     </div>
@@ -40,7 +40,7 @@ function chipBlock(title, slugs, kind) {
       if (!item) return '';
       const page = kind === 'sector' ? 'setores.html' : 'servicos.html';
       const label = kind === 'sector' ? item.name : item.shortName || item.name;
-      return `<a class="chip" href="${page}#${slug}">${icon(slug, 16, 1.7)} ${esc(label)}</a>`;
+      return `<a class="chip" href="${page}#${slug}">${icon(slug, 16)} ${esc(label)}</a>`;
     })
     .join('');
   return `
@@ -112,14 +112,14 @@ function entry(item, index, kind) {
   <section class="entry" id="${item.slug}">
     <div class="container entry__grid">
       <div class="reveal">
-        ${item.highlight ? `<p class="badge-highlight">${icon('spark', 14, 2)} Principal área de atuação</p>` : ''}
+        ${item.highlight ? `<p class="badge-highlight">${icon('destaque', 15)} Principal área de atuação</p>` : ''}
         ${label ? `<p class="chip" style="pointer-events:none">${esc(label)}</p>` : ''}
         <h2 class="h-2 entry__title"><span class="entry__num">${n}.</span> ${esc(item.name)}</h2>
         <p class="entry__summary">${esc(item.summary || item.subtitle)}</p>
         <p class="entry__desc">${esc(item.description)}</p>
         ${blocks}
         <div class="entry__actions">
-          <a class="btn btn--primary" href="${quoteHref}">${esc(item.cta || 'Solicitar orçamento')} ${icon('arrowRight', 16, 2.4)}</a>
+          <a class="btn btn--primary" href="${quoteHref}">${esc(item.cta || 'Solicitar orçamento')} ${icon('arrowRight', 16)}</a>
         </div>
       </div>
 

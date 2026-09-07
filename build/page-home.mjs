@@ -21,11 +21,11 @@ function hero() {
               <h${i === 0 ? '1' : '2'} class="hero__title anim" style="--d:1">${esc(s.title)}<span class="accent">${esc(s.accent)}</span></h${i === 0 ? '1' : '2'}>
               <p class="hero__text anim" style="--d:2">${esc(s.text)}</p>
               <div class="hero__actions anim" style="--d:3">
-                <a class="btn btn--primary" href="${s.cta.to === '/solicitar-orcamento' ? 'solicitar-orcamento.html' : s.cta.to.replace('/setores#', 'setores.html#').replace(/^\/servicos$/, 'servicos.html')}">${esc(s.cta.label)} ${icon('arrowRight', 16, 2.4)}</a>
-                <a class="btn btn--ghost-light" href="${waLink(s.whatsapp)}" target="_blank" rel="noopener">${icon('whatsapp', 18, 1.7)} Falar no WhatsApp</a>
+                <a class="btn btn--primary" href="${s.cta.to === '/solicitar-orcamento' ? 'solicitar-orcamento.html' : s.cta.to.replace('/setores#', 'setores.html#').replace(/^\/servicos$/, 'servicos.html')}">${esc(s.cta.label)} ${icon('arrowRight', 16)}</a>
+                <a class="btn btn--ghost-light" href="${waLink(s.whatsapp)}" target="_blank" rel="noopener">${icon('whatsapp', 18)} Falar no WhatsApp</a>
               </div>
               <p class="hero__urgencia anim" style="--d:4">
-                Linha parada? <a href="${telLink(c.whatsappDisplay)}">${icon('phone', 15, 1.9)} ${esc(c.whatsappDisplay)}</a>
+                Linha parada? <a href="${telLink(c.whatsappDisplay)}">${icon('phone', 15)} ${esc(c.whatsappDisplay)}</a>
                 <span>Atendemos emergências fora do horário comercial.</span>
               </p>
             </div>
@@ -47,12 +47,12 @@ function hero() {
       ${slides}
       <div class="hero__dots" role="tablist" aria-label="Escolher slide">${dots}</div>
       <div class="hero__controls">
-        <button class="hero__arrow" type="button" data-hero-prev aria-label="Slide anterior">${icon('chevronLeft', 20, 2.2)}</button>
+        <button class="hero__arrow" type="button" data-hero-prev aria-label="Slide anterior">${icon('chevronLeft', 20)}</button>
         <button class="hero__arrow hero__arrow--pausa" type="button" data-hero-toggle aria-pressed="false" aria-label="Pausar troca automática de slides">
-          <span class="hero__ico-pausa" aria-hidden="true">${icon('pause', 16, 1.9)}</span>
-          <span class="hero__ico-play" aria-hidden="true">${icon('play', 16, 1.9)}</span>
+          <span class="hero__ico-pausa" aria-hidden="true">${icon('pause', 16)}</span>
+          <span class="hero__ico-play" aria-hidden="true">${icon('play', 16)}</span>
         </button>
-        <button class="hero__arrow" type="button" data-hero-next aria-label="Próximo slide">${icon('chevronRight', 20, 2.2)}</button>
+        <button class="hero__arrow" type="button" data-hero-next aria-label="Próximo slide">${icon('chevronRight', 20)}</button>
       </div>
     </div>
     <p class="hero__live visually-hidden" aria-live="polite"></p>
@@ -70,7 +70,7 @@ function marquee() {
     <div class="marquee__viewport">
       <div class="marquee__track">${items}</div>
     </div>
-    <button class="marquee__pause" type="button" aria-pressed="false" aria-label="Pausar rolagem dos setores">${icon('pause', 14, 1.8)}</button>
+    <button class="marquee__pause" type="button" aria-pressed="false" aria-label="Pausar rolagem dos setores">${icon('pause', 15)}</button>
   </div>`;
 }
 
@@ -90,10 +90,10 @@ export function productCard(p, i = 0, feature = false, variante = '') {
           </span>
           <div class="product-card__body">
             <p class="product-card__cat">${esc(p.categoryLabel)}</p>
-            <h3 class="product-card__name">${esc(p.name)}${sobreposto ? '' : `<span class="product-card__seta" aria-hidden="true">${icon('arrowRight', 18, 2.4)}</span>`}</h3>
+            <h3 class="product-card__name">${esc(p.name)}${sobreposto ? '' : `<span class="product-card__seta" aria-hidden="true">${icon('arrowRight', 18)}</span>`}</h3>
             <div class="product-card__more"><div>
               <p class="product-card__summary">${esc(p.summary)}</p>
-              <span class="product-card__cta">Ver detalhes ${icon('arrowRight', 14, 2.4)}</span>
+              <span class="product-card__cta">Ver detalhes ${icon('arrowRight', 15)}</span>
             </div></div>
           </div>
         </a>`;
@@ -125,7 +125,7 @@ function productsHead(extra = '') {
         <div class="section-head__aside reveal" style="--i:1">
           <p class="lead">${PRODUCTS_TEXT.lead}</p>
           <div style="margin-top:1.5rem;display:flex;flex-wrap:wrap;gap:1rem;align-items:center">
-            <a class="btn btn--outline btn--sm" href="produtos.html">Ver todos os produtos ${icon('arrowRight', 15, 2.4)}</a>
+            <a class="btn btn--outline btn--sm" href="produtos.html">Ver todos os produtos ${icon('arrowRight', 15)}</a>
             ${extra}
           </div>
         </div>
@@ -159,8 +159,8 @@ export function productsRail(id = 'produtos') {
         <div class="product-rail__foot">
           <div class="product-rail__bar" aria-hidden="true"><span data-rail-bar></span></div>
           <div class="product-rail__nav">
-            <button class="rail-arrow" type="button" data-rail-prev aria-label="Produtos anteriores">${icon('chevronLeft', 20, 2.2)}</button>
-            <button class="rail-arrow" type="button" data-rail-next aria-label="Próximos produtos">${icon('chevronRight', 20, 2.2)}</button>
+            <button class="rail-arrow" type="button" data-rail-prev aria-label="Produtos anteriores">${icon('chevronLeft', 20)}</button>
+            <button class="rail-arrow" type="button" data-rail-next aria-label="Próximos produtos">${icon('chevronRight', 20)}</button>
           </div>
         </div>
       </div>
@@ -181,7 +181,7 @@ export function productsSplit(id = 'produtos') {
         </h2>
         <p class="lead" style="margin-top:1.25rem">${PRODUCTS_TEXT.lead}</p>
         <div style="margin-top:2rem">
-          <a class="btn btn--outline" href="produtos.html">Ver todos os produtos ${icon('arrowRight', 16, 2.4)}</a>
+          <a class="btn btn--outline" href="produtos.html">Ver todos os produtos ${icon('arrowRight', 16)}</a>
         </div>
         <ul class="check-list" style="margin-top:2.5rem;grid-template-columns:1fr">
           <li>Dimensionamento conforme a aplicação</li>
@@ -218,7 +218,7 @@ function about() {
         ${statsBlock()}
 
         <div style="margin-top:2.75rem">
-          <a class="btn btn--primary" href="a-elotec.html">Saiba mais sobre a Elotec ${icon('arrowRight', 16, 2.4)}</a>
+          <a class="btn btn--primary" href="a-elotec.html">Saiba mais sobre a Elotec ${icon('arrowRight', 16)}</a>
         </div>
       </div>
 
@@ -239,11 +239,11 @@ function services() {
       return `
         <article class="service-card reveal" style="--i:${i}">
           <div class="media"><img src="${img(s.image)}" alt="" loading="lazy" width="560" height="350"></div>
-          <span class="service-card__icon" aria-hidden="true">${icon(s.slug, 22, 1.7)}</span>
+          <span class="service-card__icon" aria-hidden="true">${icon(s.slug, 20)}</span>
           <div class="service-card__body">
             <h3 class="h-4">${esc(title)}</h3>
             <p>${esc(s.summary)}</p>
-            <a class="link-arrow" href="servicos.html#${s.slug}" style="margin-top:0.5rem">Conhecer ${icon('arrowRight', 15, 2.4)}</a>
+            <a class="link-arrow" href="servicos.html#${s.slug}" style="margin-top:0.5rem">Conhecer ${icon('arrowRight', 15)}</a>
           </div>
         </article>`;
     })
@@ -263,7 +263,7 @@ function services() {
       </div>
       <div class="card-grid" style="margin-top:3rem">${cards}</div>
       <div class="reveal" style="margin-top:2.5rem">
-        <a class="btn btn--outline" href="servicos.html">Ver todos os serviços ${icon('arrowRight', 16, 2.4)}</a>
+        <a class="btn btn--outline" href="servicos.html">Ver todos os serviços ${icon('arrowRight', 16)}</a>
       </div>
     </div>
   </section>`;
@@ -306,8 +306,8 @@ function contact() {
         </ul>
 
         <div style="display:flex;flex-wrap:wrap;gap:1rem;margin-top:2.5rem">
-          <a class="btn btn--primary" href="solicitar-orcamento.html">Solicitar orçamento ${icon('arrowRight', 16, 2.4)}</a>
-          <a class="btn btn--whats" href="${waLink()}" target="_blank" rel="noopener">${icon('whatsapp', 18, 1.7)} Falar no WhatsApp</a>
+          <a class="btn btn--primary" href="solicitar-orcamento.html">Solicitar orçamento ${icon('arrowRight', 16)}</a>
+          <a class="btn btn--whats" href="${waLink()}" target="_blank" rel="noopener">${icon('whatsapp', 18)} Falar no WhatsApp</a>
         </div>
         <p class="nota-cta">Mande a largura da correia, o que ela transporta e uma foto do trecho. Com isso a equipe já responde com a recomendação, sem uma rodada de perguntas.</p>
       </div>

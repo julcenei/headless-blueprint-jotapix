@@ -185,7 +185,7 @@ function dropdown(id, columns, allHref, allLabel) {
   return `<div class="dropdown" id="${id}">
           <div class="container dropdown__inner">${columns}</div>
           <div class="container dropdown__foot">
-            <a class="link-arrow" href="${allHref}">${allLabel} ${icon('arrowRight', 16, 2)}</a>
+            <a class="link-arrow" href="${allHref}">${allLabel} ${icon('arrowRight', 16)}</a>
           </div>
         </div>`;
 }
@@ -197,7 +197,7 @@ export function header(page) {
         <li class="nav__item nav__item--has-menu" data-open="false">
           <button class="nav__link" type="button" aria-expanded="false" aria-controls="${id}"${
     current === id ? ' aria-current="page"' : ''
-  }>${label} ${icon('chevronDown', 15, 2.2)}</button>
+  }>${label} ${icon('chevronDown', 15)}</button>
           ${dropdown(id, columns, allHref, allLabel)}
         </li>`;
 
@@ -207,8 +207,8 @@ export function header(page) {
       <div class="container">
         <p class="topbar__msg">Atendimento em todo o Brasil · Emergências fora do horário comercial</p>
         <div class="topbar__links">
-          <a href="tel:+55${c.whatsapp.slice(2)}">${icon('phone', 15, 1.8)} ${esc(c.whatsappDisplay)}</a>
-          <a href="mailto:${c.email}">${icon('mail', 15, 1.8)} ${esc(c.email)}</a>
+          <a href="tel:+55${c.whatsapp.slice(2)}">${icon('phone', 15)} ${esc(c.whatsappDisplay)}</a>
+          <a href="mailto:${c.email}">${icon('mail', 15)} ${esc(c.email)}</a>
         </div>
       </div>
     </div>
@@ -226,7 +226,7 @@ export function header(page) {
             ${navItem('menu-setores', 'Setores Atendidos', sectorColumns(), 'setores.html', 'Ver todos os setores')}
           </ul>
         </nav>
-        <a class="btn btn--primary nav__cta" href="solicitar-orcamento.html">Solicitar orçamento ${icon('arrowRight', 16, 2.4)}</a>
+        <a class="btn btn--primary nav__cta" href="solicitar-orcamento.html">Solicitar orçamento ${icon('arrowRight', 16)}</a>
         <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu" aria-label="Abrir menu">
           <span></span><span></span><span></span>
         </button>
@@ -250,12 +250,12 @@ export function header(page) {
       <div class="mnav__item">
         <button class="mnav__row" type="button" aria-expanded="false" aria-controls="m-${g.id}">
           ${esc(g.label)}
-          <span class="mnav__chevron" aria-hidden="true">${icon('chevronDown', 18, 2)}</span>
+          <span class="mnav__chevron" aria-hidden="true">${icon('chevronDown', 18)}</span>
         </button>
         <div class="mnav__panel" id="m-${g.id}"><div>
           <ul>
             ${g.itens.map((i) => `<li><a href="${i.href}">${esc(i.nome)}</a></li>`).join('')}
-            <li><a class="mnav__all" href="${g.pagina}">${esc(g.todos)} ${icon('arrowRight', 14, 2.4)}</a></li>
+            <li><a class="mnav__all" href="${g.pagina}">${esc(g.todos)} ${icon('arrowRight', 15)}</a></li>
           </ul>
         </div></div>
       </div>`
@@ -264,11 +264,11 @@ export function header(page) {
     </nav>
 
     <div class="mobile-menu__foot">
-      <a class="btn btn--primary btn--block" href="solicitar-orcamento.html">Solicitar orçamento ${icon('arrowRight', 16, 2.4)}</a>
-      <a class="btn btn--ghost-light btn--block" href="${waLink()}" target="_blank" rel="noopener">${icon('whatsapp', 18, 1.7)} Falar no WhatsApp</a>
+      <a class="btn btn--primary btn--block" href="solicitar-orcamento.html">Solicitar orçamento ${icon('arrowRight', 16)}</a>
+      <a class="btn btn--ghost-light btn--block" href="${waLink()}" target="_blank" rel="noopener">${icon('whatsapp', 18)} Falar no WhatsApp</a>
       <div class="mnav__contato">
-        <a href="${telLink(c.whatsappDisplay)}">${icon('phone', 16, 1.8)} ${esc(c.whatsappDisplay)}</a>
-        <a href="mailto:${c.email}">${icon('mail', 16, 1.8)} ${esc(c.email)}</a>
+        <a href="${telLink(c.whatsappDisplay)}">${icon('phone', 16)} ${esc(c.whatsappDisplay)}</a>
+        <a href="mailto:${c.email}">${icon('mail', 16)} ${esc(c.email)}</a>
       </div>
     </div>
   </div>`;
@@ -339,10 +339,10 @@ export function footer() {
 
   <div class="floaters">
     <a class="float-btn float-btn--quote" href="solicitar-orcamento.html" data-hidden="true" aria-label="Solicitar orçamento">
-      ${icon('clipboardCheck', 17, 1.9)}<span class="float-btn__rotulo">Solicitar orçamento</span>
+      ${icon('clipboardCheck', 16)}<span class="float-btn__rotulo">Solicitar orçamento</span>
     </a>
     <a class="float-btn float-btn--whats" href="${waLink()}" target="_blank" rel="noopener" aria-label="Falar no WhatsApp com a Elotec">
-      ${icon('whatsapp', 26, 1.7)}
+      ${icon('whatsapp', 26)}
     </a>
   </div>
 
@@ -361,8 +361,8 @@ export function ctaBand(title, text, primaryLabel = 'Solicitar orçamento') {
         <p class="lead" style="margin-top:1.25rem">${esc(text)}</p>
       </div>
       <div class="cta-band__actions reveal" style="--i:1">
-        <a class="btn btn--primary" href="solicitar-orcamento.html">${esc(primaryLabel)} ${icon('arrowRight', 16, 2.4)}</a>
-        <a class="btn btn--ghost-light" href="${waLink()}" target="_blank" rel="noopener">${icon('whatsapp', 18, 1.7)} Falar no WhatsApp</a>
+        <a class="btn btn--primary" href="solicitar-orcamento.html">${esc(primaryLabel)} ${icon('arrowRight', 16)}</a>
+        <a class="btn btn--ghost-light" href="${waLink()}" target="_blank" rel="noopener">${icon('whatsapp', 18)} Falar no WhatsApp</a>
         <p class="nota-cta">Mande medidas, o produto transportado e uma foto: a equipe responde com a recomendação técnica.</p>
       </div>
     </div>
@@ -395,9 +395,9 @@ export function contactLines(waHref = waLink()) {
   const c = data.contact;
   return `
         <div class="contact-lines">
-          <p class="contact-line">${icon('whatsapp', 20, 1.7)} <a href="${waHref}" target="_blank" rel="noopener"><span>WhatsApp</span>${esc(c.whatsappDisplay)}</a></p>
-          <p class="contact-line">${icon('phone', 20, 1.7)} <a href="${telLink(c.phoneAdmin)}"><span>Administrativo</span>${esc(c.phoneAdmin)}</a></p>
-          <p class="contact-line">${icon('mail', 20, 1.7)} <a href="mailto:${c.email}"><span>E-mail</span>${esc(c.email)}</a></p>
+          <p class="contact-line">${icon('whatsapp', 20)} <a href="${waHref}" target="_blank" rel="noopener"><span>WhatsApp</span>${esc(c.whatsappDisplay)}</a></p>
+          <p class="contact-line">${icon('phone', 20)} <a href="${telLink(c.phoneAdmin)}"><span>Administrativo</span>${esc(c.phoneAdmin)}</a></p>
+          <p class="contact-line">${icon('mail', 20)} <a href="mailto:${c.email}"><span>E-mail</span>${esc(c.email)}</a></p>
         </div>`;
 }
 

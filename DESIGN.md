@@ -254,6 +254,33 @@ pseudo-elemento que recebe o mesmo recorte.
 **O chanfro aparece em escala grande uma vez por página**, no painel do hero.
 Nos componentes, é miúdo.
 
+### Ícones
+
+Grid 24×24, traço arredondado. Os genéricos vêm da **Lucide v0.469.0** (ISC,
+cópia da licença em `licencas/`), com os paths embutidos em `build/icons.mjs` —
+o site abre em `file://`, então nada pode vir de CDN.
+
+Os de domínio são **desenhados para este catálogo**: elevador de canecas,
+caneca, rolo, revestimento de rolo, guias e taliscas, tração positiva, correia
+lonada, correia em rolo e correia de borracha. Nenhuma biblioteca os tem, e são
+eles que separam nove produtos que de outro modo dividiriam três símbolos
+genéricos. Desenhar aqui é regra, não exceção: se um produto do catálogo não
+tem símbolo próprio, ele é desenhado, não aproximado.
+
+**O traço é derivado do tamanho, nunca passado à mão.** `icon()` calcula
+`stroke-width = 1.7 × 24 / tamanho`, de modo que a espessura na tela seja
+sempre 1,7px. O sistema já teve 22 combinações de tamanho e traço — um chevron
+de 15px com traço 2.2 ao lado de uma chave de 40px com traço 1.6 — e era isso,
+mais que o desenho de qualquer ícone, que fazia o conjunto parecer improvisado.
+
+Cinco tamanhos, declarados em `TAM`: 15 (dentro de texto miúdo), 16 (ao lado
+de rótulo de botão), 18 (botão maior e WhatsApp), 20 (controle isolado), 26
+(ícone que abre um card).
+
+**Play, pause e a marca do WhatsApp são preenchidos**, não traçados: é
+convenção, e aproximar uma marca sólida em contorno faz o desenho parecer
+errado.
+
 ## Components
 
 ### Buttons

@@ -1,5 +1,5 @@
 import { icon } from './icons.mjs';
-import { data, esc, img, waLink } from './data.mjs';
+import { data, esc, img, telLink, waLink } from './data.mjs';
 import { contactLines, ctaBand, statsBlock } from './layout.mjs';
 
 /* ---------------------------------------------------------------------------
@@ -7,6 +7,7 @@ import { contactLines, ctaBand, statsBlock } from './layout.mjs';
    Marcado como carrossel acessível: aria-roledescription + tablist + live region.
 --------------------------------------------------------------------------- */
 function hero() {
+  const c = data.contact;
   const slides = data.heroSlides
     .map(
       (s, i) => `
@@ -21,8 +22,12 @@ function hero() {
               <p class="hero__text anim" style="--d:2">${esc(s.text)}</p>
               <div class="hero__actions anim" style="--d:3">
                 <a class="btn btn--primary" href="${s.cta.to === '/solicitar-orcamento' ? 'solicitar-orcamento.html' : s.cta.to.replace('/setores#', 'setores.html#').replace(/^\/servicos$/, 'servicos.html')}">${esc(s.cta.label)} ${icon('arrowRight', 16, 2.4)}</a>
-                ${i === 0 ? '<a class="btn btn--ghost-light" href="produtos.html">Conhecer soluções</a>' : `<a class="btn btn--ghost-light" href="${waLink()}" target="_blank" rel="noopener">${icon('whatsapp', 18, 1.7)} Falar no WhatsApp</a>`}
+                <a class="btn btn--ghost-light" href="${waLink(s.whatsapp)}" target="_blank" rel="noopener">${icon('whatsapp', 18, 1.7)} Falar no WhatsApp</a>
               </div>
+              <p class="hero__urgencia anim" style="--d:4">
+                Linha parada? <a href="${telLink(c.whatsappDisplay)}">${icon('phone', 15, 1.9)} ${esc(c.whatsappDisplay)}</a>
+                <span>Atendemos emergências fora do horário comercial.</span>
+              </p>
             </div>
           </div>
         </article>`
@@ -43,6 +48,10 @@ function hero() {
       <div class="hero__dots" role="tablist" aria-label="Escolher slide">${dots}</div>
       <div class="hero__controls">
         <button class="hero__arrow" type="button" data-hero-prev aria-label="Slide anterior">${icon('chevronLeft', 20, 2.2)}</button>
+        <button class="hero__arrow hero__arrow--pausa" type="button" data-hero-toggle aria-pressed="false" aria-label="Pausar troca automática de slides">
+          <span class="hero__ico-pausa" aria-hidden="true">${icon('pause', 16, 1.9)}</span>
+          <span class="hero__ico-play" aria-hidden="true">${icon('play', 16, 1.9)}</span>
+        </button>
         <button class="hero__arrow" type="button" data-hero-next aria-label="Próximo slide">${icon('chevronRight', 20, 2.2)}</button>
       </div>
     </div>
@@ -77,7 +86,7 @@ export function productCard(p, i = 0, feature = false, variante = '') {
   return `
         <a class="product-card${feature ? ' product-card--feature' : ''}${sobreposto ? ' product-card--sobreposto' : ''} reveal" style="--i:${i}" href="produtos.html#${p.slug}">
           <span class="product-card__media">
-            <img src="${img(p.image)}" alt="${esc(p.name)}" loading="lazy" width="640" height="480">
+            <img src="${img(p.image)}" alt="" loading="lazy" width="640" height="480">
           </span>
           <div class="product-card__body">
             <p class="product-card__cat">${esc(p.categoryLabel)}</p>
@@ -214,7 +223,7 @@ function about() {
       </div>
 
       <div class="about-media reveal" style="--i:1">
-        <div class="media chamfer-lg"><img src="images/servicos/vulcanizacao.webp" alt="Técnico da Elotec realizando manutenção em correia transportadora" loading="lazy" width="900" height="760"></div>
+        <div class="media chamfer-lg"><img src="images/servicos/consultoria.webp" alt="Inspeção de um transportador de correia em operação" loading="lazy" width="900" height="760"></div>
       </div>
     </div>
   </section>`;
@@ -229,7 +238,7 @@ function services() {
       const title = slug === 'instalacao-conserto-correias-pu' ? 'Instalação e conserto de correias' : s.name;
       return `
         <article class="service-card reveal" style="--i:${i}">
-          <div class="media"><img src="${img(s.image)}" alt="${esc(title)}" loading="lazy" width="560" height="350"></div>
+          <div class="media"><img src="${img(s.image)}" alt="" loading="lazy" width="560" height="350"></div>
           <span class="service-card__icon" aria-hidden="true">${icon(s.slug, 22, 1.7)}</span>
           <div class="service-card__body">
             <h3 class="h-4">${esc(title)}</h3>
@@ -292,7 +301,7 @@ function contact() {
 
         <ul class="check-list" style="margin-top:2rem;grid-template-columns:1fr">
           <li>Avaliação inicial sem compromisso</li>
-          <li>Atendimento emergencial 24h</li>
+          <li>Atendimento emergencial fora do horário comercial</li>
           <li>Recomendação técnica por aplicação</li>
         </ul>
 
@@ -300,6 +309,7 @@ function contact() {
           <a class="btn btn--primary" href="solicitar-orcamento.html">Solicitar orçamento ${icon('arrowRight', 16, 2.4)}</a>
           <a class="btn btn--whats" href="${waLink()}" target="_blank" rel="noopener">${icon('whatsapp', 18, 1.7)} Falar no WhatsApp</a>
         </div>
+        <p class="nota-cta">Mande a largura da correia, o que ela transporta e uma foto do trecho. Com isso a equipe já responde com a recomendação, sem uma rodada de perguntas.</p>
       </div>
     </div>
     </div>
@@ -309,10 +319,10 @@ function contact() {
 export const homePage = {
   file: 'index.html',
   nav: 'home',
+  wa: 'Olá! Vim pelo site da Elotec. Preciso de: ',
   title: 'Elotec Correias | Soluções completas em correias transportadoras',
   description:
-    'Fornecimento, instalação, conserto e manutenção de correias transportadoras em PU, PVC, borracha, nylon e transmissão. Assistência técnica 24h em todo o Brasil. Desde 2001.',
-  image: '/images/hero.webp',
+    'Fornecimento, instalação, conserto e manutenção de correias transportadoras em PU, PVC, borracha, nylon e transmissão. Atendimento emergencial fora do horário comercial, em todo o Brasil. Desde 2001.',
   breadcrumb: [{ label: 'Início', href: '' }],
   body: () => `
   <main id="conteudo">

@@ -124,19 +124,19 @@ function entry(item, index, kind) {
       </div>
 
       <div class="entry__media reveal" style="--i:1">
-        <div class="media chamfer-lg"><img src="${img(item.image)}" alt="${esc(item.name)}" loading="lazy" width="900" height="740"></div>
+        <div class="media chamfer-lg"><img src="${img(item.image)}" alt="" loading="lazy" width="900" height="740"></div>
       </div>
     </div>
   </section>`;
 }
 
-function catalogPage({ file, nav, title, description, heroTitle, heroAccent, heroText, crumb, items, kind, anchorLabel, cta }) {
+function catalogPage({ file, nav, wa, title, description, heroTitle, heroAccent, heroText, crumb, items, kind, anchorLabel, cta }) {
   return {
     file,
     nav,
+    wa,
     title,
     description,
-    image: items[0].image,
     breadcrumb: [
       { label: 'Início', href: '' },
       { label: crumb, href: file },
@@ -160,6 +160,7 @@ function catalogPage({ file, nav, title, description, heroTitle, heroAccent, her
 export const produtosPage = catalogPage({
   file: 'produtos.html',
   nav: 'menu-produtos',
+  wa: 'Olá! Vim pelo catálogo de produtos do site da Elotec. Preciso de: ',
   title: 'Produtos | Correias, canecas, rolos e revestimentos — Elotec',
   description:
     'Correias em PU, PVC e borracha, canecas para elevadores, rolos, roletes e material para revestimento industrial. Soluções para transporte, elevação, higiene e condições severas.',
@@ -181,13 +182,14 @@ export const produtosPage = catalogPage({
 export const servicosPage = catalogPage({
   file: 'servicos.html',
   nav: 'menu-servicos',
+  wa: 'Olá! Vim pela página de serviços do site da Elotec. Preciso de: ',
   title: 'Serviços | Instalação, conserto e manutenção de correias — Elotec',
   description:
     'Instalação e conserto de correias em PU, PVC, borracha, nylon e transmissão, revestimento de rolos, aplicação de guias e taliscas e consultoria preventiva.',
   heroTitle: 'Serviços técnicos para',
   heroAccent: 'reduzir paradas na sua operação',
   heroText:
-    'Vulcanização, colagem a frio, revestimento de rolos, personalização de correias e acompanhamento preventivo — com assistência técnica 24h.',
+    'Vulcanização, colagem a frio, revestimento de rolos, personalização de correias e acompanhamento preventivo — com atendimento emergencial fora do horário comercial.',
   crumb: 'Serviços',
   items: data.services,
   kind: 'service',
@@ -202,6 +204,7 @@ export const servicosPage = catalogPage({
 export const setoresPage = catalogPage({
   file: 'setores.html',
   nav: 'menu-setores',
+  wa: 'Olá! Vim pela página de setores atendidos do site da Elotec. Preciso de: ',
   title: 'Setores Atendidos | Frigoríficos, cerealistas, britadores e mais — Elotec',
   description:
     'Soluções em correias transportadoras para frigoríficos, indústria farmacêutica, panificação, cerealistas, britadores, móveis, fabricantes de equipamentos e lenha e cavacos.',

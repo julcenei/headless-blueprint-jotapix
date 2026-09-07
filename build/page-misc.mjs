@@ -8,7 +8,7 @@ const c = data.contact;
    A ELOTEC
    ========================================================================== */
 const DIFERENCIAIS = [
-  { ico: 'bolt', title: 'Assistência técnica 24h', text: 'Atendimento emergencial para reduzir o tempo de parada da linha de produção.' },
+  { ico: 'bolt', title: 'Atendimento emergencial', text: 'Fora do horário comercial, para reduzir o tempo de parada da linha de produção.' },
   { ico: 'pin', title: 'Atendimento em todo o Brasil', text: 'Duas unidades — Chapecó (SC) e Toledo (PR) — com deslocamento para outras regiões.' },
   { ico: 'wrench', title: 'Execução própria', text: 'Vulcanização, colagem a frio, revestimento e personalização feitos pela nossa equipe.' },
   { ico: 'clipboardCheck', title: 'Acompanhamento preventivo', text: 'Avaliações periódicas de correias, transportadores, rolos e roletes.' },
@@ -19,10 +19,10 @@ const DIFERENCIAIS = [
 export const aElotecPage = {
   file: 'a-elotec.html',
   nav: 'a-elotec',
+  wa: 'Olá! Vim pela página sobre a Elotec no site. Preciso de: ',
   title: 'A Elotec | Serviços técnicos em correias desde 2001',
   description:
-    'Desde 2001 a Elotec atua com correias transportadoras, instalação, conserto, manutenção e avaliação de sistemas industriais. Assistência 24h, duas unidades e atendimento nacional.',
-  image: '/images/servicos/vulcanizacao.webp',
+    'Desde 2001 a Elotec atua com correias transportadoras, instalação, conserto, manutenção e avaliação de sistemas industriais. Atendimento emergencial fora do horário comercial, duas unidades e atendimento nacional.',
   breadcrumb: [
     { label: 'Início', href: '' },
     { label: 'A Elotec', href: 'a-elotec.html' },
@@ -47,16 +47,16 @@ export const aElotecPage = {
           <div class="stack" style="margin-top:1.5rem">
             <p class="lead">A Elotec nasceu em 2001 em Chapecó, Santa Catarina, atendendo a demanda das indústrias da região por manutenção rápida e confiável de correias transportadoras.</p>
             <p class="muted">Com o tempo, a atuação se ampliou para o fornecimento de correias em PU, PVC, borracha, nylon e transmissão, além de canecas, rolos, roletes e materiais de revestimento — sempre com a mesma lógica: entender o processo do cliente antes de indicar o material.</p>
-            <p class="muted">Hoje a empresa mantém duas unidades, Chapecó (SC) e Toledo (PR), com assistência técnica 24h e atendimento em todo o Brasil. Os frigoríficos seguem como principal área de atuação, com correias sanitárias desenvolvidas para higiene, resistência e confiabilidade.</p>
+            <p class="muted">Hoje a empresa mantém duas unidades, Chapecó (SC) e Toledo (PR), com atendimento emergencial fora do horário comercial e atendimento em todo o Brasil. Os frigoríficos seguem como principal área de atuação, com correias sanitárias desenvolvidas para higiene, resistência e confiabilidade.</p>
           </div>
           <div class="trust-row" style="margin-top:2.25rem">
             <p class="trust-badge">${icon('clock', 18, 1.8)} Desde 2001</p>
-            <p class="trust-badge">${icon('bolt', 18, 1.8)} Assistência 24h</p>
+            <p class="trust-badge">${icon('bolt', 18, 1.8)} Atendimento emergencial</p>
             <p class="trust-badge">${icon('pin', 18, 1.8)} Atendimento nacional</p>
           </div>
         </div>
         <div class="about-media reveal" style="--i:1">
-          <div class="media chamfer-lg"><img src="images/setores/frigorificos.webp" alt="Linha de produção industrial atendida pela Elotec" loading="lazy" width="900" height="760"></div>
+          <div class="media chamfer-lg"><img src="images/setores/frigorificos.webp" alt="Esteira transportadora em uma linha de processamento industrial" loading="lazy" width="900" height="760"></div>
         </div>
       </div>
     </section>
@@ -117,7 +117,7 @@ const PASSOS = [
 const FAQ = [
   {
     q: 'Quanto tempo leva para receber o retorno?',
-    a: 'O contato é feito pela equipe técnica assim que a solicitação chega. Para situações emergenciais, use o WhatsApp — a assistência técnica funciona 24h.',
+    a: 'O contato é feito pela equipe técnica assim que a solicitação chega. Para situações emergenciais, use o WhatsApp: a equipe atende fora do horário comercial.',
   },
   {
     q: 'Preciso saber a medida exata da correia?',
@@ -142,10 +142,10 @@ const UFS = ['AC','AL','AP','AM','BA','CE','DF','ES','GO','MA','MT','MS','MG','P
 export const orcamentoPage = {
   file: 'solicitar-orcamento.html',
   nav: 'orcamento',
+  wa: 'Olá! Vim pela página de orçamento do site da Elotec. Preciso de: ',
   title: 'Solicitar Orçamento | Elotec Serviços Técnicos em Correias',
   description:
     'Envie os dados da sua aplicação e receba uma avaliação técnica da Elotec. Formulário rápido que abre o WhatsApp com as informações já preenchidas.',
-  image: '/images/servicos/consultoria.webp',
   breadcrumb: [
     { label: 'Início', href: '' },
     { label: 'Solicitar orçamento', href: 'solicitar-orcamento.html' },
@@ -277,7 +277,7 @@ export const orcamentoPage = {
         <aside class="reveal" style="--i:1">
           <div class="aside-card on-dark">
             <h2 class="h-4">Precisa de atendimento agora?</h2>
-            <p class="muted" style="margin-top:0.75rem;font-size:0.94rem">A assistência técnica funciona 24h para emergências que param a produção.</p>
+            <p class="muted" style="margin-top:0.75rem;font-size:0.94rem">A equipe atende fora do horário comercial quando a emergência para a produção.</p>
             ${contactLines(waLink())}
             <a class="btn btn--whats btn--block" href="${waLink()}" target="_blank" rel="noopener">${icon('whatsapp', 18, 1.7)} Falar no WhatsApp</a>
           </div>

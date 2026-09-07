@@ -52,7 +52,12 @@
   --surface: #fff;
   --surface-alt: hsl(220 20% 96%);
   --surface-line: hsl(225 18% 88%);
-  --on-dark-muted: hsl(225 30% 78%);
+  /* Texto sobre superficie escura, em tres passos. Antes eram oito valores
+     avulsos entre 50% e 88% de luminosidade, nenhum deles declarado. */
+  --on-dark-forte: hsl(225 40% 88%);   /* corpo em destaque: hero, page-hero */
+  --on-dark-muted: hsl(225 30% 78%);   /* corpo comum, enderecos, rodape */
+  --on-dark-fraco: hsl(225 30% 62%);   /* apoio: topo do titulo, separadores */
+  --t-soft-claro: hsl(225 15% 56%);    /* metade apagada do titulo, sobre claro */
 
   /* Espaço e ritmo */
   --font-display: 'Familjen Grotesk', 'Segoe UI', system-ui, sans-serif;
@@ -236,10 +241,10 @@ h1, h2, h3, h4 {
 .section-title .t-soft {
   display: block;
   font-weight: 400; /* carregado junto com a display; sem isto vinha 600 */
-  color: hsl(225 15% 56%);
+  color: var(--t-soft-claro);
   letter-spacing: -0.02em;
 }
-.section--navy .section-title .t-soft { color: hsl(225 30% 62%); }
+.section--navy .section-title .t-soft { color: var(--on-dark-fraco); }
 .section-title .t-strong { display: block; font-weight: 700; }
 
 .text-accent { color: var(--accent); }
@@ -527,7 +532,7 @@ a.chip:hover { background: var(--accent); border-color: var(--accent); transform
 
 .topbar {
   background: var(--navy-deep);
-  color: hsl(225 30% 82%);
+  color: var(--on-dark-muted);
   font-size: 0.8125rem;
   max-height: var(--topbar-h);
   overflow: hidden;
@@ -608,7 +613,7 @@ a.chip:hover { background: var(--accent); border-color: var(--accent); transform
   margin-top: 3px;
 }
 .logo--light .logo__word { color: #fff; }
-.logo--light .logo__desc { color: hsl(225 30% 72%); }
+.logo--light .logo__desc { color: var(--on-dark-muted); }
 /* A 11px a assinatura quebra em duas linhas e estica o header no celular;
    a marca já está dita pelo logotipo ao lado. */
 @media (max-width: 420px) { .logo__desc { display: none; } }
@@ -674,11 +679,15 @@ a.chip:hover { background: var(--accent); border-color: var(--accent); transform
   visibility: visible;
   transform: translateY(0);
 }
+/* Colunas do tamanho do conteudo, empacotadas a' esquerda. Com 1fr, cinco
+   categorias de 1 a 3 itens viravam cinco colunas largas e vazias ocupando a
+   viewport inteira; assim o painel fica denso e cobre menos o hero. */
 .dropdown__inner {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
-  gap: 2rem 2.5rem;
-  padding-block: 2.5rem 2rem;
+  grid-template-columns: repeat(auto-fit, minmax(170px, max-content));
+  justify-content: start;
+  gap: 1.75rem 3.5rem;
+  padding-block: 2rem 1.5rem;
 }
 .dropdown__col-title {
   font-family: var(--font-display);
@@ -702,7 +711,7 @@ a.chip:hover { background: var(--accent); border-color: var(--accent); transform
 .dropdown__foot {
   display: flex;
   justify-content: flex-end;
-  padding-bottom: 1.5rem;
+  padding-bottom: 1.25rem;
 }
 
 /* Botão hambúrguer + menu mobile */
@@ -951,9 +960,32 @@ a.chip:hover { background: var(--accent); border-color: var(--accent); transform
   max-width: 34rem;
   font-size: clamp(1.0625rem, 1rem + 0.4vw, 1.3125rem);
   line-height: 1.6;
-  color: hsl(225 40% 88%);
+  color: var(--on-dark-forte);
 }
 .hero__actions { margin-top: 2rem; display: flex; flex-wrap: wrap; gap: 0.85rem; }
+/* A rota de emergencia vive na primeira dobra, inclusive no celular. Antes,
+   quem estava com a linha parada so' encontrava um telefone depois de 7400px
+   de rolagem — ou na topbar, que some no primeiro swipe e some de vez abaixo
+   de 760px. */
+.hero__urgencia {
+  margin-top: 1.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.4rem 0.75rem;
+  font-size: 0.9375rem;
+  color: var(--on-dark-muted);
+}
+.hero__urgencia a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-weight: 700;
+  color: var(--accent);
+  padding: 0.35rem 0;
+}
+.hero__urgencia a:hover { text-decoration: underline; text-underline-offset: 4px; }
+.hero__urgencia span { flex-basis: 100%; font-size: 0.875rem; }
 
 /* Telas de notebook: o painel do hero precisa caber na dobra sem cortar o
    chanfro. Aperta os intervalos em vez de encolher o título — o título é o
@@ -1001,6 +1033,18 @@ a.chip:hover { background: var(--accent); border-color: var(--accent); transform
   --cut: 12px;
 }
 .hero__arrow:hover { background: var(--accent); color: var(--navy); box-shadow: none; }
+/* Pausado e' um estado, entao o controle ganha corpo — o mesmo vocabulario do
+   botao de pausa do marquee. Os dois icones ficam empilhados na mesma celula
+   para o botao nao mudar de largura ao alternar. */
+.hero__arrow--pausa > span { grid-area: 1 / 1; display: grid; place-items: center; }
+.hero__arrow--pausa .hero__ico-play { display: none; }
+.hero__arrow--pausa[aria-pressed='true'] {
+  background: var(--accent);
+  color: var(--navy);
+  --contorno-cor: transparent;
+}
+.hero__arrow--pausa[aria-pressed='true'] .hero__ico-pausa { display: none; }
+.hero__arrow--pausa[aria-pressed='true'] .hero__ico-play { display: grid; }
 .hero__dots {
   position: absolute;
   left: var(--gutter);
@@ -1044,7 +1088,9 @@ a.chip:hover { background: var(--accent); border-color: var(--accent); transform
    ========================================================================== */
 .marquee {
   position: relative;
-  padding-right: 3.5rem;
+  /* O controle fica a esquerda: o canto inferior direito pertence aos botoes
+     flutuantes, e um controle fixo sobre um controle rolante colide sempre. */
+  padding-left: 3.5rem;
   background: var(--accent);
   color: var(--navy);
   display: flex;
@@ -1057,8 +1103,8 @@ a.chip:hover { background: var(--accent); border-color: var(--accent); transform
   flex: 1;
   min-width: 0;
   overflow: hidden;
-  -webkit-mask-image: linear-gradient(90deg, transparent, #000 9%, #000 92%, transparent);
-  mask-image: linear-gradient(90deg, transparent, #000 9%, #000 92%, transparent);
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 6%, #000 92%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 6%, #000 92%, transparent);
 }
 .marquee__track {
   display: flex;
@@ -1096,7 +1142,7 @@ a.chip:hover { background: var(--accent); border-color: var(--accent); transform
    fundo transparente também recebe o clique. */
 .marquee__pause {
   position: absolute;
-  right: 0.35rem;
+  left: 0.35rem;
   top: 50%;
   transform: translateY(-50%);
   width: 44px; height: 44px;
@@ -1216,18 +1262,41 @@ a.chip:hover { background: var(--accent); border-color: var(--accent); transform
 @media (prefers-reduced-motion: reduce) {
   .product-card__seta { transition: none; }
 }
-/* Resumo + CTA: escondidos no card padrão, revelados no hover apenas na
-   variante sobreposta e no card em destaque do mosaico. */
-.product-card__more { display: none; }
+/* O resumo fica visivel, cortado em duas linhas. Escondido, quatro cards
+   seguidos liam so' "CORREIAS EM PU" e nao havia com o que comparar PU Lonada
+   e PU de Traçao Positiva sem abrir nove paginas — e o texto ja' viajava no
+   HTML de todo jeito. Duas linhas fixas mantem os cards nivelados; revelar no
+   hover nao serviria, porque no toque nao existe hover. */
+.product-card__more { display: block; }
 .product-card__summary {
-  font-size: 1rem;
+  font-size: 0.9375rem;
   line-height: 1.5;
-  color: hsl(225 35% 86%);
+  color: var(--text-muted);
+  margin-top: 0.6rem;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  overflow: hidden;
+  min-height: calc(2 * 1.5 * 0.9375rem);
+}
+/* A seta do titulo ja' diz "abre a ficha": o link textual seria redundante.
+   Ele continua nas variantes que tem espaco de sobra. */
+.product-card--feature .product-card__summary,
+.product-card--sobreposto .product-card__summary {
+  font-size: 1rem;
+  -webkit-line-clamp: initial;
+  line-clamp: initial;
+  min-height: 0;
   margin-top: 0.7rem;
 }
+.product-card--sobreposto .product-card__summary { color: var(--on-dark-forte); }
 .product-card__cta {
   font-family: var(--font-display);
-  display: inline-flex;
+  /* A seta no titulo ja' diz "abre a ficha": o link textual seria redundante no
+     card padrao, e em amarelo sobre a superficie clara ele nao passa em AA.
+     Continua nas variantes escuras, onde ha' espaco e contraste. */
+  display: none;
   align-items: center;
   gap: 0.45rem;
   margin-top: 0.9rem;
@@ -1236,6 +1305,8 @@ a.chip:hover { background: var(--accent); border-color: var(--accent); transform
   letter-spacing: normal;
   color: var(--accent);
 }
+.product-card--feature .product-card__cta,
+.product-card--sobreposto .product-card__cta { display: inline-flex; }
 
 /* -- Cabeçalho de seção: título à esquerda, apoio à direita (com filete) -- */
 .section-head {
@@ -1288,7 +1359,6 @@ a.chip:hover { background: var(--accent); border-color: var(--accent); transform
 /* Card em destaque do mosaico: a célula é maior, então a faixa comporta o
    resumo e o CTA sem hover. */
 .product-card--feature .product-card__more { display: grid; grid-template-rows: 1fr; opacity: 1; }
-.product-card--feature .product-card__summary { color: var(--text-muted); }
 .product-card--feature .product-card__name { min-height: 0; }
 
 /* -- Variante "sobreposto": o tratamento anterior, texto sobre a foto --------
@@ -1413,7 +1483,7 @@ a.chip:hover { background: var(--accent); border-color: var(--accent); transform
 .stat { padding-left: 1.35rem; border-left: 2px solid var(--rule); }
 .stat__num {
   font-family: var(--font-display);
-  font-size: clamp(2.9rem, 1.8rem + 4.65vw, 4.75rem);
+  font-size: clamp(2.4rem, 1.35rem + 4.25vw, 4.75rem); /* mesmo clamp do .h-1 */
   font-weight: 700;
   line-height: 1;
   letter-spacing: -0.03em;
@@ -1503,7 +1573,11 @@ a.chip:hover { background: var(--accent); border-color: var(--accent); transform
   .split-panels {
     background: linear-gradient(to right, var(--navy) 0 50%, var(--surface-alt) 50% 100%);
   }
-  .split-panels__grid { grid-template-columns: 1fr 1fr; }
+  /* O painel de conversao tem menos conteudo que o de endereco: esticado, ele
+     ficava com quase 380px de vazio embaixo e o endereco parecia mais
+     importante que a conversao. Centrado, os dois se equilibram. O fundo vem
+     do gradiente da secao, entao nada deixa de ser pintado. */
+  .split-panels__grid { grid-template-columns: 1fr 1fr; align-items: center; }
   .panel--navy { padding-right: clamp(2rem, 4vw, 3.5rem); }
   .panel--light { padding-left: clamp(2rem, 4vw, 3.5rem); }
 }
@@ -1549,12 +1623,12 @@ a.chip:hover { background: var(--accent); border-color: var(--accent); transform
     linear-gradient(120deg, var(--navy-ink), var(--navy) 65%);
 }
 
-.page-hero__text { margin-top: 1.5rem; max-width: 46rem; color: hsl(225 40% 86%); }
+.page-hero__text { margin-top: 1.5rem; max-width: 46rem; color: var(--on-dark-forte); }
 
-.breadcrumb { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; font-size: 0.875rem; color: hsl(225 30% 74%); }
+.breadcrumb { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; font-size: 0.875rem; color: var(--on-dark-muted); }
 .breadcrumb a { display: inline-flex; align-items: center; min-height: 26px; }
 .breadcrumb a:hover { color: var(--accent); }
-.breadcrumb li + li::before { content: '/'; margin-right: 0.5rem; color: hsl(225 30% 50%); }
+.breadcrumb li + li::before { content: '/'; margin-right: 0.5rem; color: var(--on-dark-fraco); }
 .breadcrumb li { display: flex; align-items: center; }
 .breadcrumb [aria-current] { color: var(--accent); }
 
@@ -1705,6 +1779,8 @@ a.chip:hover { background: var(--accent); border-color: var(--accent); transform
   padding-block: clamp(3.5rem, 7vw, 5.5rem);
 }
 .cta-band__actions { display: flex; flex-wrap: wrap; gap: 1rem; justify-content: flex-start; }
+/* a nota quebra a linha dos botoes e ocupa a largura toda da coluna */
+.cta-band__actions .nota-cta { flex-basis: 100%; margin-top: 0.25rem; }
 
 /* ==========================================================================
    10. SOLICITAR ORÇAMENTO
@@ -1887,7 +1963,7 @@ a.chip:hover { background: var(--accent); border-color: var(--accent); transform
    incomparáveis entre as amostras */
 .tipo-amostra { max-width: 620px; font-family: var(--font-body); }
 .tipo-amostra .stats { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-.prose h2 { font-size: clamp(1.35rem, 1.2rem + 0.7vw, 1.65rem); margin-top: 2.75rem; }
+.prose h2 { font-size: clamp(1.1875rem, 1.1rem + 0.35vw, 1.375rem); margin-top: 2.75rem; } /* = .h-4 */
 .prose h2:first-child { margin-top: 0; }
 .prose p, .prose ul { margin-top: 1rem; color: var(--text-muted); }
 .prose ul { display: grid; gap: 0.5rem; padding-left: 1.1rem; list-style: disc; }
@@ -1915,7 +1991,14 @@ a.chip:hover { background: var(--accent); border-color: var(--accent); transform
 /* ==========================================================================
    12. FOOTER + FLUTUANTES
    ========================================================================== */
-.site-footer { background: var(--navy); color: var(--on-dark-muted); padding-top: clamp(3.5rem, 7vw, 5.5rem); }
+.site-footer {
+  background: var(--navy-deep);
+  color: var(--on-dark-muted);
+  padding-top: clamp(3.5rem, 7vw, 5.5rem);
+  /* Um tom abaixo da faixa de CTA, com um fio de luz na juncao: sem isso as
+     duas areas navy se somam num unico bloco de 1100px sem leitura. */
+  box-shadow: inset 0 1px 0 hsl(0 0% 100% / 0.1);
+}
 .footer-grid {
   display: grid;
   grid-template-columns: minmax(240px, 1.4fr) repeat(auto-fit, minmax(150px, 1fr));
@@ -1949,7 +2032,28 @@ a.chip:hover { background: var(--accent); border-color: var(--accent); transform
   font-size: 0.875rem;
 }
 .footer-bottom nav { display: flex; flex-wrap: wrap; gap: 1.5rem; }
+/* Os flutuantes recuam quando a faixa de CTA ou o rodape entram em cena: la' o
+   contato ja' esta' na pagina, e um botao fixo por cima do botao que ele duplica
+   e' ruido. Sem JS o atributo nunca aparece e eles ficam visiveis, como antes. */
+.floaters[data-recolhido='true'] {
+  opacity: 0;
+  transform: translateY(14px);
+  pointer-events: none;
+}
+.floaters { transition: opacity 0.35s var(--ease), transform 0.35s var(--ease); }
 .footer-bottom a:hover { color: var(--accent); }
+
+/* O que mandar junto: dito no ponto do clique, nao a 78% de rolagem. Uma
+   pessoa recebe todas as mensagens — o que o visitante ja' escreve aqui e' uma
+   pergunta que ela nao precisa fazer depois. */
+.nota-cta {
+  margin-top: 1.25rem;
+  max-width: 46ch;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: var(--text-muted);
+}
+.on-dark .nota-cta, .cta-band .nota-cta { color: var(--on-dark-muted); }
 
 /* Ações flutuantes */
 .floaters {
@@ -2002,13 +2106,15 @@ a.chip:hover { background: var(--accent); border-color: var(--accent); transform
 /* ==========================================================================
    13. ANIMAÇÕES DE ENTRADA
    ========================================================================== */
-.reveal {
+/* So' esconde quando o JS esta' vivo para revelar. Sem script — ou se um dos
+   modulos lancar antes do observer — a pagina inteira continua legivel. */
+.js .reveal {
   opacity: 0;
   transform: translateY(26px);
   transition: opacity 0.7s var(--ease-out), transform 0.7s var(--ease-out);
   transition-delay: calc(var(--i, 0) * 80ms);
 }
-.reveal.is-visible { opacity: 1; transform: none; }
+.js .reveal.is-visible { opacity: 1; transform: none; }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
@@ -2043,14 +2149,30 @@ a.chip:hover { background: var(--accent); border-color: var(--accent); transform
   .topbar__links { gap: 1.1rem; font-size: 0.75rem; }
   .hero__viewport { min-height: 620px; }
   .hero__content { max-width: none; --cut: 24px; }
-  .hero__dots { bottom: 1.5rem; }
-  .hero__controls { bottom: 1.5rem; }
+  /* No celular os controles saem do canto inferior direito: e' onde ficam os
+     botoes flutuantes, e o FAB do WhatsApp cobria a seta e a pausa exatamente
+     na tela de chegada. Controles a' esquerda, pontos logo acima. */
+  .hero__dots { bottom: 4.75rem; }
+  .hero__controls { bottom: 1.5rem; left: var(--gutter); right: auto; }
+  /* faixa reservada no pe' do painel para os pontos nao cairem sobre o texto */
+  .hero__content { padding-bottom: 4.5rem; }
   .hero__arrow { width: 44px; height: 44px; }
   .hero__actions .btn { width: 100%; }
   .step::after { display: none; }
   .footer-grid { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); }
   .about-media::before { inset: -0.75rem -0.75rem 0.75rem 0.75rem; }
-  .float-btn--quote { display: none; }
+  /* O CTA de orcamento continua no celular: escondido, a unica presenca
+     permanente de conversao era o botao verde, que abre uma conversa em
+     branco — justamente a mensagem mais cara para quem atende. Vira um alvo
+     redondo do mesmo tamanho do WhatsApp, sem o rotulo. */
+  .float-btn--quote {
+    width: 58px; height: 58px;
+    padding: 0;
+    justify-content: center;
+    border-radius: 50%;
+    clip-path: none;
+  }
+  .float-btn--quote .float-btn__rotulo { display: none; }
 }
 
 @media (max-width: 420px) {

@@ -15,7 +15,10 @@ colors:
   superficie: "#fff"
   superficie-alt: "hsl(220 20% 96%)"
   filete: "hsl(225 18% 86%)"
+  sobre-escuro-forte: "hsl(225 40% 88%)"
   sobre-escuro-suave: "hsl(225 30% 78%)"
+  sobre-escuro-fraco: "hsl(225 30% 62%)"
+  titulo-apagado: "hsl(225 15% 56%)"
   erro: "#c0392b"
   sucesso: "#1a9e54"
 typography:
@@ -36,6 +39,12 @@ typography:
     fontSize: "clamp(1.5rem, 1.2rem + 1.15vw, 2.125rem)"
     fontWeight: 700
     lineHeight: 1.15
+    letterSpacing: "-0.025em"
+  subtitle:
+    fontFamily: "Familjen Grotesk, Segoe UI, system-ui, sans-serif"
+    fontSize: "clamp(1.1875rem, 1.1rem + 0.35vw, 1.375rem)"
+    fontWeight: 700
+    lineHeight: 1.25
     letterSpacing: "-0.025em"
   body:
     fontFamily: "Public Sans, Segoe UI, system-ui, sans-serif"

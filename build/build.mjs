@@ -11,7 +11,7 @@
  */
 import { writeFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { ROOT, SITE } from './data.mjs';
+import { ROOT, SITE, setContextoWa } from './data.mjs';
 import { head, header, footer } from './layout.mjs';
 import { homePage } from './page-home.mjs';
 import { produtosPage, servicosPage, setoresPage } from './page-catalog.mjs';
@@ -30,6 +30,7 @@ const PAGES = [
 
 let total = 0;
 for (const page of PAGES) {
+  setContextoWa(page.wa);
   const html = head(page) + header(page) + page.body() + footer();
   writeFileSync(join(ROOT, page.file), html, 'utf8');
   total += html.length;

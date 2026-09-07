@@ -9,6 +9,14 @@
   var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var $ = function (sel, ctx) { return (ctx || document).querySelector(sel); };
   var $$ = function (sel, ctx) { return Array.prototype.slice.call((ctx || document).querySelectorAll(sel)); };
+
+  // Cada modulo roda isolado: uma excecao num deles nao pode impedir os
+  // seguintes de inicializar. O reveal e' o 8o da fila — sem isso, um erro
+  // em qualquer modulo anterior deixaria a pagina inteira em branco.
+  function modulo(fn) {
+    try { fn(); }
+    catch (e) { if (window.console && console.error) console.error('[elotec] ' + (fn.name || 'modulo'), e); }
+  }
   var suave = reduceMotion ? 'auto' : 'smooth';
 
   /** Observa uma lista, executa a ação na primeira aparição e desobserva. */
@@ -52,7 +60,7 @@
   /* ------------------------------------------------------------------
      1. Header: encolhe/ganha sombra ao rolar + CTA flutuante contextual
      ------------------------------------------------------------------ */
-  (function header() {
+  modulo(function header() {
     var root = document.documentElement;
     var siteHeader = $('.site-header');
     var floatQuote = $('.float-btn--quote');
@@ -69,6 +77,26 @@
       if (altura === ultimaAltura) return;
       ultimaAltura = altura;
       root.style.setProperty('--header-h', altura + 'px');
+    }
+
+    // Faixa de CTA e rodape ja' carregam o contato na propria pagina: os
+    // flutuantes recuam la' para nao cobrir os controles que duplicam.
+    var floaters = $('.floaters');
+    if (floaters && 'IntersectionObserver' in window) {
+      var zonas = $$('.cta-band, .site-footer, .split-panels');
+      if (zonas.length) {
+        var dentro = 0;
+        var recolhido = null;
+        var obs = new IntersectionObserver(function (entradas) {
+          entradas.forEach(function (e) { dentro += e.isIntersecting ? 1 : -1; });
+          if (dentro < 0) dentro = 0;
+          var novo = dentro > 0;
+          if (novo === recolhido) return;
+          recolhido = novo;
+          floaters.setAttribute('data-recolhido', String(novo));
+        }, { rootMargin: '0px 0px -25% 0px' });
+        zonas.forEach(function (z) { obs.observe(z); });
+      }
     }
 
     function onScroll() {
@@ -95,12 +123,12 @@
     window.addEventListener('scroll', onScroll, { passive: true });
     aoRedimensionar.push(syncHeaderHeight);
     window.addEventListener('load', syncHeaderHeight);
-  })();
+  });
 
   /* ------------------------------------------------------------------
      2. Dropdowns do menu (hover no desktop + teclado/click acessível)
      ------------------------------------------------------------------ */
-  (function dropdowns() {
+  modulo(function dropdowns() {
     var items = $$('.nav__item--has-menu');
     if (!items.length) return;
 
@@ -144,12 +172,12 @@
     document.addEventListener('click', function (e) {
       items.forEach(function (item) { if (!item.contains(e.target)) close(item); });
     });
-  })();
+  });
 
   /* ------------------------------------------------------------------
      3. Menu mobile fullscreen
      ------------------------------------------------------------------ */
-  (function mobileMenu() {
+  modulo(function mobileMenu() {
     var toggle = $('.nav-toggle');
     var menu = $('#mobile-menu');
     if (!toggle || !menu) return;
@@ -192,12 +220,12 @@
     window.matchMedia('(min-width: 1081px)').addEventListener('change', function (ev) {
       if (ev.matches) setOpen(false);
     });
-  })();
+  });
 
   /* ------------------------------------------------------------------
      4. Hero carrossel: crossfade + ken burns, autoplay 7s, teclado e swipe
      ------------------------------------------------------------------ */
-  (function heroCarousel() {
+  modulo(function heroCarousel() {
     var hero = $('.hero[data-carousel]');
     if (!hero) return;
 
@@ -208,6 +236,10 @@
     var index = 0;
     var timer = null;
     var DURATION = 7000;
+    // Pausa explicita: no toque nao existe mouseenter nem focusin, entao sem
+    // isto o carrossel era impossivel de parar no celular — e cada seta ou
+    // ponto chamava play() de novo, desfazendo qualquer pausa.
+    var travado = false;
 
     function go(next, announce) {
       index = (next + slides.length) % slides.length;
@@ -233,7 +265,7 @@
     }
 
     function play() {
-      if (reduceMotion) return;
+      if (reduceMotion || travado) return;
       stop();
       timer = setInterval(function () { go(index + 1); }, DURATION);
       hero.classList.remove('is-paused');
@@ -254,6 +286,16 @@
     });
     dots.forEach(function (dot, i) {
       dot.addEventListener('click', function () { go(i, true); play(); });
+    });
+
+    $$('[data-hero-toggle]', hero).forEach(function (b) {
+      b.addEventListener('click', function () {
+        travado = !travado;
+        b.setAttribute('aria-pressed', String(travado));
+        b.setAttribute('aria-label', travado ? 'Retomar troca automática de slides' : 'Pausar troca automática de slides');
+        if (travado) stop();
+        else play();
+      });
     });
 
     // Pausa quando o ponteiro ou o foco está no hero, e quando a aba não está visível
@@ -290,12 +332,12 @@
 
     go(0);
     play();
-  })();
+  });
 
   /* ------------------------------------------------------------------
      5. Marquee de setores: duplica o conteúdo e permite pausar
      ------------------------------------------------------------------ */
-  (function marquee() {
+  modulo(function marquee() {
     $$('.marquee').forEach(function (el) {
       var track = $('.marquee__track', el);
       var pauseBtn = $('.marquee__pause', el);
@@ -319,13 +361,13 @@
         });
       }
     });
-  })();
+  });
 
   /* ------------------------------------------------------------------
      5b. Carrossel de produtos: arrastar, setas, avanço automático e
          barra de progresso. Usa scroll nativo + scroll-snap.
      ------------------------------------------------------------------ */
-  (function productRail() {
+  modulo(function productRail() {
     $$('[data-rail]').forEach(function (rail) {
       var track = $('[data-rail-track]', rail);
       var bar = $('[data-rail-bar]', rail);
@@ -415,12 +457,12 @@
       medir();
       aoRedimensionar.push(medir);
     });
-  })();
+  });
 
   /* ------------------------------------------------------------------
      6. Animações de entrada com IntersectionObserver (fade-up + stagger)
      ------------------------------------------------------------------ */
-  (function reveal() {
+  modulo(function reveal() {
     var els = $$('.reveal');
     if (reduceMotion) {
       els.forEach(function (el) { el.classList.add('is-visible'); });
@@ -430,12 +472,12 @@
       rootMargin: '0px 0px -12% 0px',
       threshold: 0.08,
     });
-  })();
+  });
 
   /* ------------------------------------------------------------------
      7. Contadores animados nas estatísticas
      ------------------------------------------------------------------ */
-  (function counters() {
+  modulo(function counters() {
     var nums = $$('[data-count-to]');
     if (!nums.length) return;
 
@@ -458,12 +500,12 @@
     }
 
     observeOnce(nums, run, { threshold: 0.6 });
-  })();
+  });
 
   /* ------------------------------------------------------------------
      8. Barra de progresso de leitura (páginas de catálogo)
      ------------------------------------------------------------------ */
-  (function readProgress() {
+  modulo(function readProgress() {
     var bars = $$('.read-progress');
     if (!bars.length) return;
     // scrollHeight força layout do documento: medido em resize, não a cada scroll
@@ -478,12 +520,12 @@
     window.addEventListener('scroll', update, { passive: true });
     aoRedimensionar.push(medir);
     window.addEventListener('load', medir);
-  })();
+  });
 
   /* ------------------------------------------------------------------
      9. Scrollspy da barra de âncoras
      ------------------------------------------------------------------ */
-  (function scrollSpy() {
+  modulo(function scrollSpy() {
     $$('.anchor-bar').forEach(setupSpy);
 
     function setupSpy(bar) {
@@ -517,24 +559,24 @@
     }, { rootMargin: '-45% 0px -50% 0px' });
     sections.forEach(function (s) { io.observe(s); });
     }
-  })();
+  });
 
   /* ------------------------------------------------------------------
      10. FAQ acessível (accordion)
      ------------------------------------------------------------------ */
-  (function faq() {
+  modulo(function faq() {
     $$('.faq-item__btn').forEach(function (btn) {
       btn.addEventListener('click', function () {
         var expanded = btn.getAttribute('aria-expanded') === 'true';
         btn.setAttribute('aria-expanded', String(!expanded));
       });
     });
-  })();
+  });
 
   /* ------------------------------------------------------------------
      11. Formulário de orçamento → abre o WhatsApp com a mensagem pronta
      ------------------------------------------------------------------ */
-  (function quoteForm() {
+  modulo(function quoteForm() {
     var form = $('#form-orcamento');
     if (!form) return;
 
@@ -655,7 +697,7 @@
     }
     applyPreselect();
     window.addEventListener('hashchange', applyPreselect);
-  })();
+  });
 
   /* ------------------------------------------------------------------
      12. Ano corrente no rodapé

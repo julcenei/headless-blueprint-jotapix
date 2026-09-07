@@ -17,7 +17,8 @@ function jsonLd(page) {
     email: c.email,
     foundingDate: '2001',
     image: SITE.url + '/images/hero.webp',
-    priceRange: '$$',
+    // Sem priceRange: o site nao publica preco, e '$$' era um sinal inventado
+    // que ainda por cima aparece em rich results.
     address: {
       '@type': 'PostalAddress',
       streetAddress: c.address.street,
@@ -27,6 +28,9 @@ function jsonLd(page) {
       addressCountry: 'BR',
     },
     areaServed: { '@type': 'Country', name: 'Brasil' },
+    // Horario administrativo. O atendimento emergencial fora dele existe, mas
+    // nao tem hora fixa nem plantao — declara-lo como horario de funcionamento
+    // faria o painel do Google prometer o que uma pessoa so' nao sustenta.
     openingHoursSpecification: [
       {
         '@type': 'OpeningHoursSpecification',
@@ -83,7 +87,13 @@ export function head(page) {
   <meta property="og:title" content="${esc(title)}">
   <meta property="og:description" content="${esc(desc)}">
   <meta property="og:url" content="${esc(url)}">
-  <meta property="og:image" content="${SITE.url}/${img(page.image || '/images/hero.webp')}">
+  <!-- Cartao proprio de 1200x630, nao a foto crua da pagina: o canal unico de
+       conversao e' o WhatsApp, entao esta imagem e' o que a pessoa ve' quando
+       alguem cola o link na conversa. -->
+  <meta property="og:image" content="${SITE.url}/${img('/images/compartilhar.webp')}">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Elotec — Serviços Técnicos em Correias. Correias transportadoras para sua indústria não parar.">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="${esc(title)}">
   <meta name="twitter:description" content="${esc(desc)}">
@@ -96,6 +106,9 @@ export function head(page) {
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@400;700&family=Public+Sans:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
+  <!-- Marca que o JS esta' vivo antes do primeiro paint: as animacoes de entrada
+       so' escondem conteudo quando existe quem o revele. -->
+  <script>document.documentElement.classList.add('js');</script>
 
   ${jsonLd(page)}
 </head>
@@ -106,8 +119,10 @@ export function head(page) {
 /* ==========================================================================
    Header: top bar + navbar com mega dropdowns + menu mobile
    ========================================================================== */
-function logo(light = false) {
-  return `<a class="logo${light ? ' logo--light' : ''}" href="index.html" aria-label="Elotec — página inicial">
+function logo(light = false, current = '') {
+  return `<a class="logo${light ? ' logo--light' : ''}" href="index.html" aria-label="Elotec — página inicial"${
+    current === 'home' ? ' aria-current="page"' : ''
+  }>
         <span class="logo__mark" aria-hidden="true"><span>e</span></span>
         <span>
           <span class="logo__word">elotec</span>
@@ -190,7 +205,7 @@ export function header(page) {
   <header class="site-header">
     <div class="topbar">
       <div class="container">
-        <p class="topbar__msg">Atendimento em todo o Brasil · Assistência técnica 24h</p>
+        <p class="topbar__msg">Atendimento em todo o Brasil · Emergências fora do horário comercial</p>
         <div class="topbar__links">
           <a href="tel:+55${c.whatsapp.slice(2)}">${icon('phone', 15, 1.8)} ${esc(c.whatsappDisplay)}</a>
           <a href="mailto:${c.email}">${icon('mail', 15, 1.8)} ${esc(c.email)}</a>
@@ -200,7 +215,7 @@ export function header(page) {
 
     <div class="navbar">
       <div class="container">
-        ${logo()}
+        ${logo(false, current)}
         <nav class="nav" aria-label="Navegação principal">
           <ul class="nav__list">
             <li class="nav__item"><a class="nav__link" href="a-elotec.html"${
@@ -227,7 +242,7 @@ export function header(page) {
       <a class="mnav__row" href="a-elotec.html">A Elotec</a>
       ${[
         { id: 'produtos', label: 'Produtos', pagina: 'produtos.html', todos: 'Ver todos os produtos', itens: data.products.map((p) => ({ href: `produtos.html#${p.slug}`, nome: p.name })) },
-        { id: 'servicos', label: 'Serviços', pagina: 'servicos.html', todos: 'Ver todos os serviços', itens: data.services.map((s) => ({ href: `servicos.html#${s.slug}`, nome: s.shortName || s.name })) },
+        { id: 'servicos', label: 'Serviços', pagina: 'servicos.html', todos: 'Ver todos os serviços', itens: data.services.map((s) => ({ href: `servicos.html#${s.slug}`, nome: s.name })) },
         { id: 'setores', label: 'Setores Atendidos', pagina: 'setores.html', todos: 'Ver todos os setores', itens: data.sectors.map((s) => ({ href: `setores.html#${s.slug}`, nome: s.name })) },
       ]
         .map(
@@ -296,7 +311,7 @@ export function footer() {
         <div class="footer-col">
           <h2>Serviços</h2>
           ${list(
-            data.services.slice(0, 6).map((s) => ({ href: `servicos.html#${s.slug}`, label: s.shortName || s.name })),
+            data.services.slice(0, 6).map((s) => ({ href: `servicos.html#${s.slug}`, label: s.name })),
             'servicos.html',
             'Todos os serviços'
           )}
@@ -323,8 +338,8 @@ export function footer() {
   </footer>
 
   <div class="floaters">
-    <a class="float-btn float-btn--quote" href="solicitar-orcamento.html" data-hidden="true">
-      ${icon('spark', 16, 2)} Solicitar orçamento
+    <a class="float-btn float-btn--quote" href="solicitar-orcamento.html" data-hidden="true" aria-label="Solicitar orçamento">
+      ${icon('clipboardCheck', 17, 1.9)}<span class="float-btn__rotulo">Solicitar orçamento</span>
     </a>
     <a class="float-btn float-btn--whats" href="${waLink()}" target="_blank" rel="noopener" aria-label="Falar no WhatsApp com a Elotec">
       ${icon('whatsapp', 26, 1.7)}
@@ -348,6 +363,7 @@ export function ctaBand(title, text, primaryLabel = 'Solicitar orçamento') {
       <div class="cta-band__actions reveal" style="--i:1">
         <a class="btn btn--primary" href="solicitar-orcamento.html">${esc(primaryLabel)} ${icon('arrowRight', 16, 2.4)}</a>
         <a class="btn btn--ghost-light" href="${waLink()}" target="_blank" rel="noopener">${icon('whatsapp', 18, 1.7)} Falar no WhatsApp</a>
+        <p class="nota-cta">Mande medidas, o produto transportado e uma foto: a equipe responde com a recomendação técnica.</p>
       </div>
     </div>
   </section>`;
@@ -387,18 +403,23 @@ export function contactLines(waHref = waLink()) {
 
 /** Os quatro números da empresa, com count-up ao entrar na viewport. */
 export function statsBlock(style = '') {
+  // Fatos contaveis, tirados dos dados. A promessa de atendimento saiu daqui:
+  // uma grade de numeros e' o lugar errado para um compromisso de servico, e
+  // era ela que fazia o bloco parecer prova social sem ter prova.
+  // `estatico` marca o que nao deve ser animado: um ano nao e' uma grandeza,
+  // e contar de zero ate' 2001 renderiza "892 · inicio das atividades".
   const stats = [
-    { to: '2001', label: 'início das atividades' },
-    { to: '24', suffix: 'h', label: 'assistência técnica' },
+    { to: '2001', label: 'início das atividades', estatico: true },
+    { to: String(data.products.length), label: 'produtos em linha' },
+    { to: String(data.sectors.length), label: 'setores industriais atendidos' },
     { to: '2', label: 'unidades: Chapecó/SC e Toledo/PR' },
-    { to: '8', suffix: '+', label: 'setores industriais atendidos' },
   ];
   return `
         <div class="stats"${style ? ` style="${style}"` : ''}>
           ${stats
             .map(
               (s) => `<div class="stat">
-            <p class="stat__num"><span data-count-to="${s.to}"${s.suffix ? ` data-suffix="${s.suffix}"` : ''}>${s.to}${s.suffix || ''}</span></p>
+            <p class="stat__num"><span${s.estatico ? '' : ` data-count-to="${s.to}"`}${s.suffix ? ` data-suffix="${s.suffix}"` : ''}>${s.to}${s.suffix || ''}</span></p>
             <p class="stat__label">${esc(s.label)}</p>
           </div>`
             )

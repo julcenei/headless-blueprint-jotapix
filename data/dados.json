@@ -9,7 +9,8 @@
       "cta": {
         "label": "Solicitar orçamento",
         "to": "/solicitar-orcamento"
-      }
+      },
+      "whatsapp": "Olá! Vim pelo site da Elotec e preciso de correia transportadora. Minha aplicação é: "
     },
     {
       "eyebrow": "Principal área de atuação",
@@ -20,10 +21,11 @@
       "cta": {
         "label": "Ver soluções para frigoríficos",
         "to": "/setores#frigorificos"
-      }
+      },
+      "whatsapp": "Olá! Vim pelo site da Elotec e preciso de correia sanitária para frigorífico. Minha aplicação é: "
     },
     {
-      "eyebrow": "Assistência técnica 24h",
+      "eyebrow": "Atendimento emergencial",
       "title": "Instalação, conserto e manutenção",
       "accent": "para reduzir suas paradas.",
       "text": "Vulcanização, colagem, revestimento de rolos e acompanhamento preventivo da sua operação.",
@@ -31,7 +33,8 @@
       "cta": {
         "label": "Conhecer serviços",
         "to": "/servicos"
-      }
+      },
+      "whatsapp": "Olá! Vim pelo site da Elotec e preciso de instalação, conserto ou manutenção de correia. O que está acontecendo: "
     }
   ],
   "products": [

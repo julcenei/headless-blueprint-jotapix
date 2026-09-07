@@ -11,7 +11,7 @@ export const SITE = {
   url: 'https://www.elotec.ind.br',
   name: 'Elotec — Serviços Técnicos em Correias',
   description:
-    'Soluções completas em correias transportadoras: fornecimento, instalação, conserto e manutenção em PU, PVC, borracha, nylon e transmissão. Assistência técnica 24h em todo o Brasil.',
+    'Soluções completas em correias transportadoras: fornecimento, instalação, conserto e manutenção em PU, PVC, borracha, nylon e transmissão. Atendimento emergencial fora do horário comercial, em todo o Brasil.',
 };
 
 /** Escapa texto para inserção segura em HTML. */
@@ -33,9 +33,22 @@ export function telLink(display) {
   return 'tel:+55' + String(display).replace(/\D/g, '');
 }
 
-/** Link do WhatsApp com mensagem padrão (ou personalizada). */
+/* Mensagem de abertura da página que está sendo gerada. O build renderiza uma
+   página por vez, então guardar isso aqui evita passar o texto por dentro de
+   head/header/footer/ctaBand só para chegar aos links. */
+let contextoWa = '';
+export function setContextoWa(valor) {
+  contextoWa = valor || '';
+}
+
+/**
+ * Link do WhatsApp. Sem argumento, a mensagem já diz de onde a pessoa veio e
+ * termina com dois-pontos: o cursor cai depois deles e ela continua a frase.
+ * Uma pessoa recebe todas as mensagens do site, sem triagem — cada contexto
+ * que o link já entrega é uma pergunta que ela não precisa fazer.
+ */
 export function waLink(text) {
-  const msg = text || 'Olá! Vim pelo site da Elotec e gostaria de atendimento.';
+  const msg = text || contextoWa || 'Olá! Vim pelo site da Elotec. Preciso de: ';
   return `https://wa.me/${data.contact.whatsapp}?text=${encodeURIComponent(msg)}`;
 }
 

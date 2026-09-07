@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-09-07T00:00:00Z",
+  "generatedAt": "2026-09-07T14:52:04Z",
   "title": "Design System: Elotec Correias",
   "extensions": {
     "colorMeta": {
@@ -8,47 +8,139 @@
         "role": "primary",
         "displayName": "Azul-Industrial",
         "canonical": "hsl(232 58% 24%)",
-        "tonalRamp": ["hsl(232 62% 11%)", "hsl(232 60% 15%)", "hsl(232 58% 24%)", "hsl(232 40% 34%)"]
+        "tonalRamp": [
+          "hsl(232 62% 11%)",
+          "hsl(232 60% 15%)",
+          "hsl(232 58% 24%)",
+          "hsl(232 40% 34%)"
+        ]
       },
       "amarelo-sinalizacao": {
         "role": "secondary",
         "displayName": "Amarelo-Sinalização",
         "canonical": "hsl(48 96% 52%)",
-        "tonalRamp": ["hsl(36 90% 33%)", "hsl(42 96% 50%)", "hsl(48 96% 52%)"]
+        "tonalRamp": [
+          "hsl(36 90% 33%)",
+          "hsl(42 96% 50%)",
+          "hsl(48 96% 52%)"
+        ]
       },
       "superficie": {
         "role": "neutral",
         "displayName": "Superfície",
         "canonical": "#fff",
-        "tonalRamp": ["#fff", "hsl(220 20% 96%)", "hsl(225 18% 88%)", "hsl(225 18% 86%)"]
+        "tonalRamp": [
+          "#fff",
+          "hsl(220 20% 96%)",
+          "hsl(225 18% 88%)",
+          "hsl(225 18% 86%)"
+        ]
+      },
+      "sobre-escuro": {
+        "role": "neutral",
+        "displayName": "Sobre-Escuro",
+        "canonical": "hsl(225 30% 78%)",
+        "tonalRamp": [
+          "hsl(225 30% 62%)",
+          "hsl(225 30% 78%)",
+          "hsl(225 40% 88%)"
+        ],
+        "purpose": "Texto sobre superfície escura, em três passos: apoio, corpo comum e corpo em destaque. Antes eram oito valores avulsos entre 50% e 88%, e o DESIGN.md declarava só um."
       }
     },
     "typographyMeta": {
-      "display": { "displayName": "Display", "purpose": "Título do hero e da página interna. Familjen Grotesk 700, o maior elemento da página." },
-      "headline": { "displayName": "Headline", "purpose": "Título de seção. Duas palavras em pesos e cores diferentes é o recurso da marca." },
-      "title": { "displayName": "Title", "purpose": "Título de bloco e de card grande." },
-      "body": { "displayName": "Body", "purpose": "Corpo em Public Sans 400 a 1rem. Texto corrido em 62ch." },
-      "lead": { "displayName": "Lead", "purpose": "Parágrafo de apoio ao lado ou abaixo de um título de seção." },
-      "label": { "displayName": "Label", "purpose": "Sobrelinha, categoria e selo. Único lugar com caixa alta e tracking positivo." }
+      "display": {
+        "displayName": "Display",
+        "purpose": "Título do hero e da página interna. Familjen Grotesk 700, o maior elemento da página."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Título de seção. Duas palavras em pesos e cores diferentes é o recurso da marca."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Título de bloco e de card grande."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Corpo em Public Sans 400 a 1rem. Texto corrido em 62ch."
+      },
+      "lead": {
+        "displayName": "Lead",
+        "purpose": "Parágrafo de apoio ao lado ou abaixo de um título de seção."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Sobrelinha, categoria e selo. Único lugar com caixa alta e tracking positivo."
+      },
+      "subtitle": {
+        "displayName": "Subtitle",
+        "purpose": "Título de card e subtítulo de bloco (.h-4). Menor passo da rampa de display; não tinha token declarado."
+      }
     },
     "shadows": [
-      { "name": "shadow-sm", "value": "0 2px 10px hsl(232 40% 20% / 0.06)", "purpose": "Repouso de card. Ambiente, quase imperceptível." },
-      { "name": "shadow-md", "value": "0 18px 40px -18px hsl(232 50% 18% / 0.28)", "purpose": "Painel de formulário." },
-      { "name": "shadow-lg", "value": "0 40px 80px -40px hsl(232 55% 14% / 0.45)", "purpose": "Painel do hero sobre a fotografia." }
+      {
+        "name": "shadow-sm",
+        "value": "0 2px 10px hsl(232 40% 20% / 0.06)",
+        "purpose": "Repouso de card. Ambiente, quase imperceptível."
+      },
+      {
+        "name": "shadow-md",
+        "value": "0 18px 40px -18px hsl(232 50% 18% / 0.28)",
+        "purpose": "Painel de formulário."
+      },
+      {
+        "name": "shadow-lg",
+        "value": "0 40px 80px -40px hsl(232 55% 14% / 0.45)",
+        "purpose": "Painel do hero sobre a fotografia."
+      }
     ],
     "motion": [
-      { "name": "ease", "value": "cubic-bezier(0.22, 1, 0.36, 1)", "purpose": "Padrão de transição de estado." },
-      { "name": "ease-out", "value": "cubic-bezier(0.16, 1, 0.3, 1)", "purpose": "Entradas reveladas na rolagem." },
-      { "name": "dur", "value": "0.45s", "purpose": "Duração padrão." }
+      {
+        "name": "ease",
+        "value": "cubic-bezier(0.22, 1, 0.36, 1)",
+        "purpose": "Padrão de transição de estado."
+      },
+      {
+        "name": "ease-out",
+        "value": "cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "Entradas reveladas na rolagem."
+      },
+      {
+        "name": "dur",
+        "value": "0.45s",
+        "purpose": "Duração padrão."
+      }
     ],
     "breakpoints": [
-      { "name": "xs", "value": "420px" },
-      { "name": "sm", "value": "640px" },
-      { "name": "md", "value": "760px" },
-      { "name": "lg", "value": "860px" },
-      { "name": "xl", "value": "900px" },
-      { "name": "2xl", "value": "1025px" },
-      { "name": "altura-notebook", "value": "max-height: 1000px" }
+      {
+        "name": "xs",
+        "value": "420px"
+      },
+      {
+        "name": "sm",
+        "value": "640px"
+      },
+      {
+        "name": "md",
+        "value": "760px"
+      },
+      {
+        "name": "lg",
+        "value": "860px"
+      },
+      {
+        "name": "xl",
+        "value": "900px"
+      },
+      {
+        "name": "2xl",
+        "value": "1025px"
+      },
+      {
+        "name": "altura-notebook",
+        "value": "max-height: 1000px"
+      }
     ]
   },
   "components": [
@@ -88,12 +180,36 @@
       "Amarelo reservado a ação, estado e marca"
     ],
     "rules": [
-      { "name": "A Regra do Amarelo", "body": "Divisória, filete e marcador nunca usam amarelo; usam o token neutro. Se um elemento amarelo não é clicável, não comunica estado e não é a marca, está errado.", "section": "colors" },
-      { "name": "A Regra da Superfície Escura", "body": "Superfícies escuras redefinem os tokens numa lista única de seletores; nenhum componente escreve exceção própria.", "section": "colors" },
-      { "name": "Hierarquia por tamanho e espaço", "body": "Com dois pesos disponíveis, a distância entre título e corpo vem da escala e do respiro.", "section": "typography" },
-      { "name": "Caixa alta é rótulo", "body": "Nunca ação nem título. Junto com a caixa alta sai o letter-spacing positivo.", "section": "typography" },
-      { "name": "O chanfro recorta borda, sombra interna e outline", "body": "Contorno permanente e anel de foco são desenhados como polígono com furo num pseudo-elemento com o mesmo recorte. É a armadilha mais séria do sistema.", "section": "elevation" },
-      { "name": "A superfície separa, não a sombra", "body": "Para distinguir dois blocos, troque a cor de fundo antes de adicionar sombra.", "section": "elevation" }
+      {
+        "name": "A Regra do Amarelo",
+        "body": "Divisória, filete e marcador nunca usam amarelo; usam o token neutro. Se um elemento amarelo não é clicável, não comunica estado e não é a marca, está errado.",
+        "section": "colors"
+      },
+      {
+        "name": "A Regra da Superfície Escura",
+        "body": "Superfícies escuras redefinem os tokens numa lista única de seletores; nenhum componente escreve exceção própria.",
+        "section": "colors"
+      },
+      {
+        "name": "Hierarquia por tamanho e espaço",
+        "body": "Com dois pesos disponíveis, a distância entre título e corpo vem da escala e do respiro.",
+        "section": "typography"
+      },
+      {
+        "name": "Caixa alta é rótulo",
+        "body": "Nunca ação nem título. Junto com a caixa alta sai o letter-spacing positivo.",
+        "section": "typography"
+      },
+      {
+        "name": "O chanfro recorta borda, sombra interna e outline",
+        "body": "Contorno permanente e anel de foco são desenhados como polígono com furo num pseudo-elemento com o mesmo recorte. É a armadilha mais séria do sistema.",
+        "section": "elevation"
+      },
+      {
+        "name": "A superfície separa, não a sombra",
+        "body": "Para distinguir dois blocos, troque a cor de fundo antes de adicionar sombra.",
+        "section": "elevation"
+      }
     ],
     "dos": [
       "Use amarelo para ação, estado e marca. Nada mais.",

@@ -927,10 +927,11 @@ a.chip:hover { background: var(--accent); border-color: var(--accent); transform
   inset: 0;
   background:
     linear-gradient(100deg,
-      hsl(232 62% 11% / 0.93) 0%,
-      hsl(232 62% 11% / 0.80) 32%,
-      hsl(232 60% 15% / 0.34) 60%,
-      transparent 80%),
+      hsl(232 62% 11% / 0.94) 0%,
+      hsl(232 62% 11% / 0.90) 34%,
+      hsl(232 60% 15% / 0.62) 55%,
+      hsl(232 58% 24% / 0.22) 72%,
+      transparent 86%),
     linear-gradient(to top, hsl(232 62% 11% / 0.5), transparent 38%);
 }
 /* No celular o texto ocupa a largura inteira, então não existe "lado claro":

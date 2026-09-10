@@ -101,6 +101,12 @@ Vinculantes, do brief e da marca existente:
   foi substituído. Uma troca futura de imagem precisa checar as duas coisas.
 - `images/compartilhar.webp` — cartão próprio de 1200×630 servido como
   `og:image`, para o preview no WhatsApp não ser a foto crua da página.
+- `images/hero.webp` — linha de processamento de alimentos com correia
+  sanitária azul, **fornecida pelo cliente** nesta sessão. Conferida: sem marca
+  d'água e sem marca de terceiro nos quatro cantos. A origem não foi informada
+  e não é dedutível daqui, então ela também não pode ser descrita como registro
+  de trabalho da Elotec — o `alt` é vazio, e o slide não faz nenhuma afirmação
+  sobre quem operou aquela linha.
 - `docs/brief-elotec-premium.md` — o brief que rege conteúdo e arquitetura.
 
 **Ausências que trabalhos futuros não podem preencher com invenção:**

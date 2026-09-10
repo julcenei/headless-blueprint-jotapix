@@ -102,11 +102,17 @@ Vinculantes, do brief e da marca existente:
 - `images/compartilhar.webp` — cartão próprio de 1200×630 servido como
   `og:image`, para o preview no WhatsApp não ser a foto crua da página.
 - `images/hero.webp` — linha de processamento de alimentos com correia
-  sanitária azul, **fornecida pelo cliente** nesta sessão. Conferida: sem marca
-  d'água e sem marca de terceiro nos quatro cantos. A origem não foi informada
-  e não é dedutível daqui, então ela também não pode ser descrita como registro
-  de trabalho da Elotec — o `alt` é vazio, e o slide não faz nenhuma afirmação
-  sobre quem operou aquela linha.
+  sanitária azul. **Criada pelo cliente a partir de imagens de referência do
+  produto em uso** (confirmado por ele). Conferida: sem marca d'água e sem
+  marca de terceiro nos quatro cantos.
+
+  Isso a coloca num degrau acima das outras 21: ela é *representativa* — o
+  material, a aplicação e o tipo de linha vêm de referências reais do produto
+  em operação, não de um banco genérico. Mas continua sendo imagem gerada, e
+  não registro de um trabalho da Elotec: o `alt` segue vazio e nenhum texto do
+  site afirma que aquela linha é de um cliente atendido. A distinção importa
+  porque é ela que separa "ilustra o produto com fidelidade" de "prova que
+  fizemos isto" — e só a segunda depende das fotos que ainda vão chegar.
 - `docs/brief-elotec-premium.md` — o brief que rege conteúdo e arquitetura.
 
 **Ausências que trabalhos futuros não podem preencher com invenção:**

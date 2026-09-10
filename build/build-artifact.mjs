@@ -64,7 +64,11 @@ function collectImages(html) {
 
 const headerHtml = collectImages(toHashLinks(header(homePage)));
 // o footer traz a tag <script src="js/main.js">: aqui o JS já vai embutido
-const footerHtml = collectImages(toHashLinks(footer())).replace(/<script src="js\/main\.js" defer><\/script>/, '');
+const footerHtml = collectImages(toHashLinks(footer()))
+  .replace(/<script src="js\/main\.js" defer><\/script>/, '')
+  // O rodapé fecha o documento das 8 páginas; aqui ele é só um trecho, e o
+  // arquivo único não abre <html>/<body> — fechá-los deixava tags órfãs.
+  .replace(/<\/body>\s*<\/html>\s*$/, '');
 const routesHtml = routes
   .map((r) => {
     const body = collectImages(toHashLinks(r.html));

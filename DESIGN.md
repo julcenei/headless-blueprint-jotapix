@@ -254,17 +254,31 @@ pseudo-elemento que recebe o mesmo recorte.
 **O chanfro aparece em escala grande uma vez por página**, no painel do hero.
 Nos componentes, é miúdo.
 
-**O painel do hero é um plano, não um cartão.** Ele sangra pela borda esquerda
-e encosta na base do hero; o que aparece dele é a aresta direita e o corte
-diagonal onde encontra o marquee. O recuo interno recompõe a goteira
-(`--sangria: calc(50vw - 50%)`), para o texto continuar alinhado com o resto da
-página, e a largura máxima **soma** a sangria — sem isso, quanto mais larga a
-tela, mais o painel comia da própria medida de texto.
+**No hero, quem garante o contraste é o degradê — não a foto.** O painel navy
+saiu; o texto pousa direto na imagem, com um degradê de `0.93` de alfa na borda
+esquerda dissolvendo até transparente em 80%. Essa opacidade não é estética: a
+`0.93` o texto branco fica em 14,5:1 mesmo que a foto ali seja branca, que é a
+mesma garantia que a chapa opaca dava. Abaixo de 860px o texto ocupa a largura
+toda, então não existe "lado claro" e o degradê vira vertical.
 
-**O texto do hero nunca pousa direto na fotografia.** É a mesma regra que vale
-no resto do site, e aqui ela é mais dura, não menos: as fotos de trabalho real
-ainda vão chegar, tiradas em chão de fábrica com exposição imprevisível, e o
-painel é o que mantém o contraste independente da imagem que entrar.
+**A regra de fundo continua valendo, e o mecanismo é que mudou.** As fotos de
+trabalho real ainda vão chegar, tiradas em chão de fábrica com exposição
+imprevisível. Qualquer troca de foto do hero exige remedir — em pixel, não no
+DOM: um degradê e um cabeçalho transparente são invisíveis para qualquer
+auditor que componha alfa subindo a árvore, porque o fundo real é um irmão, não
+um ancestral.
+
+**O cabeçalho flutua sobre a abertura.** Transparente enquanto está sobre a
+seção escura de abertura (as 8 páginas abrem com `.hero`, `.page-hero` ou
+`.error-page`), sólido depois — alternado pela classe `sobre-escuro`, medida a
+partir da borda inferior dessa seção. Ele depende de `html.js`: sem script o
+estado sólido continua valendo, e ninguém fica com texto branco no branco.
+Transparência pura não passou na medição: sem um véu curto no topo,
+"Setores Atendidos" caía para 3,80:1 sobre a prensa.
+
+**Controle sobre foto precisa de corpo próprio.** Caixa branca translúcida
+some: as setas do carrossel mediam 1,06:1 sobre a foto clara do frigorífico.
+Fundo escuro a `0.62`, com o anel de contorno branco por cima.
 
 ### Ícones
 

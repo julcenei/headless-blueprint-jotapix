@@ -893,7 +893,10 @@ a.chip:hover { background: var(--accent); border-color: var(--accent); transform
   grid-area: 1 / 1;
   position: relative;
   display: grid;
-  align-items: center;
+  /* o container estica na altura toda; quem posiciona o texto é o
+     `align-content: start` do .hero__grid, para todos os slides começarem
+     no mesmo y independentemente de quantas linhas o título tem */
+  align-items: stretch;
   opacity: 0;
   visibility: hidden;
   transition: opacity 1s var(--ease), visibility 1s;
@@ -945,8 +948,10 @@ a.chip:hover { background: var(--accent); border-color: var(--accent); transform
 .hero__grid {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
-  align-content: center;
-  padding-block: calc(var(--header-h) + clamp(2rem, 5vh, 3.5rem)) clamp(2.5rem, 6vh, 4.5rem);
+  /* Ancorado no topo, não centrado: os slides têm alturas diferentes, e
+     centrar cada um fazia o título saltar 71px a cada troca. */
+  align-content: start;
+  padding-block: calc(var(--header-h) + clamp(2.5rem, 7vh, 5rem)) clamp(2.5rem, 6vh, 4.5rem);
 }
 /* O texto deixa de flutuar sobre um véu e passa a ocupar um painel com o
    corte da marca — a maior instância do chanfro no site inteiro. */
@@ -1044,9 +1049,9 @@ a.chip:hover { background: var(--accent); border-color: var(--accent); transform
   width: 52px; height: 52px;
   display: grid;
   place-items: center;
-  background: hsl(0 0% 100% / 0.08);
+  background: hsl(232 62% 11% / 0.62);
   --contorno: 1px;
-  --contorno-cor: hsl(0 0% 100% / 0.3);
+  --contorno-cor: hsl(0 0% 100% / 0.34);
   color: #fff;
   border: 0;
   cursor: pointer;
@@ -1091,7 +1096,7 @@ a.chip:hover { background: var(--accent); border-color: var(--accent); transform
   height: 4px;
   transform: translateY(-50%);
 }
-.hero__dot::before { background: hsl(0 0% 100% / 0.28); }
+.hero__dot::before { background: hsl(232 62% 11% / 0.78); box-shadow: 0 0 0 1px hsl(0 0% 100% / 0.24); }
 .hero__dot::after {
   background: var(--accent);
   transform: translateY(-50%) scaleX(0);

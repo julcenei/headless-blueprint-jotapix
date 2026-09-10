@@ -23,12 +23,7 @@ function hero() {
               <div class="hero__actions anim" style="--d:3">
                 <a class="btn btn--primary" href="${s.cta.to === '/solicitar-orcamento' ? 'solicitar-orcamento.html' : s.cta.to.replace('/setores#', 'setores.html#').replace(/^\/servicos$/, 'servicos.html')}">${esc(s.cta.label)} ${icon('arrowRight', 16)}</a>
               </div>
-              <p class="hero__urgencia anim" style="--d:4">
-                Linha parada?
-                <a href="${telLink(c.whatsappDisplay)}">${icon('phone', 15)} ${esc(c.whatsappDisplay)}</a>
-                <a href="${waLink(s.whatsapp)}" target="_blank" rel="noopener">${icon('whatsapp', 15)} WhatsApp</a>
-                <span>Atendemos emergências fora do horário comercial.</span>
-              </p>
+              <p class="hero__nota anim" style="--d:4">Atendemos emergências fora do horário comercial.</p>
             </div>
           </div>
         </article>`

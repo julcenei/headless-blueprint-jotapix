@@ -108,7 +108,7 @@ export function head(page) {
   <link rel="stylesheet" href="css/style.css">
   <!-- Marca que o JS esta' vivo antes do primeiro paint: as animacoes de entrada
        so' escondem conteudo quando existe quem o revele. -->
-  <script>document.documentElement.classList.add('js');</script>
+  <script>document.documentElement.classList.add('js', 'sobre-escuro');</script>
 
   ${jsonLd(page)}
 </head>
@@ -203,16 +203,6 @@ export function header(page) {
 
   return `
   <header class="site-header">
-    <div class="topbar">
-      <div class="container">
-        <p class="topbar__msg">Atendimento em todo o Brasil · Emergências fora do horário comercial</p>
-        <div class="topbar__links">
-          <a href="tel:+55${c.whatsapp.slice(2)}">${icon('phone', 15)} ${esc(c.whatsappDisplay)}</a>
-          <a href="mailto:${c.email}">${icon('mail', 15)} ${esc(c.email)}</a>
-        </div>
-      </div>
-    </div>
-
     <div class="navbar">
       <div class="container">
         ${logo(false, current)}
@@ -226,6 +216,9 @@ export function header(page) {
             ${navItem('menu-setores', 'Setores Atendidos', sectorColumns(), 'setores.html', 'Ver todos os setores')}
           </ul>
         </nav>
+        <a class="nav__fone" href="${telLink(c.whatsappDisplay)}" aria-label="Ligar para ${esc(c.whatsappDisplay)}">
+          ${icon('phone', 16)}<span>${esc(c.whatsappDisplay)}</span>
+        </a>
         <a class="btn btn--primary nav__cta" href="solicitar-orcamento.html">Solicitar orçamento ${icon('arrowRight', 16)}</a>
         <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu" aria-label="Abrir menu">
           <span></span><span></span><span></span>

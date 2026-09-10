@@ -85,9 +85,8 @@
 
   /* Alturas do header. O JS sobrescreve --header-h com a medida real;
      este valor é o fallback antes de o script rodar. */
-  --topbar-h: 38px;
   --navbar-h: 80px;
-  --header-h: calc(var(--topbar-h) + var(--navbar-h));
+  --header-h: var(--navbar-h);
 }
 
 *,
@@ -261,7 +260,6 @@ h1, h2, h3, h4 {
    ========================================================================== */
 .chamfer,
 .chamfer-lg,
-.hero__content,
 .chip,
 .nav-toggle,
 .hero__arrow,
@@ -522,40 +520,65 @@ a.chip:hover { background: var(--accent); border-color: var(--accent); transform
    05. HEADER
    ========================================================================== */
 .site-header {
-  position: sticky;
+  position: fixed;
   top: 0;
+  left: 0;
+  right: 0;
   z-index: 100;
 }
 
-.topbar {
-  background: var(--navy-deep);
-  color: var(--on-dark-muted);
-  font-size: 0.8125rem;
-  max-height: var(--topbar-h);
-  overflow: hidden;
-  transition: max-height 0.4s var(--ease);
-}
-.topbar > .container {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  min-height: var(--topbar-h);
-}
-.topbar__msg { display: flex; align-items: center; }
-.topbar__links { display: flex; gap: 1.5rem; }
-.topbar__links a { display: inline-flex; align-items: center; gap: 0.45rem; transition: color 0.25s; }
-.topbar__links a:hover { color: var(--accent); }
 /* Some a top bar ao rolar, encolhendo o header */
-.is-scrolled .topbar { max-height: 0; }
 
 .navbar {
   background: hsl(0 0% 100% / 0.92);
   backdrop-filter: blur(14px);
   border-bottom: 1px solid var(--surface-line);
-  transition: box-shadow 0.4s var(--ease);
+  transition: background-color 0.4s var(--ease), border-color 0.4s var(--ease), box-shadow 0.4s var(--ease);
 }
 .is-scrolled .navbar { box-shadow: var(--shadow-sm); }
+/* ---- Barra sobre a abertura escura -------------------------------------- */
+.js.sobre-escuro .navbar {
+  /* Não é transparente puro: um véu curto no topo, que se dissolve antes de
+     virar faixa. Sem ele o menu depende da foto — medido, "Setores Atendidos"
+     caía para 3,80:1 sobre a prensa —, e as fotos reais ainda vão chegar. */
+  background: linear-gradient(to bottom, hsl(232 62% 11% / 0.62) 0%, hsl(232 62% 11% / 0.34) 62%, transparent 100%);
+  border-bottom-color: transparent;
+  backdrop-filter: none;
+  box-shadow: none;
+}
+.js.sobre-escuro .nav__link,
+.js.sobre-escuro .nav__fone { color: #fff; }
+.js.sobre-escuro .nav__link:hover,
+.js.sobre-escuro .nav__fone:hover { color: var(--accent); }
+.js.sobre-escuro .logo__word { color: #fff; }
+.js.sobre-escuro .logo__desc { color: var(--on-dark-muted); }
+.js.sobre-escuro .nav-toggle { background: hsl(0 0% 100% / 0.14); }
+.js.sobre-escuro .nav-toggle span { background: #fff; }
+/* O painel do mega-menu acompanha: branco em cima da foto viraria uma chapa. */
+.js.sobre-escuro .dropdown {
+  background: hsl(232 62% 11% / 0.96);
+  backdrop-filter: blur(16px);
+  border-bottom-color: hsl(0 0% 100% / 0.14);
+}
+.js.sobre-escuro .dropdown__col-title { color: #fff; border-left-color: hsl(0 0% 100% / 0.3); }
+.js.sobre-escuro .dropdown__col a { color: var(--on-dark-muted); }
+.js.sobre-escuro .dropdown__col a:hover { color: #fff; }
+
+/* Telefone na barra: a rota de emergência não depende de abrir menu nenhum. */
+.nav__fone {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 0.4rem;
+  font-weight: 700;
+  font-size: 0.9375rem;
+  color: var(--navy);
+  white-space: nowrap;
+  transition: color 0.25s;
+}
+.nav__fone:hover { color: var(--accent-ink); }
+
 .navbar > .container {
   display: flex;
   align-items: center;
@@ -566,7 +589,7 @@ a.chip:hover { background: var(--accent); border-color: var(--accent); transform
 .is-scrolled .navbar > .container { min-height: 68px; }
 
 /* Logo */
-.logo { display: inline-flex; align-items: center; gap: 0.75rem; }
+.logo { display: inline-flex; align-items: center; gap: 0.75rem; flex: none; }
 .logo__mark {
   position: relative;
   display: grid;
@@ -617,6 +640,7 @@ a.chip:hover { background: var(--accent); border-color: var(--accent); transform
 
 /* Navegação principal */
 .nav { margin-left: auto; }
+.nav { margin-inline: auto; flex: none; }
 .nav__list { display: flex; align-items: center; gap: 0.35rem; }
 /* Entre 1024 e 1300px o menu de 16px não cabe ao lado do CTA e quebra em
    duas linhas. Aperta os intervalos em vez de reduzir a fonte. */
@@ -624,11 +648,16 @@ a.chip:hover { background: var(--accent); border-color: var(--accent); transform
   .nav__list { gap: 0; }
   .nav__link { padding-left: 0.5rem; padding-right: 0.5rem; gap: 0.2rem; }
   .nav__cta { padding-left: 1.15rem; padding-right: 1.5rem; }
-  .logo__desc { display: none; }
+  /* Nesta faixa a barra fica com ~17px de folga: o número sai e fica o ícone,
+     que continua discando. */
+  .nav__fone span { display: none; }
+  .nav__fone { padding-inline: 0.6rem; }
 }
+.navbar .logo__desc { display: none; }
 .nav__link {
   display: inline-flex;
   align-items: center;
+  white-space: nowrap;
   gap: 0.35rem;
   padding: 0.65rem 0.85rem;
   font-size: 1rem;
@@ -655,7 +684,7 @@ a.chip:hover { background: var(--accent); border-color: var(--accent); transform
 .nav__link svg { transition: transform 0.3s var(--ease); }
 .nav__item[data-open='true'] .nav__link svg { transform: rotate(180deg); }
 
-.nav__cta { margin-left: 1rem; }
+.nav__cta { margin-left: 1rem; flex: none; white-space: nowrap; }
 
 /* Mega dropdown */
 .nav__item { position: static; }
@@ -894,38 +923,39 @@ a.chip:hover { background: var(--accent); border-color: var(--accent); transform
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(100deg, hsl(232 62% 11% / 0.72) 0%, hsl(232 60% 15% / 0.42) 45%, hsl(232 58% 24% / 0.12) 100%),
-    linear-gradient(to top, hsl(232 62% 11% / 0.55), transparent 40%);
+    linear-gradient(100deg,
+      hsl(232 62% 11% / 0.93) 0%,
+      hsl(232 62% 11% / 0.80) 32%,
+      hsl(232 60% 15% / 0.34) 60%,
+      transparent 80%),
+    linear-gradient(to top, hsl(232 62% 11% / 0.5), transparent 38%);
+}
+/* No celular o texto ocupa a largura inteira, então não existe "lado claro":
+   o degradê deixa de ser horizontal e vira um véu de cima para baixo, forte
+   o bastante em toda a faixa onde o texto pousa. */
+@media (max-width: 860px) {
+  .hero__bg::after {
+    background: linear-gradient(180deg,
+      hsl(232 62% 11% / 0.90) 0%,
+      hsl(232 62% 11% / 0.87) 58%,
+      hsl(232 60% 15% / 0.62) 100%);
+  }
 }
 
 .hero__grid {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
-  /* Sem respiro embaixo: o painel encosta na base do hero e passa a ler como
-     um plano ancorado no canto, não como um cartão flutuando sobre a foto. */
-  align-content: end;
-  padding-block: clamp(2rem, 5vh, 3.5rem) 0;
+  align-content: center;
+  padding-block: calc(var(--header-h) + clamp(2rem, 5vh, 3.5rem)) clamp(2.5rem, 6vh, 4.5rem);
 }
 /* O texto deixa de flutuar sobre um véu e passa a ocupar um painel com o
    corte da marca — a maior instância do chanfro no site inteiro. */
+/* Sem chapa: o texto pousa direto no degradê, que é quem garante o contraste.
+   A medida fica em ~42rem — larga o bastante para o título não picotar, curta
+   o bastante para a foto respirar do meio para a direita. */
 .hero__content {
-  /* Escapa o container pela esquerda e recompõe o recuo por dentro, para o
-     texto continuar alinhado com o resto da página. `50vw - 50%` é a distância
-     da borda da viewport até a borda do container, seja ela a goteira (telas
-     estreitas) ou a sobra da centralização (telas largas). */
-  --sangria: calc(50vw - 50%);
-  margin-left: calc(var(--sangria) * -1);
-  padding-left: calc(var(--sangria) + clamp(1.75rem, 4vw, 3.5rem));
-  /* A largura tem que somar a sangria: sem isso, quanto mais larga a tela,
-     mais o painel comia da propria medida de texto (a 1920 ela caia de 678px
-     para 438px e o titulo estourava a dobra). */
-  max-width: calc(var(--sangria) + min(49.5rem, 72%));
-  --cut: clamp(30px, 4.5vw, 64px);
-  background: hsl(232 62% 11% / 0.88);
-  backdrop-filter: blur(10px) saturate(1.15);
-  padding-block: clamp(1.75rem, 3.5vw, 3rem) clamp(2.25rem, 4vw, 3.25rem);
-  padding-right: clamp(1.75rem, 4vw, 3.5rem);
-  box-shadow: 0 40px 90px -50px hsl(232 62% 5% / 0.9);
+  max-width: min(42rem, 58%);
+  padding-block: clamp(1.5rem, 3vw, 2.5rem) clamp(2rem, 3.5vw, 3rem);
 }
 /* Era uma chapa com contorno: uma parada visual inteira antes do título, e a
    mais fraca das cinco. Como rótulo travado no título, o conteúdo continua lá
@@ -970,29 +1000,13 @@ a.chip:hover { background: var(--accent); border-color: var(--accent); transform
   color: var(--on-dark-forte);
 }
 .hero__actions { margin-top: 2rem; display: flex; flex-wrap: wrap; gap: 0.85rem; }
-/* A rota de emergencia vive na primeira dobra, inclusive no celular. Antes,
-   quem estava com a linha parada so' encontrava um telefone depois de 7400px
-   de rolagem — ou na topbar, que some no primeiro swipe e some de vez abaixo
-   de 760px. */
-.hero__urgencia {
-  margin-top: 1.5rem;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 0.4rem 0.75rem;
+/* A promessa continua na primeira dobra, mas em uma linha. O telefone saiu
+   daqui para a barra, onde fica visível sem depender de abrir menu nenhum. */
+.hero__nota {
+  margin-top: 1.35rem;
   font-size: 0.9375rem;
   color: var(--on-dark-muted);
 }
-.hero__urgencia a {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.45rem;
-  font-weight: 700;
-  color: var(--accent);
-  padding: 0.35rem 0;
-}
-.hero__urgencia a:hover { text-decoration: underline; text-underline-offset: 4px; }
-.hero__urgencia span { flex-basis: 100%; font-size: 0.875rem; }
 
 /* Telas de notebook: o painel do hero precisa caber na dobra sem cortar o
    chanfro. Aperta os intervalos em vez de encolher o título — o título é o
@@ -1002,7 +1016,7 @@ a.chip:hover { background: var(--accent); border-color: var(--accent); transform
   .hero__title { margin-top: 0.6rem; }
   .hero__text { margin-top: 1rem; }
   .hero__actions { margin-top: 1.35rem; }
-  .hero__urgencia { margin-top: 1rem; }
+  .hero__nota { margin-top: 1rem; }
 }
 .hero__actions .btn { padding: 0.9rem 1.55rem; font-size: 1rem; }
 
@@ -1616,7 +1630,7 @@ a.chip:hover { background: var(--accent); border-color: var(--accent); transform
   background: var(--navy);
   color: #fff;
   overflow: hidden;
-  padding-block: clamp(3.5rem, 8vw, 6.5rem) clamp(3.5rem, 8vw, 6rem);
+  padding-block: calc(var(--header-h) + clamp(3rem, 7vw, 5rem)) clamp(3.5rem, 8vw, 6rem);
   isolation: isolate;
 }
 .page-hero::before {
@@ -1982,7 +1996,7 @@ a.chip:hover { background: var(--accent); border-color: var(--accent); transform
   text-align: center;
   background: var(--navy);
   color: #fff;
-  padding-block: 5rem;
+  padding-block: calc(var(--header-h) + 4rem) 5rem;
 }
 .error-code {
   font-family: var(--font-display);
@@ -2150,9 +2164,6 @@ a.chip:hover { background: var(--accent); border-color: var(--accent); transform
 
 @media (max-width: 760px) {
   :root { --navbar-h: 72px; }
-  .topbar__msg { display: none; }
-  .topbar .container { justify-content: center; }
-  .topbar__links { gap: 1.1rem; font-size: 0.75rem; }
   .hero__viewport { min-height: 620px; }
   .hero__content { max-width: none; --cut: 24px; }
   /* No celular os controles saem do canto inferior direito: e' onde ficam os

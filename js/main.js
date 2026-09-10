@@ -102,12 +102,25 @@
     // A barra fica transparente enquanto está por cima da abertura escura —
     // todas as 8 páginas abrem com .hero, .page-hero ou .error-page. Assim que
     // a base dessa seção passa por baixo do cabeçalho, ele fica sólido.
-    var abertura = $('.hero, .page-hero, .error-page');
+    //
+    // Na versão de arquivo único as 10 rotas convivem no mesmo documento, com
+    // as inativas escondidas: guardar a primeira que casa fixaria a abertura da
+    // home para sempre. Por isso o valor é revalidado quando a guardada deixa
+    // de ter caixa de layout.
+    var aberturaCache = null;
+    function abertura() {
+      if (aberturaCache && aberturaCache.getClientRects().length) return aberturaCache;
+      aberturaCache = $$('.hero, .page-hero, .error-page').filter(function (el) {
+        return el.getClientRects().length;
+      })[0] || null;
+      return aberturaCache;
+    }
 
     function onScroll() {
       var y = window.scrollY;
-      if (abertura) {
-        root.classList.toggle('sobre-escuro', abertura.getBoundingClientRect().bottom > ultimaAltura);
+      var abre = abertura();
+      if (abre) {
+        root.classList.toggle('sobre-escuro', abre.getBoundingClientRect().bottom > ultimaAltura);
       }
       var wasScrolled = root.classList.contains('is-scrolled');
       root.classList.toggle('is-scrolled', y > 40);

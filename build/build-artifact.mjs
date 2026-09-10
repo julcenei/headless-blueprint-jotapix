@@ -136,6 +136,10 @@ const html = `<meta charset="utf-8">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@400;700&family=Public+Sans:wght@400;700&display=swap" rel="stylesheet">
+<!-- Mesmo marcador que o layout das 8 páginas põe antes do primeiro paint: sem
+     ele o cabeçalho transparente e as animações de entrada nunca casam, porque
+     as duas regras dependem da classe js na raiz. -->
+<script>document.documentElement.classList.add('js', 'sobre-escuro');</script>
 <style>
 ${css}
 

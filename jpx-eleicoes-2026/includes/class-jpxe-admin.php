@@ -18,6 +18,7 @@ class JPXE_Admin {
 	}
 
 	public static function register() {
+		JPXE_Options::migrar(); // antes do register_setting (veja JPXE_Options::migrar).
 		// Atualizar o plugin pelo .zip não dispara a ativação: garante a limpeza diária aqui.
 		if ( ! wp_next_scheduled( 'jpxe_limpeza' ) ) {
 			wp_schedule_event( time() + HOUR_IN_SECONDS, 'daily', 'jpxe_limpeza' );

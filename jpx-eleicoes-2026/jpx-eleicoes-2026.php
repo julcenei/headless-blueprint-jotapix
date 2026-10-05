@@ -2,7 +2,7 @@
 /**
  * Plugin Name:       JPX Eleições 2026
  * Description:       Apuração e resultados oficiais das eleições direto do TSE (resultados.tse.jus.br): Presidente, Governador, Senador e Deputados por Brasil, estado, município e seção eleitoral, com mapa, hemiciclo e boletins de urna. Shortcodes [eleicoes_tse_painel], [eleicoes_tse], [eleicoes_tse_secoes], [eleicoes_tse_mapa] e [eleicoes_tse_regiao].
- * Version:           1.4.0
+ * Version:           1.4.1
  * Requires at least: 5.8
  * Requires PHP:      7.4
  * Author:            JPX
@@ -12,7 +12,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'JPXE_VERSION', '1.4.0' );
+define( 'JPXE_VERSION', '1.4.1' );
 define( 'JPXE_FILE', __FILE__ );
 define( 'JPXE_DIR', plugin_dir_path( __FILE__ ) );
 define( 'JPXE_URL', plugin_dir_url( __FILE__ ) );

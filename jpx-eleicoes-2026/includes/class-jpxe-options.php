@@ -25,11 +25,11 @@ class JPXE_Options {
 
 	public static function all() {
 		$saved = get_option( self::KEY, null );
-		// Instalações do plugin anterior (novafm-eleicoes-tse): aproveita as configurações.
+		// Sem configurações próprias ainda: usa as do plugin anterior (novafm-eleicoes-tse), se houver.
+		// Não grava aqui: no painel, gravar dispara a validação do WordPress, que chama all() de novo.
 		if ( null === $saved ) {
 			$antigo = get_option( 'nfe_tse_opcoes', null );
 			$saved  = is_array( $antigo ) ? $antigo : array();
-			update_option( self::KEY, $saved );
 		}
 		return wp_parse_args( is_array( $saved ) ? $saved : array(), self::defaults() );
 	}
@@ -37,6 +37,20 @@ class JPXE_Options {
 	public static function get( $key ) {
 		$all = self::all();
 		return isset( $all[ $key ] ) ? $all[ $key ] : null;
+	}
+
+	/**
+	 * Copia uma vez as configurações do plugin anterior. Chamado no admin_init antes do
+	 * register_setting, quando ainda não há validação registrada para a opção.
+	 */
+	public static function migrar() {
+		if ( null !== get_option( self::KEY, null ) ) {
+			return;
+		}
+		$antigo = get_option( 'nfe_tse_opcoes', null );
+		if ( is_array( $antigo ) ) {
+			add_option( self::KEY, $antigo );
+		}
 	}
 
 	public static function sanitize( $input ) {

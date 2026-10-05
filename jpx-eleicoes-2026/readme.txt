@@ -4,7 +4,7 @@ Tags: eleições, tse, apuração, resultados, shortcode
 Requires at least: 5.8
 Tested up to: 6.8
 Requires PHP: 7.4
-Stable tag: 1.4.0
+Stable tag: 1.4.1
 License: GPLv2 or later
 
 Apuração e resultados oficiais das eleições direto dos arquivos públicos do TSE.
@@ -57,6 +57,9 @@ por estado e por município. Atualiza sozinho e detecta o 2º turno.
 3. Crie uma página "Apuração" com [eleicoes_tse_painel].
 
 == Changelog ==
+
+= 1.4.1 =
+* Corrige erro 500 na página de configurações na primeira vez que ela é aberta (cópia das configurações do plugin anterior).
 
 = 1.4.0 =
 * Novo nome: JPX Eleições 2026 (jpx-eleicoes-2026). Configurações do plugin anterior são copiadas automaticamente.

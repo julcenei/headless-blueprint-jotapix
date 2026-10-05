@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Gera novafm-eleicoes-tse/data/locais-<uf>-<ano>.json a partir dos dados abertos do TSE
+Gera jpx-eleicoes-2026/data/locais-<uf>-<ano>.json a partir dos dados abertos do TSE
 (locais de votação), para mostrar o nome e o endereço de cada seção eleitoral.
 
 Fonte: https://dadosabertos.tse.jus.br  (Eleitorado → Locais de votação)
@@ -37,7 +37,7 @@ def main():
             principal = int(r['NR_SECAO_PRINCIPAL']) if r['NR_SECAO_PRINCIPAL'] not in ('', '-1') else 0
             m['s'][f"{int(r['NR_ZONA'])}-{int(r['NR_SECAO'])}"] = [int(local), int(r['QT_ELEITOR_SECAO'] or 0), principal]
 
-    destino = os.path.join(os.path.dirname(__file__), '..', 'novafm-eleicoes-tse', 'data', f'locais-{uf}-{ano}.json')
+    destino = os.path.join(os.path.dirname(__file__), '..', 'jpx-eleicoes-2026', 'data', f'locais-{uf}-{ano}.json')
     os.makedirs(os.path.dirname(destino), exist_ok=True)
     with open(destino, 'w', encoding='utf-8') as f:
         json.dump({'fonte': 'TSE - dados abertos, locais de votação', 'gerado': gerado, 'mun': muns}, f, ensure_ascii=False, separators=(',', ':'))

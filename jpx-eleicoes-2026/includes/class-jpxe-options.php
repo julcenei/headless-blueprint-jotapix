@@ -1,19 +1,19 @@
 <?php
 /**
- * Configurações do plugin (Configurações → Eleições TSE).
+ * Configurações do plugin (Configurações → Eleições 2026).
  */
 
 defined( 'ABSPATH' ) || exit;
 
-class NFE_Options {
+class JPXE_Options {
 
-	const KEY = 'nfe_tse_opcoes';
+	const KEY = 'jpxe_opcoes';
 
 	public static function defaults() {
 		return array(
 			'ciclo'     => 'ele2026',
 			'uf'        => 'sc',
-			'destaques' => 'pinhalzinho, sao-lourenco-do-oeste',
+			'destaques' => '',
 			'intervalo' => 60,
 			'cor'       => '#ff6600',
 			'fotos'     => 1,
@@ -24,7 +24,13 @@ class NFE_Options {
 	}
 
 	public static function all() {
-		$saved = get_option( self::KEY, array() );
+		$saved = get_option( self::KEY, null );
+		// Instalações do plugin anterior (novafm-eleicoes-tse): aproveita as configurações.
+		if ( null === $saved ) {
+			$antigo = get_option( 'nfe_tse_opcoes', null );
+			$saved  = is_array( $antigo ) ? $antigo : array();
+			update_option( self::KEY, $saved );
+		}
 		return wp_parse_args( is_array( $saved ) ? $saved : array(), self::defaults() );
 	}
 
@@ -42,7 +48,7 @@ class NFE_Options {
 		$out['ciclo'] = preg_match( '/^ele\d{4}$/', $ciclo ) ? $ciclo : $d['ciclo'];
 
 		$uf        = isset( $in['uf'] ) ? strtolower( trim( $in['uf'] ) ) : $d['uf'];
-		$out['uf'] = isset( NFE_TSE::UFS[ $uf ] ) ? $uf : $d['uf'];
+		$out['uf'] = isset( JPXE_TSE::UFS[ $uf ] ) ? $uf : $d['uf'];
 
 		$out['destaques'] = isset( $in['destaques'] ) ? sanitize_text_field( $in['destaques'] ) : '';
 		$out['intervalo'] = isset( $in['intervalo'] ) ? max( 30, min( 600, (int) $in['intervalo'] ) ) : $d['intervalo'];
@@ -61,7 +67,7 @@ class NFE_Options {
 		// Ciclo ou UF diferentes mudam todas as chaves de dados: invalida o cache.
 		$old = self::all();
 		if ( $old['ciclo'] !== $out['ciclo'] || $old['uf'] !== $out['uf'] ) {
-			NFE_TSE::flush_cache();
+			JPXE_TSE::flush_cache();
 		}
 
 		return $out;

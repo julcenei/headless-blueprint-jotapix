@@ -14,7 +14,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-class NFE_TSE {
+class JPXE_TSE {
 
 	const CARGOS = array(
 		'presidente'        => array( 'cd' => 1, 'nome' => 'Presidente', 'escopo' => 'br', 'prop' => false ),
@@ -39,20 +39,20 @@ class NFE_TSE {
 	 * ------------------------------------------------------------------ */
 
 	public static function base_url() {
-		return untrailingslashit( apply_filters( 'nfe_tse_base_url', 'https://resultados.tse.jus.br' ) );
+		return untrailingslashit( apply_filters( 'jpxe_base_url', 'https://resultados.tse.jus.br' ) );
 	}
 
 	/** "oficial" na eleição; o TSE também publica um ambiente "simulado" para testes. */
 	public static function ambiente() {
-		return apply_filters( 'nfe_tse_ambiente', 'oficial' );
+		return apply_filters( 'jpxe_ambiente', 'oficial' );
 	}
 
 	public static function ciclo() {
-		return NFE_Options::get( 'ciclo' );
+		return JPXE_Options::get( 'ciclo' );
 	}
 
 	public static function uf_padrao() {
-		return NFE_Options::get( 'uf' );
+		return JPXE_Options::get( 'uf' );
 	}
 
 	public static function url( $path ) {
@@ -63,6 +63,21 @@ class NFE_TSE {
 	 * HTTP + cache
 	 * ------------------------------------------------------------------ */
 
+	/**
+	 * Durante a montagem da página o plugin não consulta o TSE: usa o cache (ou a cópia
+	 * reserva) e, se não houver nada, mostra o esqueleto e o navegador busca em seguida.
+	 * Assim a página nunca espera o TSE.
+	 */
+	public static $sem_rede = false;
+
+	/** Verdadeiro quando a página usou uma cópia reserva (o navegador atualiza logo). */
+	public static $usou_reserva = false;
+
+	/** Resultado consolidado: 100% das seções totalizadas (mesmo antes do TSE marcar o encerramento). */
+	public static function consolidado( $r ) {
+		return is_array( $r ) && ( ! empty( $r['finalizada'] ) || ( isset( $r['secoes']['pct'] ) && $r['secoes']['pct'] >= 100 ) );
+	}
+
 	public static function http_json( $path ) {
 		$body = self::http_get( $path );
 		if ( is_wp_error( $body ) ) {
@@ -70,7 +85,7 @@ class NFE_TSE {
 		}
 		$data = json_decode( $body, true );
 		if ( ! is_array( $data ) ) {
-			return new WP_Error( 'nfe_json', 'Resposta inválida do TSE.' );
+			return new WP_Error( 'jpxe_json', 'Resposta inválida do TSE.' );
 		}
 		return $data;
 	}
@@ -81,20 +96,20 @@ class NFE_TSE {
 			self::url( $path ),
 			array(
 				'timeout'    => 15,
-				'user-agent' => 'NovaFM-Eleicoes-TSE/' . NFE_VERSION . ' (+' . home_url( '/' ) . ')',
+				'user-agent' => 'JPX-Eleicoes/' . JPXE_VERSION . ' (+' . home_url( '/' ) . ')',
 				'headers'    => array( 'Accept' => 'application/json' ),
 			)
 		);
 		if ( is_wp_error( $res ) ) {
-			return new WP_Error( 'nfe_http', 'Falha ao consultar o TSE: ' . $res->get_error_message() );
+			return new WP_Error( 'jpxe_http', 'Falha ao consultar o TSE: ' . $res->get_error_message() );
 		}
 		$code = (int) wp_remote_retrieve_response_code( $res );
 		// O armazenamento do TSE responde 404 (ou 403) para arquivos ainda não publicados.
 		if ( 404 === $code || 403 === $code ) {
-			return new WP_Error( 'nfe_404', 'Dados ainda não publicados pelo TSE.' );
+			return new WP_Error( 'jpxe_404', 'Dados ainda não publicados pelo TSE.' );
 		}
 		if ( 200 !== $code ) {
-			return new WP_Error( 'nfe_http', 'O TSE respondeu HTTP ' . $code . '.' );
+			return new WP_Error( 'jpxe_http', 'O TSE respondeu HTTP ' . $code . '.' );
 		}
 		return wp_remote_retrieve_body( $res );
 	}
@@ -109,6 +124,9 @@ class NFE_TSE {
 	public static function http_multi( $paths, $prazo = 0 ) {
 		$paths = array_values( array_unique( $paths ) );
 		$out   = array();
+		if ( self::$sem_rede ) {
+			return $out;
+		}
 		$cls   = class_exists( 'WpOrg\\Requests\\Requests' ) ? 'WpOrg\\Requests\\Requests' : ( class_exists( 'Requests' ) ? 'Requests' : '' );
 		if ( ! $cls || count( $paths ) < 2 ) {
 			foreach ( $paths as $p ) {
@@ -123,7 +141,7 @@ class NFE_TSE {
 				'timeout'         => 15,
 				'sslverify'       => true,
 				'sslcertificates' => ABSPATH . WPINC . '/certificates/ca-bundle.crt',
-				'user-agent'      => 'NovaFM-Eleicoes-TSE/' . NFE_VERSION . ' (+' . home_url( '/' ) . ')',
+				'user-agent'      => 'JPX-Eleicoes/' . JPXE_VERSION . ' (+' . home_url( '/' ) . ')',
 			),
 			self::url( $paths[0] )
 		);
@@ -155,11 +173,11 @@ class NFE_TSE {
 			foreach ( $lote as $p ) {
 				$r = isset( $resps[ $p ] ) ? $resps[ $p ] : null;
 				if ( ! is_object( $r ) || $r instanceof Exception || ! isset( $r->status_code ) ) {
-					$out[ $p ] = new WP_Error( 'nfe_http', 'Falha ao consultar o TSE.' );
+					$out[ $p ] = new WP_Error( 'jpxe_http', 'Falha ao consultar o TSE.' );
 				} elseif ( 404 === (int) $r->status_code || 403 === (int) $r->status_code ) {
-					$out[ $p ] = new WP_Error( 'nfe_404', 'Dados ainda não publicados pelo TSE.' );
+					$out[ $p ] = new WP_Error( 'jpxe_404', 'Dados ainda não publicados pelo TSE.' );
 				} elseif ( 200 !== (int) $r->status_code ) {
-					$out[ $p ] = new WP_Error( 'nfe_http', 'O TSE respondeu HTTP ' . (int) $r->status_code . '.' );
+					$out[ $p ] = new WP_Error( 'jpxe_http', 'O TSE respondeu HTTP ' . (int) $r->status_code . '.' );
 				} else {
 					$out[ $p ] = (string) $r->body;
 				}
@@ -175,19 +193,31 @@ class NFE_TSE {
 	}
 
 	/** Grava no cache como cached() faria. */
-	public static function put( $key, $value, $ttl ) {
+	public static function put( $key, $value, $ttl, $reserva = true ) {
 		$k = self::cache_key( $key );
 		set_transient( $k . '_f', $value, max( 10, (int) $ttl ) );
-		set_transient( $k . '_s', $value, DAY_IN_SECONDS );
+		if ( $reserva ) {
+			set_transient( $k . '_s', $value, DAY_IN_SECONDS );
+		}
 	}
 
 	private static function cache_key( $key ) {
-		return 'nfe' . (int) get_option( 'nfe_tse_cache_v', 1 ) . '_' . md5( NFE_VERSION . $key );
+		return 'jpxe' . (int) get_option( 'jpxe_cache_v', 1 ) . '_' . md5( JPXE_VERSION . $key );
 	}
 
-	/** Invalida todo o cache trocando o prefixo das chaves (funciona também com object cache). */
+	/**
+	 * Invalida todo o cache: troca o prefixo das chaves (vale também com object cache),
+	 * apaga os temporários do banco e os arquivos estáticos.
+	 */
 	public static function flush_cache() {
-		update_option( 'nfe_tse_cache_v', (int) get_option( 'nfe_tse_cache_v', 1 ) + 1, false );
+		global $wpdb;
+		update_option( 'jpxe_cache_v', (int) get_option( 'jpxe_cache_v', 1 ) + 1, false );
+		if ( ! wp_using_ext_object_cache() ) {
+			$wpdb->query( "DELETE FROM {$wpdb->options} WHERE option_name LIKE '\\_transient\\_jpxe%' OR option_name LIKE '\\_transient\\_timeout\\_jpxe%'" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+		}
+		if ( class_exists( 'JPXE_Estatico' ) ) {
+			JPXE_Estatico::limpar( 0 );
+		}
 	}
 
 	/**
@@ -196,9 +226,10 @@ class NFE_TSE {
 	 * @param string       $key      Identificador.
 	 * @param int|callable $ttl      Segundos, ou função que recebe o valor e devolve segundos.
 	 * @param callable     $producer Produz o valor (ou WP_Error).
+	 * @param bool         $reserva  Guardar cópia reserva (dispensável para dados que não mudam).
 	 * @return mixed|WP_Error Valor; quando veio da reserva, $value['_stale'] = true.
 	 */
-	public static function cached( $key, $ttl, $producer ) {
+	public static function cached( $key, $ttl, $producer, $reserva = true ) {
 		$k     = self::cache_key( $key );
 		$fresh = get_transient( $k . '_f' );
 		if ( false !== $fresh ) {
@@ -208,7 +239,18 @@ class NFE_TSE {
 			return $fresh;
 		}
 
-		$stale = get_transient( $k . '_s' );
+		$stale = $reserva ? get_transient( $k . '_s' ) : false;
+
+		// Configuração (eleições, municípios, locais) pode ser buscada mesmo montando a página:
+		// é pequena, raramente expira e sem ela o painel não teria os botões de local.
+		$config = 0 === strpos( $key, 'cfg_' ) || 0 === strpos( $key, 'mun_' ) || 0 === strpos( $key, 'loc_' );
+		if ( self::$sem_rede && ! $config ) {
+			if ( false !== $stale ) {
+				self::$usou_reserva = true;
+				return $stale;
+			}
+			return new WP_Error( 'jpxe_frio', 'Sem cache: o navegador vai buscar.' );
+		}
 
 		// Outro processo já está buscando: serve a reserva em vez de bater no TSE de novo.
 		if ( false !== $stale && get_transient( $k . '_l' ) ) {
@@ -220,6 +262,9 @@ class NFE_TSE {
 		delete_transient( $k . '_l' );
 
 		if ( is_wp_error( $value ) ) {
+			if ( 'jpxe_frio' === $value->get_error_code() ) {
+				return $value;
+			}
 			if ( false !== $stale ) {
 				return self::mark_stale( $stale, true );
 			}
@@ -227,14 +272,16 @@ class NFE_TSE {
 			set_transient(
 				$k . '_f',
 				array( '_err' => $value->get_error_code(), '_msg' => $value->get_error_message() ),
-				'nfe_404' === $value->get_error_code() ? 60 : 20
+				'jpxe_404' === $value->get_error_code() ? 60 : 20
 			);
 			return $value;
 		}
 
 		$seconds = is_callable( $ttl ) ? (int) call_user_func( $ttl, $value ) : (int) $ttl;
 		set_transient( $k . '_f', $value, max( 10, $seconds ) );
-		set_transient( $k . '_s', $value, DAY_IN_SECONDS );
+		if ( $reserva ) {
+			set_transient( $k . '_s', $value, DAY_IN_SECONDS );
+		}
 		return $value;
 	}
 
@@ -286,7 +333,7 @@ class NFE_TSE {
 					}
 				}
 				if ( ! $out ) {
-					return new WP_Error( 'nfe_cfg', 'O ciclo ' . $ciclo . ' não foi encontrado na configuração do TSE.' );
+					return new WP_Error( 'jpxe_cfg', 'O ciclo ' . $ciclo . ' não foi encontrado na configuração do TSE.' );
 				}
 				return $out;
 			}
@@ -336,7 +383,7 @@ class NFE_TSE {
 			}
 		}
 		if ( ! $e1 ) {
-			return new WP_Error( 'nfe_cfg', 'Não há eleição para este cargo no ciclo configurado.' );
+			return new WP_Error( 'jpxe_cfg', 'Não há eleição para este cargo no ciclo configurado.' );
 		}
 
 		// O 2º turno só aparece no ele-c.json depois que o TSE o configura, e só para as UFs que o terão.
@@ -346,7 +393,7 @@ class NFE_TSE {
 		}
 
 		if ( 2 === (int) $turno && ! $e2 ) {
-			return new WP_Error( 'nfe_sem_t2', 'Não há 2º turno para este cargo nesta abrangência.' );
+			return new WP_Error( 'jpxe_sem_t2', 'Não há 2º turno para este cargo nesta abrangência.' );
 		}
 		$usa_t2 = $e2 && ( 2 === (int) $turno || ( 'auto' === $turno && self::hoje() >= self::data_ymd( $e2['data'] ) ) );
 
@@ -366,7 +413,7 @@ class NFE_TSE {
 	public static function municipios( $uf ) {
 		$uf = strtolower( $uf );
 		if ( ! isset( self::UFS[ $uf ] ) ) {
-			return new WP_Error( 'nfe_uf', 'UF inválida.' );
+			return new WP_Error( 'jpxe_uf', 'UF inválida.' );
 		}
 		$el = self::eleicao_para( 3, $uf, 1 );
 		if ( is_wp_error( $el ) ) {
@@ -390,13 +437,13 @@ class NFE_TSE {
 					foreach ( $a['mu'] as $m ) {
 						$out[ (string) $m['cd'] ] = array(
 							'cd'   => (string) $m['cd'],
-							'nome' => NFE_Render::titulo( $m['nm'] ),
+							'nome' => JPXE_Render::titulo( $m['nm'] ),
 							'ibge' => isset( $m['cdi'] ) ? (string) $m['cdi'] : '',
 						);
 					}
 				}
 				if ( ! $out ) {
-					return new WP_Error( 'nfe_cfg', 'Municípios não encontrados para a UF.' );
+					return new WP_Error( 'jpxe_cfg', 'Municípios não encontrados para a UF.' );
 				}
 				uasort(
 					$out,
@@ -458,7 +505,7 @@ class NFE_TSE {
 			}
 		}
 		if ( ! $achado ) {
-			return new WP_Error( 'nfe_local', 'Município não encontrado: ' . $local );
+			return new WP_Error( 'jpxe_local', 'Município não encontrado: ' . $local );
 		}
 		return array(
 			'tipo'  => 'mun',
@@ -472,7 +519,7 @@ class NFE_TSE {
 	/** Lista de locais em destaque definida nas configurações. */
 	public static function destaques() {
 		$out = array();
-		foreach ( preg_split( '/\s*,\s*/', (string) NFE_Options::get( 'destaques' ), -1, PREG_SPLIT_NO_EMPTY ) as $item ) {
+		foreach ( preg_split( '/\s*,\s*/', (string) JPXE_Options::get( 'destaques' ), -1, PREG_SPLIT_NO_EMPTY ) as $item ) {
 			$loc = self::local( $item );
 			if ( ! is_wp_error( $loc ) ) {
 				$out[ $loc['chave'] ] = $loc;
@@ -495,7 +542,7 @@ class NFE_TSE {
 	 */
 	public static function resultado( $cargo, $local = '', $turno = 'auto' ) {
 		if ( ! isset( self::CARGOS[ $cargo ] ) ) {
-			return new WP_Error( 'nfe_cargo', 'Cargo inválido.' );
+			return new WP_Error( 'jpxe_cargo', 'Cargo inválido.' );
 		}
 		$cfg = self::CARGOS[ $cargo ];
 		$loc = self::local( $local );
@@ -578,7 +625,7 @@ class NFE_TSE {
 			return;
 		}
 		$corpos = self::http_multi( array_keys( $fila ), microtime( true ) + 6 );
-		$int    = (int) NFE_Options::get( 'intervalo' );
+		$int    = (int) JPXE_Options::get( 'intervalo' );
 		foreach ( $fila as $path => $f ) {
 			$d = isset( $corpos[ $path ] ) && is_string( $corpos[ $path ] ) ? json_decode( $corpos[ $path ], true ) : null;
 			if ( ! is_array( $d ) ) {
@@ -586,7 +633,7 @@ class NFE_TSE {
 			}
 			$v = self::normalizar( $d, $cfg, $f[0], $f[1], $f[2] );
 			if ( ! is_wp_error( $v ) ) {
-				self::put( 'res_' . $path, $v, ! empty( $v['finalizada'] ) ? 15 * MINUTE_IN_SECONDS : max( 20, $int - 15 ) );
+				self::put( 'res_' . $path, $v, self::consolidado( $v ) ? 6 * HOUR_IN_SECONDS : max( 20, $int - 15 ) );
 			}
 		}
 	}
@@ -606,12 +653,12 @@ class NFE_TSE {
 		}
 		$cfg                  = self::CARGOS[ $cargo ];
 		list( $path, $fotos ) = self::caminhos( $eleicao, $e1, $cargo, $loc );
-		$int                  = (int) NFE_Options::get( 'intervalo' );
+		$int                  = (int) JPXE_Options::get( 'intervalo' );
 
 		return self::cached(
 			'res_' . $path,
 			function ( $v ) use ( $int ) {
-				return ! empty( $v['finalizada'] ) ? 15 * MINUTE_IN_SECONDS : max( 20, $int - 15 );
+				return self::consolidado( $v ) ? 6 * HOUR_IN_SECONDS : max( 20, $int - 15 );
 			},
 			function () use ( $path, $cfg, $loc, $eleicao, $fotos ) {
 				$raw = self::http_json( $path );
@@ -629,7 +676,7 @@ class NFE_TSE {
 
 	private static function normalizar( $raw, $cfg, $loc, $eleicao, $fotos ) {
 		if ( empty( $raw['carg'][0] ) ) {
-			return new WP_Error( 'nfe_json', 'Arquivo do TSE sem dados do cargo.' );
+			return new WP_Error( 'jpxe_json', 'Arquivo do TSE sem dados do cargo.' );
 		}
 		$c = $raw['carg'][0];
 		$s = isset( $raw['s'] ) ? $raw['s'] : array();
@@ -653,17 +700,17 @@ class NFE_TSE {
 					foreach ( isset( $cd['vs'] ) ? $cd['vs'] : array() as $vs ) {
 						$vices[] = array(
 							'tipo'    => $vs['tp'],
-							'nome'    => NFE_Render::titulo( isset( $vs['nmu'] ) ? $vs['nmu'] : $vs['nm'] ),
+							'nome'    => JPXE_Render::titulo( isset( $vs['nmu'] ) ? $vs['nmu'] : $vs['nm'] ),
 							'partido' => isset( $vs['sgp'] ) ? $vs['sgp'] : '',
 						);
 					}
 					$cands[] = array(
 						'sq'        => (string) $cd['sqcand'],
 						'numero'    => (string) $cd['n'],
-						'nome'      => NFE_Render::titulo( isset( $cd['nmu'] ) && '' !== $cd['nmu'] ? $cd['nmu'] : $cd['nm'] ),
-						'completo'  => NFE_Render::titulo( $cd['nm'] ),
+						'nome'      => JPXE_Render::titulo( isset( $cd['nmu'] ) && '' !== $cd['nmu'] ? $cd['nmu'] : $cd['nm'] ),
+						'completo'  => JPXE_Render::titulo( $cd['nm'] ),
 						'partido'   => (string) $par['sg'],
-						'agrup'     => in_array( $tp, array( 'c', 'f' ), true ) ? NFE_Render::titulo( $agr['nm'] ) : '',
+						'agrup'     => in_array( $tp, array( 'c', 'f' ), true ) ? JPXE_Render::titulo( $agr['nm'] ) : '',
 						'agrup_tp'  => $tp,
 						'agrup_com' => isset( $agr['com'] ) ? (string) $agr['com'] : '',
 						'votos'     => (int) $cd['vap'],
@@ -676,9 +723,9 @@ class NFE_TSE {
 				}
 			}
 			$agrs[] = array(
-				'nome'  => 'i' === $tp ? implode( '/', $siglas ) : NFE_Render::titulo( $agr['nm'] ),
+				'nome'  => 'i' === $tp ? implode( '/', $siglas ) : JPXE_Render::titulo( $agr['nm'] ),
 				'sigla' => isset( $agr['com'] ) ? (string) $agr['com'] : implode( '/', $siglas ),
-				'extenso' => isset( $agr['nm'] ) ? NFE_Render::titulo( $agr['nm'] ) : '',
+				'extenso' => isset( $agr['nm'] ) ? JPXE_Render::titulo( $agr['nm'] ) : '',
 				'tipo'  => $tp,
 				'votos' => $votos_ag,
 				'vagas' => isset( $agr['vag'] ) ? (int) $agr['vag'] : 0,

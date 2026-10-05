@@ -1,10 +1,10 @@
-=== Eleições TSE – Nova FM ===
-Contributors: novafmportal
+=== JPX Eleições 2026 ===
+Contributors: jpx
 Tags: eleições, tse, apuração, resultados, shortcode
 Requires at least: 5.8
 Tested up to: 6.8
 Requires PHP: 7.4
-Stable tag: 1.3.0
+Stable tag: 1.4.0
 License: GPLv2 or later
 
 Apuração e resultados oficiais das eleições direto dos arquivos públicos do TSE.
@@ -52,11 +52,20 @@ por estado e por município. Atualiza sozinho e detecta o 2º turno.
 
 == Installation ==
 
-1. Plugins → Adicionar novo → Enviar plugin → escolha novafm-eleicoes-tse.zip → Ativar.
-2. Configurações → Eleições TSE: confira o estado (SC) e os municípios em destaque.
+1. Plugins → Adicionar novo → Enviar plugin → escolha jpx-eleicoes-2026.zip → Ativar.
+2. Configurações → Eleições 2026: confira o estado (SC) e os municípios em destaque.
 3. Crie uma página "Apuração" com [eleicoes_tse_painel].
 
 == Changelog ==
+
+= 1.4.0 =
+* Novo nome: JPX Eleições 2026 (jpx-eleicoes-2026). Configurações do plugin anterior são copiadas automaticamente.
+* Atualizações lidas de arquivos estáticos em uploads/jpx-eleicoes (sem PHP), com teto de 3.000 arquivos / 100 MB e limpeza diária.
+* Modo consolidado: com 100% das seções, cache de 6 h e verificação a cada 30 min.
+* A página nunca espera o TSE: sem cache, mostra o esqueleto e o navegador completa.
+* Botão "Buscar dados novos no TSE agora" e painel de espaço ocupado.
+* Boletins de urna guardados em uma cópia só (menos espaço no banco).
+* Abas do painel redesenhadas, com ícones.
 
 = 1.3.0 =
 * Abas do painel fixas ao rolar (abaixo do cabeçalho do tema), com indicador de rolagem no celular.

@@ -18,7 +18,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-class NFE_BU {
+class JPXE_BU {
 
 	const TIPO_VOTO = array(
 		1 => 'nominal',
@@ -132,7 +132,7 @@ class NFE_BU {
 		try {
 			$env = self::der( $bin );
 			if ( ! $env || ! self::is_seq( $env[0] ) ) {
-				return new WP_Error( 'nfe_bu', 'BU em formato inesperado.' );
+				return new WP_Error( 'jpxe_bu', 'BU em formato inesperado.' );
 			}
 			// Conteúdo do envelope: a maior OCTET STRING que começa com SEQUENCE.
 			$conteudo = '';
@@ -143,11 +143,11 @@ class NFE_BU {
 			}
 			$bu = $conteudo ? self::der( $conteudo ) : array();
 			if ( ! $bu || ! self::is_seq( $bu[0] ) ) {
-				return new WP_Error( 'nfe_bu', 'BU sem conteúdo.' );
+				return new WP_Error( 'jpxe_bu', 'BU sem conteúdo.' );
 			}
 			return self::boletim( $bu[0]['k'] );
 		} catch ( Exception $e ) {
-			return new WP_Error( 'nfe_bu', $e->getMessage() );
+			return new WP_Error( 'jpxe_bu', $e->getMessage() );
 		}
 	}
 
@@ -195,7 +195,7 @@ class NFE_BU {
 		}
 
 		if ( ! $out['secao'] || ! $out['eleicoes'] ) {
-			return new WP_Error( 'nfe_bu', 'BU sem resultados reconhecíveis.' );
+			return new WP_Error( 'jpxe_bu', 'BU sem resultados reconhecíveis.' );
 		}
 		return $out;
 	}

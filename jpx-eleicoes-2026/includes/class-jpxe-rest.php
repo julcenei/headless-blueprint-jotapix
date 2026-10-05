@@ -1,15 +1,15 @@
 <?php
 /**
  * Endpoint público usado pela atualização automática:
- *   GET /wp-json/nfe-tse/v1/resultado?cargo=governador&local=sc
+ *   GET /wp-json/jpx-eleicoes/v1/resultado?cargo=governador&local=sc
  * Devolve o HTML já renderizado, servido do cache do servidor.
  */
 
 defined( 'ABSPATH' ) || exit;
 
-class NFE_Rest {
+class JPXE_Rest {
 
-	const NS = 'nfe-tse/v1';
+	const NS = 'jpx-eleicoes/v1';
 
 	public static function init() {
 		add_action( 'rest_api_init', array( __CLASS__, 'routes' ) );
@@ -24,7 +24,7 @@ class NFE_Rest {
 				'permission_callback' => '__return_true',
 				'callback'            => array( __CLASS__, 'resultado' ),
 				'args'                => array(
-					'cargo'  => array( 'type' => 'string', 'required' => true, 'enum' => array_merge( array_keys( NFE_TSE::CARGOS ), array( 'secoes', 'mapa', 'regiao' ) ) ),
+					'cargo'  => array( 'type' => 'string', 'required' => true, 'enum' => array_merge( array_keys( JPXE_TSE::CARGOS ), array( 'secoes', 'mapa', 'regiao' ) ) ),
 					'mapa'   => array( 'type' => 'string', 'default' => 'presidente', 'enum' => array( 'presidente', 'governador', 'senador' ) ),
 					'cargos' => array( 'type' => 'string', 'default' => '', 'sanitize_callback' => array( __CLASS__, 'limpa_lista' ) ),
 					'locais' => array( 'type' => 'string', 'default' => '', 'sanitize_callback' => array( __CLASS__, 'limpa_lista' ) ),
@@ -54,35 +54,37 @@ class NFE_Rest {
 		$turno = 'auto' === $turno ? 'auto' : (int) $turno;
 
 		if ( 'mapa' === $req['cargo'] ) {
-			$s = NFE_Extras::mapa( $req['mapa'], $turno, NFE_Shortcodes::link_painel() );
-			return self::resposta( $s['html'], $s['intervalo'], false );
+			$s = JPXE_Extras::mapa( $req['mapa'], $turno, JPXE_Shortcodes::link_painel() );
+		} elseif ( 'regiao' === $req['cargo'] ) {
+			$s = JPXE_Shortcodes::regiao_render( $req['cargos'], $req['locais'], $req['limite'], $req['titulo'], $turno );
+		} elseif ( 'secoes' === $req['cargo'] ) {
+			$s = JPXE_Secoes::render( $req['local'], $req['secao'], $turno );
+		} else {
+			$r = JPXE_TSE::resultado( $req['cargo'], $req['local'], $turno );
+			$s = array(
+				'html'      => JPXE_Render::resultado( $r, JPXE_Shortcodes::opcoes_render( $req->get_params() ) ),
+				'intervalo' => JPXE_Shortcodes::intervalo( $r ),
+			);
 		}
-		if ( 'regiao' === $req['cargo'] ) {
-			$s = NFE_Shortcodes::regiao_render( $req['cargos'], $req['locais'], $req['limite'], $req['titulo'], $turno );
-			return self::resposta( $s['html'], $s['intervalo'], false );
-		}
-		if ( 'secoes' === $req['cargo'] ) {
-			$s = NFE_Secoes::render( $req['local'], $req['secao'], $turno );
-			return self::resposta( $s['html'], $s['intervalo'], false );
-		}
-
-		$r     = NFE_TSE::resultado( $req['cargo'], $req['local'], $turno );
-		$opts  = NFE_Shortcodes::opcoes_render( $req->get_params() );
-
-		return self::resposta( NFE_Render::resultado( $r, $opts ), NFE_Shortcodes::intervalo( $r ), ! is_wp_error( $r ) && $r['finalizada'] );
+		return self::resposta( $req, $s['html'], $s['intervalo'] );
 	}
 
-	private static function resposta( $html, $intervalo, $finalizada ) {
-		$resp = new WP_REST_Response(
-			array(
-				'html'       => $html,
-				'gerado'     => time(),
-				'intervalo'  => (int) $intervalo,
-				'finalizada' => (bool) $finalizada,
-			)
+	private static function resposta( WP_REST_Request $req, $html, $intervalo ) {
+		$intervalo   = (int) $intervalo;
+		$consolidado = $intervalo >= JPXE_Shortcodes::CONSOLIDADO;
+		$dados       = array(
+			'html'        => $html,
+			'gerado'      => time(),
+			'intervalo'   => $intervalo,
+			'consolidado' => $consolidado,
+			// Até quando o arquivo estático vale: depois disso o navegador pede ao REST de novo.
+			'expira'      => time() + ( $consolidado ? $intervalo : max( 20, (int) ( $intervalo / 2 ) ) ),
 		);
+		JPXE_Estatico::gravar( $req->get_query_params(), $dados );
+
+		$resp = new WP_REST_Response( $dados );
 		// Deixa CDN/proxy segurar a resposta por alguns segundos em noite de apuração.
-		$resp->header( 'Cache-Control', 'public, max-age=20, stale-while-revalidate=40' );
+		$resp->header( 'Cache-Control', 'public, max-age=' . ( $consolidado ? 600 : 20 ) . ', stale-while-revalidate=60' );
 		return $resp;
 	}
 }

@@ -9,6 +9,7 @@ alimenta o app *Resultados* do TSE e páginas como a `eleicoes.rco.com.br/oficia
 - **2º turno:** detectado automaticamente a partir do dia da eleição, apenas onde o TSE o configurar
 - **Atualização automática** a cada 60 s, com cache no servidor (o TSE nunca é consultado pelo navegador dos visitantes)
 - Situação dos candidatos (eleito, 2º turno, eleito por QP/média, suplente), cadeiras por partido/federação, comparecimento, abstenção, brancos e nulos
+- **Por seção:** boletim de urna oficial de cada seção, com as seções agrupadas por local de votação (escola, endereço). Funciona em qualquer município de SC
 - Cores e fonte do tema `nova-portal` (`--accent: #ff6600`, `--ink: #0B192C`, Encode Sans)
 
 ## Instalação
@@ -23,6 +24,7 @@ alimenta o app *Resultados* do TSE e páginas como a `eleicoes.rco.com.br/oficia
 | Shortcode | O que mostra |
 |---|---|
 | `[eleicoes_tse_painel]` | Painel completo: abas de cargo e botões Brasil / SC / Pinhalzinho / São Lourenço do Oeste, além de uma lista com todos os municípios de SC |
+| `[eleicoes_tse_secoes local="pinhalzinho"]` | Seções de Pinhalzinho por local de votação; clicando, o boletim de urna da seção (todos os cargos) |
 | `[eleicoes_tse cargo="presidente" local="br"]` | Presidente, Brasil |
 | `[eleicoes_tse cargo="governador" local="pinhalzinho"]` | Governador, votos em Pinhalzinho |
 | `[eleicoes_tse cargo="senador" local="sc"]` | Senado em SC |
@@ -44,6 +46,25 @@ navegador ──(a cada 60 s)──▶ /wp-json/nfe-tse/v1/resultado ──▶ c
 | `oficial/ele2026/<eleição>/config/mun-e<eleição>-cm.json` | municípios e seus códigos TSE |
 | `oficial/ele2026/<eleição>/dados/<uf>/<uf><mun>-c<cargo>-e<eleição>-u.json` | resultado por cargo e abrangência |
 | `oficial/ele2026/<eleição>/fotos/<uf>/<sqcand>.jpeg` | fotos dos candidatos |
+| `oficial/ele2026/arquivo-urna/<pleito>/config/<uf>/<uf>-p<pleito>-cs.json` | seções de cada município/zona (e agregações) |
+| `oficial/ele2026/arquivo-urna/<pleito>/dados/<uf>/<mun>/<zona>/<seção>/…-aux.json` | arquivos publicados de cada urna |
+| `…/<hash>/…-bu.dat` | **boletim de urna** (ASN.1/DER), lido por `class-nfe-bu.php` |
+
+### Por seção
+
+O boletim de urna traz os votos por número de candidato/partido, brancos, nulos, aptos, comparecimento e os horários
+da urna. Os nomes dos candidatos vêm do resultado do município. O boletim traz só o **número** do local de votação;
+o nome e o endereço vêm de `data/locais-sc-2026.json`, gerado dos dados abertos do TSE
+(<https://dadosabertos.tse.jus.br>, *Eleitorado → Locais de votação*):
+
+```
+curl -O https://cdn.tse.jus.br/estatistica/sead/odsele/eleitorado_locais_votacao/eleitorado_local_votacao_2026.zip
+unzip eleitorado_local_votacao_2026.zip eleitorado_local_votacao_2026_SC.csv
+python3 bin/gerar-locais.py eleitorado_local_votacao_2026_SC.csv sc 2026
+```
+
+Seções agregadas (ex.: a 62, que votou junto com a 58) abrem o boletim da seção principal, com um aviso.
+Links diretos funcionam: `/apuracao/?nfe_cargo=secoes&nfe_local=sc-82538&nfe_secao=66-50`.
 
 Se o TSE ficar fora do ar, o plugin continua exibindo os últimos dados recebidos, com um aviso.
 Em **Configurações → Eleições TSE** há uma tabela que mostra quais eleições (1º e 2º turno) foram
@@ -57,12 +78,15 @@ novafm-eleicoes-tse/
 ├── includes/
 │   ├── class-nfe-tse.php          leitura dos arquivos do TSE, cache, turnos, municípios
 │   ├── class-nfe-render.php       HTML dos resultados (usado na página e nas atualizações)
+│   ├── class-nfe-secoes.php       por seção: lista de seções/locais e boletim de urna
+│   ├── class-nfe-bu.php           leitor do boletim de urna (ASN.1 DER)
 │   ├── class-nfe-shortcodes.php   [eleicoes_tse] e [eleicoes_tse_painel]
 │   ├── class-nfe-rest.php         endpoint público de atualização
 │   ├── class-nfe-options.php      configurações
 │   └── class-nfe-admin.php        tela Configurações → Eleições TSE
 ├── assets/css/eleicoes.css
 ├── assets/js/eleicoes.js          atualização automática, abas, busca (sem dependências)
+├── data/locais-sc-2026.json       locais de votação de SC (dados abertos do TSE)
 ├── readme.txt
 └── uninstall.php
 ```

@@ -64,6 +64,19 @@ class NFE_TSE {
 	 * ------------------------------------------------------------------ */
 
 	public static function http_json( $path ) {
+		$body = self::http_get( $path );
+		if ( is_wp_error( $body ) ) {
+			return $body;
+		}
+		$data = json_decode( $body, true );
+		if ( ! is_array( $data ) ) {
+			return new WP_Error( 'nfe_json', 'Resposta inválida do TSE.' );
+		}
+		return $data;
+	}
+
+	/** Corpo bruto de um arquivo do TSE (JSON ou binário, como o -bu.dat). */
+	public static function http_get( $path ) {
 		$res = wp_remote_get(
 			self::url( $path ),
 			array(
@@ -83,15 +96,11 @@ class NFE_TSE {
 		if ( 200 !== $code ) {
 			return new WP_Error( 'nfe_http', 'O TSE respondeu HTTP ' . $code . '.' );
 		}
-		$data = json_decode( wp_remote_retrieve_body( $res ), true );
-		if ( ! is_array( $data ) ) {
-			return new WP_Error( 'nfe_json', 'Resposta inválida do TSE.' );
-		}
-		return $data;
+		return wp_remote_retrieve_body( $res );
 	}
 
 	private static function cache_key( $key ) {
-		return 'nfe' . (int) get_option( 'nfe_tse_cache_v', 1 ) . '_' . md5( $key );
+		return 'nfe' . (int) get_option( 'nfe_tse_cache_v', 1 ) . '_' . md5( NFE_VERSION . $key );
 	}
 
 	/** Invalida todo o cache trocando o prefixo das chaves (funciona também com object cache). */
@@ -188,8 +197,9 @@ class NFE_TSE {
 							'cdt2'  => isset( $e['cdt2'] ) ? (string) $e['cdt2'] : '',
 							'turno' => (int) $e['t'],
 							'nome'  => (string) $e['nm'],
-							'data'  => (string) $pl['dt'],
-							'abr'   => $abr,
+							'data'   => (string) $pl['dt'],
+							'pleito' => (string) $pl['cd'],
+							'abr'    => $abr,
 						);
 					}
 				}

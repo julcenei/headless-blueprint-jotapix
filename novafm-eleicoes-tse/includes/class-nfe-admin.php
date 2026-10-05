@@ -120,7 +120,8 @@ class NFE_Admin {
 			<p>Cole um dos shortcodes em qualquer página ou post (bloco <em>Shortcode</em>):</p>
 			<table class="widefat striped" style="max-width:960px">
 				<tbody>
-					<tr><td><code>[eleicoes_tse_painel]</code></td><td>Painel completo: abas de cargo e botões Brasil / estado / municípios em destaque, além de uma lista com todos os municípios.</td></tr>
+					<tr><td><code>[eleicoes_tse_painel]</code></td><td>Painel completo: abas de cargo (incluindo "Por seção") e botões Brasil / estado / municípios em destaque, além de uma lista com todos os municípios.</td></tr>
+					<tr><td><code>[eleicoes_tse_secoes local="pinhalzinho"]</code></td><td>Seções do município agrupadas por local de votação; ao clicar, o boletim de urna oficial da seção com todos os cargos.</td></tr>
 					<tr><td><code>[eleicoes_tse cargo="presidente" local="br"]</code></td><td>Presidente no Brasil.</td></tr>
 					<tr><td><code>[eleicoes_tse cargo="governador" local="pinhalzinho"]</code></td><td>Governador, votos em Pinhalzinho.</td></tr>
 					<tr><td><code>[eleicoes_tse cargo="senador" local="sc"]</code></td><td>Senado em Santa Catarina.</td></tr>

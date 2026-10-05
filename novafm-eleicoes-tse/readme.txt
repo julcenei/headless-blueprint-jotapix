@@ -4,7 +4,7 @@ Tags: eleições, tse, apuração, resultados, shortcode
 Requires at least: 5.8
 Tested up to: 6.8
 Requires PHP: 7.4
-Stable tag: 1.0.0
+Stable tag: 1.1.0
 License: GPLv2 or later
 
 Apuração e resultados oficiais das eleições direto dos arquivos públicos do TSE.
@@ -30,6 +30,10 @@ por estado e por município. Atualiza sozinho e detecta o 2º turno.
   Atributos: cargos="presidente,governador,senador,deputado-federal,deputado-estadual" locais="br,sc,pinhalzinho"
              cargo="presidente" local="sc" limite="20" fotos="sim"
 
+[eleicoes_tse_secoes local="pinhalzinho"]
+  Seções do município agrupadas por local de votação; ao clicar, o boletim de urna oficial da seção.
+  Também disponível como aba "Por seção" no painel.
+
 [eleicoes_tse cargo="governador" local="pinhalzinho"]
   cargo:  presidente | governador | senador | deputado-federal | deputado-estadual
   local:  br | sigla da UF (sc) | nome do município (pinhalzinho, sao-lourenco-do-oeste) | código TSE (82538) | uf-código (sc-82538)
@@ -47,6 +51,9 @@ por estado e por município. Atualiza sozinho e detecta o 2º turno.
 3. Crie uma página "Apuração" com [eleicoes_tse_painel].
 
 == Changelog ==
+
+= 1.1.0 =
+* Resultados por seção: boletim de urna oficial (leitor ASN.1), locais de votação de SC, aba "Por seção" no painel.
 
 = 1.0.0 =
 * Primeira versão.

@@ -24,7 +24,8 @@ class NFE_Rest {
 				'permission_callback' => '__return_true',
 				'callback'            => array( __CLASS__, 'resultado' ),
 				'args'                => array(
-					'cargo'  => array( 'type' => 'string', 'required' => true, 'enum' => array_keys( NFE_TSE::CARGOS ) ),
+					'cargo'  => array( 'type' => 'string', 'required' => true, 'enum' => array_merge( array_keys( NFE_TSE::CARGOS ), array( 'secoes' ) ) ),
+					'secao'  => array( 'type' => 'string', 'default' => '', 'pattern' => '^(\\d{1,4}-\\d{1,4})?$' ),
 					'local'  => array( 'type' => 'string', 'default' => '', 'sanitize_callback' => array( __CLASS__, 'limpa_local' ) ),
 					'turno'  => array( 'type' => 'string', 'default' => 'auto', 'enum' => array( 'auto', '1', '2' ) ),
 					'layout' => array( 'type' => 'string', 'default' => 'completo', 'enum' => array( 'completo', 'compacto' ) ),
@@ -43,15 +44,26 @@ class NFE_Rest {
 
 	public static function resultado( WP_REST_Request $req ) {
 		$turno = $req['turno'];
-		$r     = NFE_TSE::resultado( $req['cargo'], $req['local'], 'auto' === $turno ? 'auto' : (int) $turno );
+		$turno = 'auto' === $turno ? 'auto' : (int) $turno;
+
+		if ( 'secoes' === $req['cargo'] ) {
+			$s = NFE_Secoes::render( $req['local'], $req['secao'], $turno );
+			return self::resposta( $s['html'], $s['intervalo'], false );
+		}
+
+		$r     = NFE_TSE::resultado( $req['cargo'], $req['local'], $turno );
 		$opts  = NFE_Shortcodes::opcoes_render( $req->get_params() );
 
+		return self::resposta( NFE_Render::resultado( $r, $opts ), NFE_Shortcodes::intervalo( $r ), ! is_wp_error( $r ) && $r['finalizada'] );
+	}
+
+	private static function resposta( $html, $intervalo, $finalizada ) {
 		$resp = new WP_REST_Response(
 			array(
-				'html'       => NFE_Render::resultado( $r, $opts ),
+				'html'       => $html,
 				'gerado'     => time(),
-				'intervalo'  => NFE_Shortcodes::intervalo( $r ),
-				'finalizada' => ! is_wp_error( $r ) && $r['finalizada'],
+				'intervalo'  => (int) $intervalo,
+				'finalizada' => (bool) $finalizada,
 			)
 		);
 		// Deixa CDN/proxy segurar a resposta por alguns segundos em noite de apuração.

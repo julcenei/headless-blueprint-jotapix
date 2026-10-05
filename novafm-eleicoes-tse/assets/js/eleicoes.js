@@ -107,36 +107,68 @@
 	Widget.prototype.syncPainel = function () {
 		var p = this.params;
 		var tab = this.el.querySelector('.nfe-tab[data-cargo="' + p.cargo + '"]');
-		var nacional = tab && tab.getAttribute('data-escopo') === 'br';
-		var br = this.el.querySelector('.nfe-chip[data-local="br"]');
-		if (br) br.hidden = !nacional;
-		if (!nacional && p.local === 'br') p.local = this.el.getAttribute('data-uf') || '';
+		var escopo = tab ? tab.getAttribute('data-escopo') : '';
+		var chips = this.el.querySelectorAll('.nfe-chip');
+		var primeiroMun = '';
+		for (var i = 0; i < chips.length; i++) {
+			var tipo = chips[i].getAttribute('data-tipo');
+			chips[i].hidden = (tipo === 'br' && escopo !== 'br') || (escopo === 'mun' && tipo !== 'mun');
+			if (tipo === 'mun' && !primeiroMun) primeiroMun = chips[i].getAttribute('data-local');
+		}
+		if (escopo !== 'br' && p.local === 'br') p.local = this.el.getAttribute('data-uf') || '';
+		// "Por seção" só faz sentido em município.
+		if (escopo === 'mun' && (p.local || '').indexOf('-') === -1 && primeiroMun) p.local = primeiroMun;
 
 		this.setPressed('.nfe-tab', 'data-cargo', p.cargo);
 		this.setPressed('.nfe-chip', 'data-local', p.local);
 		var sel = this.el.querySelector('.nfe-mun');
 		if (sel) sel.value = this.el.querySelector('.nfe-chip[data-local="' + p.local + '"]') ? '' : p.local;
+		this.syncUrl();
+	};
 
-		if (this.el.getAttribute('data-url') && window.history && history.replaceState) {
-			try {
-				var u = new URL(window.location.href);
-				u.searchParams.set('nfe_cargo', p.cargo);
-				u.searchParams.set('nfe_local', p.local);
-				history.replaceState(null, '', u.toString());
-			} catch (e) {}
-		}
+	/* Links compartilháveis: ?nfe_cargo=&nfe_local=&nfe_secao= */
+	Widget.prototype.syncUrl = function () {
+		if (!this.el.getAttribute('data-url') || !window.history || !history.replaceState) return;
+		try {
+			var u = new URL(window.location.href);
+			u.searchParams.set('nfe_cargo', this.params.cargo);
+			u.searchParams.set('nfe_local', this.params.local || '');
+			if (this.params.secao) u.searchParams.set('nfe_secao', this.params.secao);
+			else u.searchParams.delete('nfe_secao');
+			history.replaceState(null, '', u.toString());
+		} catch (e) {}
 	};
 
 	Widget.prototype.trocar = function () {
 		this.ui = { busca: '', eleitos: false, todos: false };
+		delete this.params.secao;
 		this.syncPainel();
 		this.load(true);
 	};
 
+	Widget.prototype.abrirSecao = function (secao) {
+		this.ui = { busca: secao ? this.ui.busca : '', eleitos: false, todos: false };
+		if (secao) {
+			this.voltarBusca = this.ui.busca;
+			this.params.secao = secao;
+		} else {
+			delete this.params.secao;
+			this.ui.busca = this.voltarBusca || '';
+		}
+		this.syncUrl();
+		this.load(true);
+		var top = this.el.getBoundingClientRect().top;
+		if (top < 0 && this.el.scrollIntoView) this.el.scrollIntoView({ block: 'start' });
+	};
+
 	Widget.prototype.onClick = function (ev) {
-		var t = ev.target.closest('.nfe-tab, .nfe-chip, .nfe-more');
+		var t = ev.target.closest('.nfe-tab, .nfe-chip, .nfe-more, .nfe-sec, .nfe-voltar');
 		if (!t || !this.el.contains(t)) return;
-		if (t.classList.contains('nfe-tab')) {
+		if (t.classList.contains('nfe-sec') || t.classList.contains('nfe-voltar')) {
+			if (ev.metaKey || ev.ctrlKey || ev.shiftKey || ev.button === 1) return; // nova aba: deixa o link seguir
+			ev.preventDefault();
+			this.abrirSecao(t.getAttribute('data-secao') || '');
+		} else if (t.classList.contains('nfe-tab')) {
 			if (this.params.cargo === t.getAttribute('data-cargo')) return;
 			this.params.cargo = t.getAttribute('data-cargo');
 			this.trocar();
@@ -172,6 +204,7 @@
 	/* ---------- cargos proporcionais: busca, "só eleitos", "mostrar todos" ---------- */
 
 	Widget.prototype.apply = function () {
+		if (this.out.querySelector('.nfe-secoes')) return this.applySecoes();
 		var list = this.out.querySelector('.nfe-rows');
 		if (!list || this.out.querySelector('.nfe-res--compacto')) return;
 
@@ -202,6 +235,32 @@
 			more.hidden = filtrando;
 			more.textContent = this.ui.todos ? 'Mostrar menos' : 'Mostrar todos os ' + more.getAttribute('data-total') + ' candidatos';
 		}
+	};
+
+	/* Lista de seções: busca por número, escola ou bairro. */
+	Widget.prototype.applySecoes = function () {
+		var input = this.out.querySelector('.nfe-search input');
+		if (input && input.value !== this.ui.busca) input.value = this.ui.busca;
+		var termo = norm(this.ui.busca).trim();
+		var num = /^\d+$/.test(termo) ? String(parseInt(termo, 10)) : '';
+		var grupos = this.out.querySelectorAll('.nfe-local');
+		var vis = 0;
+		for (var i = 0; i < grupos.length; i++) {
+			var g = grupos[i];
+			var secs = g.querySelectorAll('li');
+			var algum = false;
+			for (var j = 0; j < secs.length; j++) {
+				var a = secs[j].querySelector('.nfe-sec');
+				// Número digitado: mostra só as seções com esse número; texto: o local inteiro.
+				var ok = !termo || (num ? a.getAttribute('data-num') === num : g.getAttribute('data-busca').indexOf(termo) !== -1);
+				secs[j].hidden = !ok;
+				if (ok) algum = true;
+			}
+			g.hidden = !algum;
+			if (algum) vis++;
+		}
+		var vazio = this.out.querySelector('.nfe-vazio');
+		if (vazio) vazio.hidden = vis > 0;
 	};
 
 	/* ---------- fotos que não existem no TSE viram iniciais ---------- */

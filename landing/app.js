@@ -7,8 +7,9 @@
 		// Número do WhatsApp com DDI e DDD, só dígitos. Ex.: '5549999999999'.
 		// Vazio: o WhatsApp abre para o visitante escolher o contato.
 		whatsapp: '5549991578745',
-		precoPortal: 1490,
-		precoParceiro: 790
+		precoPortal: 698,
+		precoParceiro: 449, // em 2×
+		precoParceiroVista: 397
 	};
 	/* ================================================== */
 
@@ -17,7 +18,8 @@
 	var $$ = function (s, el) { return Array.prototype.slice.call((el || document).querySelectorAll(s)); };
 
 	function brl(v) {
-		return 'R$ ' + v.toLocaleString('pt-BR', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+		var dec = Math.round(v * 100) % 100 ? 2 : 0;
+		return 'R$ ' + v.toLocaleString('pt-BR', { minimumFractionDigits: dec, maximumFractionDigits: dec });
 	}
 	function pct(v, d) {
 		return v.toLocaleString('pt-BR', { minimumFractionDigits: d, maximumFractionDigits: d });
@@ -26,7 +28,7 @@
 	/* ---------- WhatsApp ---------- */
 	function linkWhats(plano) {
 		var txt = plano === 'Parceiro'
-			? 'Olá! Sou parceiro JPX e quero o JPX Eleições 2026 (plano Parceiro, ' + brl(CONFIG.precoParceiro) + ') no meu portal.'
+			? 'Olá! Sou parceiro JPX e quero o JPX Eleições 2026 (plano Parceiro, ' + brl(CONFIG.precoParceiro) + ' em 2× ou ' + brl(CONFIG.precoParceiroVista) + ' à vista) no meu portal.'
 			: 'Olá! Quero o JPX Eleições 2026 (plano Portal, ' + brl(CONFIG.precoPortal) + ') no meu portal.';
 		return 'https://wa.me/' + CONFIG.whatsapp.replace(/\D/g, '') + '?text=' + encodeURIComponent(txt);
 	}
@@ -286,7 +288,7 @@
 	function calc() {
 		$('#calcN').textContent = n;
 		$('#calcPortal').textContent = brl(n * CONFIG.precoPortal);
-		$('#calcParceiro').textContent = brl(n * CONFIG.precoParceiro);
+		$('#calcParceiro').textContent = brl(n * CONFIG.precoParceiroVista);
 	}
 	$('#calcMenos').addEventListener('click', function () {
 		n = Math.max(1, n - 1);

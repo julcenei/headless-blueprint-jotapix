@@ -24,7 +24,10 @@ class NFE_Rest {
 				'permission_callback' => '__return_true',
 				'callback'            => array( __CLASS__, 'resultado' ),
 				'args'                => array(
-					'cargo'  => array( 'type' => 'string', 'required' => true, 'enum' => array_merge( array_keys( NFE_TSE::CARGOS ), array( 'secoes' ) ) ),
+					'cargo'  => array( 'type' => 'string', 'required' => true, 'enum' => array_merge( array_keys( NFE_TSE::CARGOS ), array( 'secoes', 'mapa', 'regiao' ) ) ),
+					'mapa'   => array( 'type' => 'string', 'default' => 'presidente', 'enum' => array( 'presidente', 'governador', 'senador' ) ),
+					'cargos' => array( 'type' => 'string', 'default' => '', 'sanitize_callback' => array( __CLASS__, 'limpa_lista' ) ),
+					'locais' => array( 'type' => 'string', 'default' => '', 'sanitize_callback' => array( __CLASS__, 'limpa_lista' ) ),
 					'secao'  => array( 'type' => 'string', 'default' => '', 'pattern' => '^(\\d{1,4}-\\d{1,4})?$' ),
 					'local'  => array( 'type' => 'string', 'default' => '', 'sanitize_callback' => array( __CLASS__, 'limpa_local' ) ),
 					'turno'  => array( 'type' => 'string', 'default' => 'auto', 'enum' => array( 'auto', '1', '2' ) ),
@@ -42,10 +45,22 @@ class NFE_Rest {
 		return substr( preg_replace( '/[^a-z0-9:-]/', '', strtolower( remove_accents( (string) $v ) ) ), 0, 60 );
 	}
 
+	public static function limpa_lista( $v ) {
+		return substr( preg_replace( '/[^a-z0-9:,-]/', '', strtolower( remove_accents( (string) $v ) ) ), 0, 300 );
+	}
+
 	public static function resultado( WP_REST_Request $req ) {
 		$turno = $req['turno'];
 		$turno = 'auto' === $turno ? 'auto' : (int) $turno;
 
+		if ( 'mapa' === $req['cargo'] ) {
+			$s = NFE_Extras::mapa( $req['mapa'], $turno, NFE_Shortcodes::link_painel() );
+			return self::resposta( $s['html'], $s['intervalo'], false );
+		}
+		if ( 'regiao' === $req['cargo'] ) {
+			$s = NFE_Shortcodes::regiao_render( $req['cargos'], $req['locais'], $req['limite'], $req['titulo'], $turno );
+			return self::resposta( $s['html'], $s['intervalo'], false );
+		}
 		if ( 'secoes' === $req['cargo'] ) {
 			$s = NFE_Secoes::render( $req['local'], $req['secao'], $turno );
 			return self::resposta( $s['html'], $s['intervalo'], false );

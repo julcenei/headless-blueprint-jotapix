@@ -12,6 +12,11 @@ alimenta o app *Resultados* do TSE e páginas como a `eleicoes.rco.com.br/oficia
 - **Por seção:** boletim de urna oficial de cada seção, com as seções agrupadas por local de votação (escola, endereço). Funciona em qualquer município de SC
 - **Hemiciclo** de cadeiras por partido/federação nos cargos proporcionais
 - **Largura:** painel e página por seção vão até 1130px (configurável), saindo da coluna de 900px do tema sem estourar a tela
+- **Navegação:** abas fixas ao rolar, busca de município digitável, botão Compartilhar (link, WhatsApp, Facebook, X), esqueleto de carregamento
+- **Destaque do líder** (vantagem sobre o 2º) e **duelo** lado a lado no 2º turno
+- **Mapa do Brasil** por UF (`[eleicoes_tse_mapa]`, aba "Mapa") e **mais votados da região** (`[eleicoes_tse_regiao]`)
+- **Por seção:** mais votado em cada local e seção; no boletim, ▲▼ do % na seção em relação à cidade
+- **Aparência:** claro (padrão), automático ou escuro
 - Cores e fonte do tema `nova-portal` (`--accent: #ff6600`, `--ink: #0B192C`, Encode Sans)
 
 ## Instalação
@@ -26,6 +31,8 @@ alimenta o app *Resultados* do TSE e páginas como a `eleicoes.rco.com.br/oficia
 | Shortcode | O que mostra |
 |---|---|
 | `[eleicoes_tse_painel]` | Painel completo: abas de cargo e botões Brasil / SC / Pinhalzinho / São Lourenço do Oeste, além de uma lista com todos os municípios de SC |
+| `[eleicoes_tse_mapa]` | Mapa do Brasil: quem venceu para Presidente em cada UF (clique abre o estado no painel) |
+| `[eleicoes_tse_regiao]` | Deputados mais votados somando Pinhalzinho + São Lourenço do Oeste, com colunas por cidade |
 | `[eleicoes_tse_secoes local="pinhalzinho"]` | Seções de Pinhalzinho por local de votação; clicando, o boletim de urna da seção (todos os cargos) |
 | `[eleicoes_tse cargo="presidente" local="br"]` | Presidente, Brasil |
 | `[eleicoes_tse cargo="governador" local="pinhalzinho"]` | Governador, votos em Pinhalzinho |
@@ -82,6 +89,7 @@ novafm-eleicoes-tse/
 │   ├── class-nfe-render.php       HTML dos resultados (usado na página e nas atualizações)
 │   ├── class-nfe-secoes.php       por seção: lista de seções/locais e boletim de urna
 │   ├── class-nfe-bu.php           leitor do boletim de urna (ASN.1 DER)
+│   ├── class-nfe-extras.php       mapa do Brasil e mais votados da região
 │   ├── class-nfe-shortcodes.php   [eleicoes_tse] e [eleicoes_tse_painel]
 │   ├── class-nfe-rest.php         endpoint público de atualização
 │   ├── class-nfe-options.php      configurações

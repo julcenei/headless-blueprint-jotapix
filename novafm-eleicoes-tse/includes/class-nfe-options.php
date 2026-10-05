@@ -19,6 +19,7 @@ class NFE_Options {
 			'fotos'     => 1,
 			'link'      => '',
 			'largura'   => 1130,
+			'aparencia' => 'claro',
 		);
 	}
 
@@ -54,6 +55,8 @@ class NFE_Options {
 		// 0 = respeitar a largura do tema; senão, entre 600 e 1600 px.
 		$larg           = isset( $in['largura'] ) ? (int) $in['largura'] : $d['largura'];
 		$out['largura'] = $larg <= 0 ? 0 : max( 600, min( 1600, $larg ) );
+
+		$out['aparencia'] = isset( $in['aparencia'] ) && in_array( $in['aparencia'], array( 'claro', 'auto', 'escuro' ), true ) ? $in['aparencia'] : 'claro';
 
 		// Ciclo ou UF diferentes mudam todas as chaves de dados: invalida o cache.
 		$old = self::all();

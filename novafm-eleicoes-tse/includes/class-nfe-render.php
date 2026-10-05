@@ -114,7 +114,7 @@ class NFE_Render {
 
 		ob_start();
 		$classes = 'nfe-res nfe-res--' . ( $r['proporcional'] ? 'prop' : 'maj' ) . ( $compacto ? ' nfe-res--compacto' : '' );
-		echo '<div class="' . esc_attr( $classes ) . '" data-finalizada="' . ( $r['finalizada'] ? '1' : '0' ) . '">';
+		echo '<div class="' . esc_attr( $classes ) . '" data-finalizada="' . ( $r['finalizada'] ? '1' : '0' ) . '" data-compartilhar="' . esc_attr( self::texto_compartilhar( $r ) ) . '">';
 
 		self::cabecalho( $r, $opts['titulo'], $compacto );
 
@@ -143,7 +143,7 @@ class NFE_Render {
 		if ( $compacto && $opts['link'] ) {
 			echo '<a class="nfe-link" href="' . esc_url( $opts['link'] ) . '">Ver apuração completa →</a>';
 		}
-		echo '<span class="nfe-countdown" aria-hidden="true"></span>';
+		echo '<span class="nfe-foot__dir"><span class="nfe-countdown" aria-hidden="true"></span>' . self::botao_compartilhar() . '</span>'; // phpcs:ignore WordPress.Security.EscapeOutput
 		echo '</footer></div>';
 
 		return ob_get_clean();
@@ -193,8 +193,23 @@ class NFE_Render {
 	private static function majoritario( $r, $limite, $fotos, $compacto ) {
 		$cands = $r['candidatos'];
 		$total = count( $cands );
-		echo '<ol class="nfe-cands">';
+		$ini   = 0;
+
+		// Cargo de uma vaga com votos: 1º colocado em destaque (ou duelo, no 2º turno).
+		if ( ! $compacto && 1 === $r['vagas'] && $total > 1 && $cands[0]['votos'] > 0 ) {
+			if ( 2 === $total ) {
+				self::duelo( $r, $cands, $fotos );
+				return;
+			}
+			self::lider( $r, $cands, $fotos );
+			$ini = 1;
+		}
+
+		echo '<ol class="nfe-cands"' . ( $ini ? ' start="2"' : '' ) . '>';
 		foreach ( $cands as $i => $c ) {
+			if ( $i < $ini ) {
+				continue;
+			}
 			if ( $limite > 0 && $i >= $limite ) {
 				break;
 			}
@@ -430,6 +445,98 @@ class NFE_Render {
 			echo '</li>';
 		}
 		echo '</ol></div></div>';
+	}
+
+	/* ------------------------------------------------------------------ *
+	 * Compartilhar, destaque do líder e duelo
+	 * ------------------------------------------------------------------ */
+
+	public static function foto_publica( $c, $base ) {
+		return self::foto( $c, (bool) NFE_Options::get( 'fotos' ), $base );
+	}
+
+	public static function tag_publica( $c ) {
+		return self::tag_situacao( $c );
+	}
+
+	public static function botao_compartilhar() {
+		return '<button type="button" class="nfe-share" aria-haspopup="menu"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" focusable="false"><path fill="currentColor" d="M18 16.1c-.8 0-1.5.3-2 .8l-7.1-4.2c.1-.2.1-.5.1-.7s0-.5-.1-.7L16 7.2c.5.5 1.2.8 2 .8 1.7 0 3-1.3 3-3s-1.3-3-3-3-3 1.3-3 3c0 .2 0 .5.1.7L8 9.8C7.5 9.3 6.8 9 6 9c-1.7 0-3 1.3-3 3s1.3 3 3 3c.8 0 1.5-.3 2-.8l7.1 4.2c-.1.2-.1.4-.1.6 0 1.6 1.3 2.9 2.9 2.9s2.9-1.3 2.9-2.9-1.2-2.9-2.8-2.9z"/></svg><span>Compartilhar</span></button>';
+	}
+
+	/** "Governador · Pinhalzinho (100% das seções): Jorginho Mello 44,04% · João Rodrigues 40,73% …" */
+	public static function texto_compartilhar( $r ) {
+		$top = array();
+		foreach ( array_slice( $r['candidatos'], 0, $r['proporcional'] ? 5 : 3 ) as $c ) {
+			$top[] = $c['nome'] . ' (' . $c['partido'] . ') ' . self::pct( $c['pct'] );
+		}
+		$t = $r['turno'] . 'º turno · ' . $r['cargo'] . ' · ' . $r['local']['nome'] . ' (' . self::pct( $r['secoes']['pct'] ) . ' das seções): ' . implode( ' · ', $top );
+		return $t . ' — ' . get_bloginfo( 'name' );
+	}
+
+	public static function cor_partido( $sigla ) {
+		$k = str_replace( ' ', '', strtoupper( remove_accents( (string) $sigla ) ) );
+		return isset( self::CORES[ $k ] ) ? self::CORES[ $k ] : '#64748b';
+	}
+
+	private static function foto_g( $c, $fotos, $base, $classe ) {
+		return str_replace( 'class="nfe-foto', 'class="nfe-foto ' . $classe, self::foto( $c, $fotos, $base ) );
+	}
+
+	private static function lider( $r, $cands, $fotos ) {
+		$c   = $cands[0];
+		$seg = $cands[1];
+		$dif = $c['votos'] - $seg['votos'];
+		$rot = $c['eleito'] ? 'Eleito' : ( false !== stripos( $c['situacao'], 'turno' ) ? 'Mais votado · vai ao 2º turno' : 'Lidera' );
+
+		echo '<div class="nfe-lider' . ( $c['eleito'] ? ' is-eleito' : '' ) . '" style="--nfe-c:' . esc_attr( self::cor_partido( $c['partido'] ) ) . '">';
+		echo self::foto_g( $c, $fotos, $r['fotos'], 'nfe-foto--g' ); // phpcs:ignore WordPress.Security.EscapeOutput
+		echo '<div class="nfe-lider__info">';
+		echo '<span class="nfe-lider__rot">' . esc_html( $rot ) . '</span>';
+		echo '<span class="nfe-lider__nome">' . esc_html( $c['nome'] ) . '</span>';
+		echo '<span class="nfe-lider__sub">' . esc_html( $c['numero'] . ' · ' . $c['partido'] . ( $c['agrup'] ? ' · ' . $c['agrup'] : '' ) ) . '</span>';
+		foreach ( $c['vices'] as $v ) {
+			echo '<span class="nfe-lider__sub">' . esc_html( ( 'v' === $v['tipo'] ? 'Vice' : 'Suplente' ) . ': ' . $v['nome'] . ( $v['partido'] ? ' (' . $v['partido'] . ')' : '' ) ) . '</span>';
+		}
+		echo '</div>';
+		echo '<div class="nfe-lider__num"><span class="nfe-lider__pct">' . esc_html( self::pct( $c['pct'] ) ) . '</span>';
+		echo '<span class="nfe-lider__votos">' . esc_html( self::n( $c['votos'] ) ) . ' votos</span></div>';
+		echo '<div class="nfe-bar nfe-lider__bar"><span style="width:' . esc_attr( min( 100, $c['pct'] ) ) . '%"></span></div>';
+		echo '<p class="nfe-lider__vant">Vantagem de <strong>' . esc_html( self::n( $dif ) ) . ' votos</strong> (' . esc_html( number_format( $c['pct'] - $seg['pct'], 2, ',', '.' ) ) . ' p.p.) sobre ' . esc_html( $seg['nome'] ) . '</p>';
+		echo '</div>';
+	}
+
+	private static function duelo( $r, $cands, $fotos ) {
+		$a   = $cands[0];
+		$b   = $cands[1];
+		$ca  = self::cor_partido( $a['partido'] );
+		$cb  = self::cor_partido( $b['partido'] );
+		if ( $ca === $cb ) {
+			$cb = '#94a3b8';
+		}
+		$tot = max( 1, $a['votos'] + $b['votos'] );
+		echo '<div class="nfe-duelo">';
+		foreach ( array( array( $a, $ca ), array( $b, $cb ) ) as $i => $par ) {
+			list( $c, $cor ) = $par;
+			echo '<div class="nfe-duelo__lado' . ( 0 === $i ? ' is-lider' : '' ) . ( $c['eleito'] ? ' is-eleito' : '' ) . '" style="--nfe-c:' . esc_attr( $cor ) . '">';
+			echo self::foto_g( $c, $fotos, $r['fotos'], 'nfe-foto--g' ); // phpcs:ignore WordPress.Security.EscapeOutput
+			echo '<span class="nfe-lider__nome">' . esc_html( $c['nome'] ) . '</span>';
+			echo '<span class="nfe-lider__sub">' . esc_html( $c['numero'] . ' · ' . $c['partido'] ) . '</span>';
+			echo self::tag_situacao( $c ); // phpcs:ignore WordPress.Security.EscapeOutput
+			echo '<span class="nfe-lider__pct">' . esc_html( self::pct( $c['pct'] ) ) . '</span>';
+			echo '<span class="nfe-lider__votos">' . esc_html( self::n( $c['votos'] ) ) . ' votos</span>';
+			echo '</div>';
+			if ( 0 === $i ) {
+				echo '<span class="nfe-duelo__x" aria-hidden="true">×</span>';
+			}
+		}
+		echo '<div class="nfe-duelo__bar" role="img" aria-label="' . esc_attr( $a['nome'] . ' ' . self::pct( $a['pct'] ) . ', ' . $b['nome'] . ' ' . self::pct( $b['pct'] ) ) . '">';
+		echo '<span style="width:' . esc_attr( round( 100 * $a['votos'] / $tot, 3 ) ) . '%;background:' . esc_attr( $ca ) . '"></span>';
+		echo '<span style="width:' . esc_attr( round( 100 * $b['votos'] / $tot, 3 ) ) . '%;background:' . esc_attr( $cb ) . '"></span>';
+		echo '<i aria-hidden="true"></i></div>';
+		if ( $a['votos'] > 0 ) {
+			echo '<p class="nfe-lider__vant">Diferença de <strong>' . esc_html( self::n( $a['votos'] - $b['votos'] ) ) . ' votos</strong> (' . esc_html( number_format( $a['pct'] - $b['pct'], 2, ',', '.' ) ) . ' p.p.)</p>';
+		}
+		echo '</div>';
 	}
 
 	private static function estatisticas( $r ) {

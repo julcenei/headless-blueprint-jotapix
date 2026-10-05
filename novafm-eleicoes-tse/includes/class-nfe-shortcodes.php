@@ -4,6 +4,8 @@
  *   [eleicoes_tse cargo="governador" local="pinhalzinho" layout="completo|compacto" limite="" turno="auto" fotos="sim" titulo="" link=""]
  *   [eleicoes_tse_painel cargos="presidente,governador,senador,deputado-federal,deputado-estadual,secoes" locais="br,sc,pinhalzinho" cargo="presidente" local="sc"]
  *   [eleicoes_tse_secoes local="pinhalzinho" turno="auto"]
+ *   [eleicoes_tse_mapa cargo="presidente"]
+ *   [eleicoes_tse_regiao cargos="deputado-federal,deputado-estadual" locais="pinhalzinho,sao-lourenco-do-oeste" limite="10"]
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -15,6 +17,8 @@ class NFE_Shortcodes {
 		add_shortcode( 'eleicoes_tse', array( __CLASS__, 'widget' ) );
 		add_shortcode( 'eleicoes_tse_painel', array( __CLASS__, 'painel' ) );
 		add_shortcode( 'eleicoes_tse_secoes', array( __CLASS__, 'secoes' ) );
+		add_shortcode( 'eleicoes_tse_mapa', array( __CLASS__, 'mapa' ) );
+		add_shortcode( 'eleicoes_tse_regiao', array( __CLASS__, 'regiao' ) );
 	}
 
 	public static function register_assets() {
@@ -28,8 +32,13 @@ class NFE_Shortcodes {
 
 		// Carrega o CSS no <head> quando o conteúdo da página já usa o shortcode (evita "piscar").
 		$post = get_post();
-		if ( $post && ( has_shortcode( $post->post_content, 'eleicoes_tse' ) || has_shortcode( $post->post_content, 'eleicoes_tse_painel' ) || has_shortcode( $post->post_content, 'eleicoes_tse_secoes' ) ) ) {
-			wp_enqueue_style( 'nfe-tse' );
+		if ( $post ) {
+			foreach ( array( 'eleicoes_tse', 'eleicoes_tse_painel', 'eleicoes_tse_secoes', 'eleicoes_tse_mapa', 'eleicoes_tse_regiao' ) as $sc ) {
+				if ( has_shortcode( $post->post_content, $sc ) ) {
+					wp_enqueue_style( 'nfe-tse' );
+					break;
+				}
+			}
 		}
 	}
 
@@ -88,7 +97,65 @@ class NFE_Shortcodes {
 		if ( $largura ) {
 			$css[] = '--nfe-largura:' . (int) $largura . 'px';
 		}
-		return ( $largura ? ' data-largo="1"' : '' ) . ( $css ? ' style="' . esc_attr( implode( ';', $css ) ) . '"' : '' );
+		$tema = NFE_Options::get( 'aparencia' );
+		return ( $largura ? ' data-largo="1"' : '' ) . ' data-tema="' . esc_attr( $tema ? $tema : 'claro' ) . '"' . ( $css ? ' style="' . esc_attr( implode( ';', $css ) ) . '"' : '' );
+	}
+
+	/** Página do painel (Configurações → Página da apuração), para os links do mapa. */
+	public static function link_painel() {
+		return (string) NFE_Options::get( 'link' );
+	}
+
+	/** Contêiner padrão de um widget com atualização automática. */
+	private static function caixa( $params, $html, $intervalo, $largura = 0, $url = false ) {
+		return '<div class="nfe nfe-widget"' . self::estilo( $largura ) . ' data-nfe="' . esc_attr( wp_json_encode( array_filter( $params, 'strlen' ) ) ) . '" data-gerado="' . time() . '" data-intervalo="' . (int) $intervalo . '"' . ( $url ? ' data-url="1"' : '' ) . '>'
+			. '<div class="nfe-out">' . $html . '</div></div>';
+	}
+
+	/** Lista "a,b" → array, com os destaques das configurações como padrão. */
+	public static function regiao_render( $cargos, $locais, $limite, $titulo, $turno ) {
+		$cs = array_filter( array_map( 'trim', explode( ',', (string) $cargos ) ) );
+		$cs = $cs ? array_map( array( __CLASS__, 'cargo_valido' ), $cs ) : array( 'deputado-federal', 'deputado-estadual' );
+		$ls = array_filter( array_map( 'trim', explode( ',', (string) $locais ) ) );
+		$ls = $ls ? $ls : array_keys( NFE_TSE::destaques() );
+		return NFE_Extras::regiao( array_unique( $cs ), $ls, $limite ? $limite : 10, $titulo, $turno );
+	}
+
+	/** [eleicoes_tse_mapa] — Brasil por UF. */
+	public static function mapa( $atts ) {
+		$a = shortcode_atts( array( 'cargo' => 'presidente', 'turno' => 'auto', 'largura' => '' ), $atts, 'eleicoes_tse_mapa' );
+		self::enqueue();
+		$cargo = in_array( $a['cargo'], array( 'presidente', 'governador', 'senador' ), true ) ? $a['cargo'] : 'presidente';
+		$m     = NFE_Extras::mapa( $cargo, self::turno_attr( $a['turno'] ), self::link_painel() );
+		return self::caixa(
+			array( 'cargo' => 'mapa', 'mapa' => $cargo, 'turno' => (string) self::turno_attr( $a['turno'] ) ),
+			$m['html'],
+			$m['intervalo'],
+			self::largura( $a['largura'], false )
+		);
+	}
+
+	/** [eleicoes_tse_regiao] — mais votados somando os municípios da região. */
+	public static function regiao( $atts ) {
+		$a = shortcode_atts( array( 'cargos' => '', 'locais' => '', 'limite' => '10', 'titulo' => '', 'turno' => 'auto', 'largura' => '' ), $atts, 'eleicoes_tse_regiao' );
+		self::enqueue();
+		$cargos = NFE_Rest::limpa_lista( $a['cargos'] );
+		$locais = NFE_Rest::limpa_lista( $a['locais'] );
+		$titulo = sanitize_text_field( $a['titulo'] );
+		$r      = self::regiao_render( $cargos, $locais, (int) $a['limite'], $titulo, self::turno_attr( $a['turno'] ) );
+		return self::caixa(
+			array(
+				'cargo'  => 'regiao',
+				'cargos' => $cargos,
+				'locais' => $locais,
+				'limite' => (string) (int) $a['limite'],
+				'titulo' => $titulo,
+				'turno'  => (string) self::turno_attr( $a['turno'] ),
+			),
+			$r['html'],
+			$r['intervalo'],
+			self::largura( $a['largura'], false )
+		);
 	}
 
 	/** Largura do atributo "largura" (px) ou, sem ele, da configuração. */
@@ -100,7 +167,7 @@ class NFE_Shortcodes {
 		return $padrao ? (int) NFE_Options::get( 'largura' ) : 0;
 	}
 
-	private static function cargo_valido( $c, $padrao = 'presidente' ) {
+	public static function cargo_valido( $c, $padrao = 'presidente' ) {
 		$c = sanitize_title( remove_accents( (string) $c ) );
 		$alias = array(
 			'deputado_federal'  => 'deputado-federal',
@@ -209,7 +276,7 @@ class NFE_Shortcodes {
 		$uf = NFE_TSE::uf_padrao();
 		$a  = shortcode_atts(
 			array(
-				'cargos' => implode( ',', array_keys( NFE_TSE::CARGOS ) ) . ',secoes',
+				'cargos' => implode( ',', array_keys( NFE_TSE::CARGOS ) ) . ',secoes,mapa',
 				'locais' => '',
 				'cargo'  => '',
 				'local'  => '',
@@ -227,6 +294,10 @@ class NFE_Shortcodes {
 		foreach ( explode( ',', $a['cargos'] ) as $c ) {
 			if ( in_array( trim( $c ), array( 'secoes', 'secao', 'por-secao' ), true ) ) {
 				$cargos['secoes'] = 'Por seção';
+				continue;
+			}
+			if ( 'mapa' === trim( $c ) ) {
+				$cargos['mapa'] = 'Mapa';
 				continue;
 			}
 			$c = self::cargo_valido( trim( $c ), '' );
@@ -251,14 +322,14 @@ class NFE_Shortcodes {
 		// Estado inicial: ?nfe_cargo=&nfe_local= na URL (links compartilháveis) ou atributos.
 		// phpcs:disable WordPress.Security.NonceVerification.Recommended
 		$pedido = isset( $_GET['nfe_cargo'] ) ? sanitize_key( wp_unslash( $_GET['nfe_cargo'] ) ) : $a['cargo'];
-		$cargo  = 'secoes' === $pedido ? 'secoes' : self::cargo_valido( $pedido, key( $cargos ) );
+		$cargo  = in_array( $pedido, array( 'secoes', 'mapa' ), true ) ? $pedido : self::cargo_valido( $pedido, key( $cargos ) );
 		$local = NFE_Rest::limpa_local( isset( $_GET['nfe_local'] ) ? wp_unslash( $_GET['nfe_local'] ) : ( $a['local'] ? $a['local'] : $uf ) );
 		// phpcs:enable
 		if ( ! isset( $cargos[ $cargo ] ) ) {
 			$cargo = key( $cargos );
 		}
-		$escopo = 'secoes' === $cargo ? 'mun' : NFE_TSE::CARGOS[ $cargo ]['escopo'];
-		if ( 'br' === $local && 'br' !== $escopo ) {
+		$escopo = 'secoes' === $cargo ? 'mun' : ( 'mapa' === $cargo ? 'mapa' : NFE_TSE::CARGOS[ $cargo ]['escopo'] );
+		if ( 'br' === $local && 'br' !== $escopo && 'mapa' !== $escopo ) {
 			$local = $uf;
 		}
 		$loc_atual = NFE_TSE::local( $local );
@@ -273,6 +344,10 @@ class NFE_Shortcodes {
 			$sec       = NFE_Secoes::render( $chave, $secao, self::turno_attr( $a['turno'] ) );
 			$html      = $sec['html'];
 			$intervalo = $sec['intervalo'];
+		} elseif ( 'mapa' === $cargo ) {
+			$m         = NFE_Extras::mapa( 'presidente', self::turno_attr( $a['turno'] ) );
+			$html      = $m['html'];
+			$intervalo = $m['intervalo'];
 		} else {
 			$r         = NFE_TSE::resultado( $cargo, $chave, self::turno_attr( $a['turno'] ) );
 			$html      = NFE_Render::resultado( $r, $opts );
@@ -299,17 +374,17 @@ class NFE_Shortcodes {
 		echo '<div class="nfe-painel__bar">';
 		echo '<div class="nfe-tabs" role="group" aria-label="Cargo">';
 		foreach ( $cargos as $slug => $nome ) {
-			echo '<button type="button" class="nfe-tab" data-cargo="' . esc_attr( $slug ) . '" data-escopo="' . esc_attr( 'secoes' === $slug ? 'mun' : NFE_TSE::CARGOS[ $slug ]['escopo'] ) . '" aria-pressed="' . ( $slug === $cargo ? 'true' : 'false' ) . '">' . esc_html( $nome ) . '</button>';
+			echo '<button type="button" class="nfe-tab" data-cargo="' . esc_attr( $slug ) . '" data-escopo="' . esc_attr( 'secoes' === $slug ? 'mun' : ( 'mapa' === $slug ? 'mapa' : NFE_TSE::CARGOS[ $slug ]['escopo'] ) ) . '" aria-pressed="' . ( $slug === $cargo ? 'true' : 'false' ) . '">' . esc_html( $nome ) . '</button>';
 		}
 		echo '</div>';
 
 		echo '<div class="nfe-locais" role="group" aria-label="Local">';
 		foreach ( $locais as $k => $loc ) {
-			$oculto = ( 'br' === $k && 'br' !== $escopo ) || ( 'mun' === $escopo && 'mun' !== $loc['tipo'] );
+			$oculto = 'mapa' === $escopo || ( 'br' === $k && 'br' !== $escopo ) || ( 'mun' === $escopo && 'mun' !== $loc['tipo'] );
 			echo '<button type="button" class="nfe-chip" data-local="' . esc_attr( $k ) . '" data-tipo="' . esc_attr( $loc['tipo'] ) . '" aria-pressed="' . ( $k === $chave ? 'true' : 'false' ) . '"' . ( $oculto ? ' hidden' : '' ) . '>' . esc_html( 'uf' === $loc['tipo'] ? strtoupper( $loc['uf'] ) . ' · ' . $loc['nome'] : $loc['nome'] ) . '</button>';
 		}
 		if ( ! is_wp_error( $muns ) ) {
-			echo '<label class="nfe-select"><span class="screen-reader-text">Outro município</span><select class="nfe-mun">';
+			echo '<label class="nfe-select"' . ( 'mapa' === $escopo ? ' hidden' : '' ) . '><span class="screen-reader-text">Outro município</span><select class="nfe-mun">';
 			echo '<option value="">Outro município de ' . esc_html( strtoupper( $uf ) ) . '…</option>';
 			foreach ( $muns as $m ) {
 				$k = $uf . '-' . $m['cd'];

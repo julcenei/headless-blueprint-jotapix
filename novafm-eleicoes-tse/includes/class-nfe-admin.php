@@ -100,6 +100,16 @@ class NFE_Admin {
 						<td><label><input type="checkbox" name="<?php echo esc_attr( NFE_Options::KEY ); ?>[fotos]" value="1" <?php checked( $o['fotos'], 1 ); ?>> Mostrar fotos (carregadas do TSE)</label></td>
 					</tr>
 					<tr>
+						<th scope="row"><label for="nfe_aparencia">Aparência</label></th>
+						<td>
+							<select name="<?php echo esc_attr( NFE_Options::KEY ); ?>[aparencia]" id="nfe_aparencia">
+								<option value="claro" <?php selected( $o['aparencia'], 'claro' ); ?>>Sempre claro (recomendado: o tema do site é claro)</option>
+								<option value="auto" <?php selected( $o['aparencia'], 'auto' ); ?>>Automático (segue o modo escuro do aparelho)</option>
+								<option value="escuro" <?php selected( $o['aparencia'], 'escuro' ); ?>>Sempre escuro</option>
+							</select>
+						</td>
+					</tr>
+					<tr>
 						<th scope="row"><label for="nfe_largura">Largura do painel (px)</label></th>
 						<td><?php self::campo( 'largura', $o['largura'], 'number', 'min="0" max="1600" step="10" style="width:7em"' ); ?>
 							<p class="description">O painel e a página por seção podem ficar mais largos que a coluna de texto do tema (900px), centralizados e sem passar da tela. Use <code>0</code> para seguir a largura do tema.</p></td>
@@ -126,6 +136,8 @@ class NFE_Admin {
 			<table class="widefat striped" style="max-width:960px">
 				<tbody>
 					<tr><td><code>[eleicoes_tse_painel]</code></td><td>Painel completo: abas de cargo (incluindo "Por seção") e botões Brasil / estado / municípios em destaque, além de uma lista com todos os municípios.</td></tr>
+					<tr><td><code>[eleicoes_tse_mapa]</code></td><td>Mapa do Brasil: quem venceu para Presidente em cada estado (também <code>cargo="governador"</code> ou <code>"senador"</code>). Também é a aba "Mapa" do painel.</td></tr>
+					<tr><td><code>[eleicoes_tse_regiao]</code></td><td>Mais votados (deputados) somando os municípios em destaque, com colunas por cidade. Atributos: <code>cargos</code>, <code>locais</code>, <code>limite</code>, <code>titulo</code>.</td></tr>
 					<tr><td><code>[eleicoes_tse_secoes local="pinhalzinho"]</code></td><td>Seções do município agrupadas por local de votação; ao clicar, o boletim de urna oficial da seção com todos os cargos.</td></tr>
 					<tr><td><code>[eleicoes_tse cargo="presidente" local="br"]</code></td><td>Presidente no Brasil.</td></tr>
 					<tr><td><code>[eleicoes_tse cargo="governador" local="pinhalzinho"]</code></td><td>Governador, votos em Pinhalzinho.</td></tr>

@@ -4,7 +4,7 @@ Tags: eleições, tse, apuração, resultados, shortcode
 Requires at least: 5.8
 Tested up to: 6.8
 Requires PHP: 7.4
-Stable tag: 1.2.0
+Stable tag: 1.3.0
 License: GPLv2 or later
 
 Apuração e resultados oficiais das eleições direto dos arquivos públicos do TSE.
@@ -34,6 +34,12 @@ por estado e por município. Atualiza sozinho e detecta o 2º turno.
   Seções do município agrupadas por local de votação; ao clicar, o boletim de urna oficial da seção.
   Também disponível como aba "Por seção" no painel.
 
+[eleicoes_tse_mapa cargo="presidente"]
+  Mapa do Brasil por UF (presidente | governador | senador). Também é a aba "Mapa" do painel.
+
+[eleicoes_tse_regiao cargos="deputado-federal,deputado-estadual" locais="pinhalzinho,sao-lourenco-do-oeste" limite="10"]
+  Mais votados somando os municípios (padrão: os destaques das configurações).
+
 [eleicoes_tse cargo="governador" local="pinhalzinho"]
   cargo:  presidente | governador | senador | deputado-federal | deputado-estadual
   local:  br | sigla da UF (sc) | nome do município (pinhalzinho, sao-lourenco-do-oeste) | código TSE (82538) | uf-código (sc-82538)
@@ -51,6 +57,18 @@ por estado e por município. Atualiza sozinho e detecta o 2º turno.
 3. Crie uma página "Apuração" com [eleicoes_tse_painel].
 
 == Changelog ==
+
+= 1.3.0 =
+* Abas do painel fixas ao rolar (abaixo do cabeçalho do tema), com indicador de rolagem no celular.
+* Busca de município digitável no lugar da lista de 295 cidades.
+* Botão Compartilhar (copiar link, WhatsApp, Facebook, X) com texto pronto do resultado.
+* Esqueleto de carregamento ao trocar de aba.
+* Destaque do 1º colocado com vantagem sobre o 2º; duelo lado a lado no 2º turno.
+* Aparência: claro, automático ou escuro.
+* [eleicoes_tse_regiao]: mais votados somando os municípios da região.
+* Boletim de urna: diferença do % na seção para o % na cidade.
+* Por seção: mais votado em cada local de votação e em cada seção.
+* [eleicoes_tse_mapa] e aba "Mapa": quem venceu em cada UF.
 
 = 1.2.0 =
 * Cadeiras por partido/federação em hemiciclo, com legenda e destaque ao passar o mouse.

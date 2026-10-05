@@ -99,6 +99,88 @@ class NFE_TSE {
 		return wp_remote_retrieve_body( $res );
 	}
 
+	/**
+	 * Vários arquivos do TSE em paralelo (boletins de todas as seções de um município).
+	 *
+	 * @param string[] $paths Caminhos relativos ao ambiente.
+	 * @param float    $prazo microtime() limite para iniciar novos lotes (0 = sem limite).
+	 * @return array caminho => corpo (string) ou WP_Error; caminhos não tentados (prazo) ficam de fora.
+	 */
+	public static function http_multi( $paths, $prazo = 0 ) {
+		$paths = array_values( array_unique( $paths ) );
+		$out   = array();
+		$cls   = class_exists( 'WpOrg\\Requests\\Requests' ) ? 'WpOrg\\Requests\\Requests' : ( class_exists( 'Requests' ) ? 'Requests' : '' );
+		if ( ! $cls || count( $paths ) < 2 ) {
+			foreach ( $paths as $p ) {
+				$out[ $p ] = self::http_get( $p );
+			}
+			return $out;
+		}
+		// Mesmos ajustes que o WordPress aplicaria a wp_remote_get (certificados, proxy, filtros do host).
+		$args = apply_filters(
+			'http_request_args',
+			array(
+				'timeout'         => 15,
+				'sslverify'       => true,
+				'sslcertificates' => ABSPATH . WPINC . '/certificates/ca-bundle.crt',
+				'user-agent'      => 'NovaFM-Eleicoes-TSE/' . NFE_VERSION . ' (+' . home_url( '/' ) . ')',
+			),
+			self::url( $paths[0] )
+		);
+		$opts = array(
+			'timeout'         => 8,
+			'connect_timeout' => 5,
+			'useragent'       => isset( $args['user-agent'] ) ? $args['user-agent'] : 'WordPress',
+			'verify'          => empty( $args['sslverify'] ) ? false : ( isset( $args['sslcertificates'] ) ? $args['sslcertificates'] : true ),
+		);
+		$proxy = new WP_HTTP_Proxy();
+		if ( $proxy->is_enabled() ) {
+			$opts['proxy'] = $proxy->use_authentication()
+				? array( $proxy->host() . ':' . $proxy->port(), $proxy->username(), $proxy->password() )
+				: $proxy->host() . ':' . $proxy->port();
+		}
+		foreach ( array_chunk( $paths, 16 ) as $lote ) {
+			if ( $prazo && microtime( true ) > $prazo ) {
+				break;
+			}
+			$reqs = array();
+			foreach ( $lote as $p ) {
+				$reqs[ $p ] = array( 'url' => self::url( $p ), 'type' => 'GET', 'headers' => array() );
+			}
+			try {
+				$resps = call_user_func( array( $cls, 'request_multiple' ), $reqs, $opts );
+			} catch ( Exception $e ) {
+				$resps = array();
+			}
+			foreach ( $lote as $p ) {
+				$r = isset( $resps[ $p ] ) ? $resps[ $p ] : null;
+				if ( ! is_object( $r ) || $r instanceof Exception || ! isset( $r->status_code ) ) {
+					$out[ $p ] = new WP_Error( 'nfe_http', 'Falha ao consultar o TSE.' );
+				} elseif ( 404 === (int) $r->status_code || 403 === (int) $r->status_code ) {
+					$out[ $p ] = new WP_Error( 'nfe_404', 'Dados ainda não publicados pelo TSE.' );
+				} elseif ( 200 !== (int) $r->status_code ) {
+					$out[ $p ] = new WP_Error( 'nfe_http', 'O TSE respondeu HTTP ' . (int) $r->status_code . '.' );
+				} else {
+					$out[ $p ] = (string) $r->body;
+				}
+			}
+		}
+		return $out;
+	}
+
+	/** Valor em cache (fresco) ou null — para buscas em lote. */
+	public static function peek( $key ) {
+		$v = get_transient( self::cache_key( $key ) . '_f' );
+		return false === $v || ( is_array( $v ) && isset( $v['_err'] ) ) ? null : $v;
+	}
+
+	/** Grava no cache como cached() faria. */
+	public static function put( $key, $value, $ttl ) {
+		$k = self::cache_key( $key );
+		set_transient( $k . '_f', $value, max( 10, (int) $ttl ) );
+		set_transient( $k . '_s', $value, DAY_IN_SECONDS );
+	}
+
 	private static function cache_key( $key ) {
 		return 'nfe' . (int) get_option( 'nfe_tse_cache_v', 1 ) . '_' . md5( NFE_VERSION . $key );
 	}
@@ -468,16 +550,63 @@ class NFE_TSE {
 		return $res;
 	}
 
+	/**
+	 * Baixa em paralelo os resultados de um cargo em vários locais (ex.: as 27 UFs do mapa),
+	 * deixando-os no mesmo cache que resultado() usa.
+	 */
+	public static function precarregar( $cargo, $locais, $turno = 'auto' ) {
+		if ( ! isset( self::CARGOS[ $cargo ] ) ) {
+			return;
+		}
+		$cfg  = self::CARGOS[ $cargo ];
+		$fila = array();
+		foreach ( $locais as $l ) {
+			$loc = self::local( $l );
+			if ( is_wp_error( $loc ) ) {
+				continue;
+			}
+			$el = self::eleicao_para( $cfg['cd'], $loc['uf'], $turno );
+			if ( is_wp_error( $el ) ) {
+				continue;
+			}
+			list( $path, $fotos ) = self::caminhos( $el['eleicao'], $el['e1'], $cargo, $loc );
+			if ( null === self::peek( 'res_' . $path ) ) {
+				$fila[ $path ] = array( $loc, $el['eleicao'], $fotos );
+			}
+		}
+		if ( ! $fila ) {
+			return;
+		}
+		$corpos = self::http_multi( array_keys( $fila ), microtime( true ) + 6 );
+		$int    = (int) NFE_Options::get( 'intervalo' );
+		foreach ( $fila as $path => $f ) {
+			$d = isset( $corpos[ $path ] ) && is_string( $corpos[ $path ] ) ? json_decode( $corpos[ $path ], true ) : null;
+			if ( ! is_array( $d ) ) {
+				continue;
+			}
+			$v = self::normalizar( $d, $cfg, $f[0], $f[1], $f[2] );
+			if ( ! is_wp_error( $v ) ) {
+				self::put( 'res_' . $path, $v, ! empty( $v['finalizada'] ) ? 15 * MINUTE_IN_SECONDS : max( 20, $int - 15 ) );
+			}
+		}
+	}
+
+	private static function caminhos( $eleicao, $e1, $cargo, $loc ) {
+		$cfg = self::CARGOS[ $cargo ];
+		$ele = $eleicao['cd'];
+		return array(
+			sprintf( '%s/%s/dados/%s/%s%s-c%04d-e%06d-u.json', self::ciclo(), $ele, $loc['uf'], $loc['uf'], $loc['mun'], $cfg['cd'], $ele ),
+			sprintf( '%s/%s/fotos/%s/', self::ciclo(), $e1['cd'], 'br' === $cfg['escopo'] ? 'br' : $loc['uf'] ),
+		);
+	}
+
 	private static function carregar( $eleicao, $e1, $cargo, $loc ) {
 		if ( is_wp_error( $loc ) ) {
 			return $loc;
 		}
-		$cfg   = self::CARGOS[ $cargo ];
-		$ciclo = self::ciclo();
-		$ele   = $eleicao['cd'];
-		$path  = sprintf( '%s/%s/dados/%s/%s%s-c%04d-e%06d-u.json', $ciclo, $ele, $loc['uf'], $loc['uf'], $loc['mun'], $cfg['cd'], $ele );
-		$fotos = sprintf( '%s/%s/fotos/%s/', $ciclo, $e1['cd'], 'br' === $cfg['escopo'] ? 'br' : $loc['uf'] );
-		$int   = (int) NFE_Options::get( 'intervalo' );
+		$cfg                  = self::CARGOS[ $cargo ];
+		list( $path, $fotos ) = self::caminhos( $eleicao, $e1, $cargo, $loc );
+		$int                  = (int) NFE_Options::get( 'intervalo' );
 
 		return self::cached(
 			'res_' . $path,

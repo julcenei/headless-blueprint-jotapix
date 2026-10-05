@@ -57,7 +57,7 @@
 				</ul>
 			</div>
 
-			<!-- Navegador simulado com o painel ao vivo -->
+			<!-- Navegador simulado com o painel de resultados -->
 			<div class="hero__demo" aria-label="Demonstração animada do painel de resultados">
 				<div class="navegador">
 					<div class="navegador__barra">
@@ -167,7 +167,7 @@
 						</div>
 					</div>
 
-					<!-- 4: ao vivo -->
+					<!-- 4: no ar -->
 					<div class="tela" data-t="3">
 						<div class="mini">
 							<div class="mini__abas"><span class="is-on">Governador</span><span>Senado</span><span>Deputados</span><span>Por seção</span><span>Mapa</span></div>
@@ -280,26 +280,26 @@
 		<div class="wrap desemp">
 			<div class="desemp__txt">
 				<span class="olho olho--l">Desempenho</span>
-				<h2>Leve para o seu site, mesmo com muito acesso</h2>
-				<p>Os dados do TSE ficam em cache no seu servidor e chegam ao leitor como arquivos estáticos, sem acionar o WordPress. Como os resultados já estão consolidados, ficam guardados por horas: a página abre na hora e o site trabalha como se tivesse poucos acessos.</p>
+				<h2>Leve e rápido para o seu site</h2>
+				<p>O plugin só carrega nas páginas em que você colocar o painel e não usa bibliotecas externas. Os resultados ficam guardados no seu servidor: a página abre na hora, sem esperar o TSE, e o leitor troca de cargo, cidade e seção sem recarregar a página.</p>
 				<ul class="numeros">
 					<li><b class="contador" data-alvo="65" data-suf="ms">0</b><span>para abrir a página com o painel (em nossos testes)</span></li>
-					<li><b class="contador" data-alvo="0" data-suf="">0</b><span>consultas ao TSE feitas pelos leitores</span></li>
+					<li><b class="contador" data-alvo="0" data-suf=" KB">0</b><span>a mais nas outras páginas do site</span></li>
 					<li><b class="contador" data-alvo="15" data-suf=" KB">0</b><span>de CSS e JS, sem bibliotecas externas</span></li>
-					<li><b>6h</b><span>de cache para resultados consolidados</span></li>
+					<li><b>1 clique</b><span>para buscar dados novos no TSE quando houver retotalização</span></li>
 				</ul>
 			</div>
-			<div class="fluxo" aria-label="Diagrama: TSE para o seu servidor e do servidor para os leitores">
+			<div class="fluxo" aria-label="Diagrama: o servidor do portal busca os dados no TSE e entrega prontos ao leitor">
 				<div class="fluxo__no fluxo__no--tse"><b>TSE</b><small>resultados oficiais</small></div>
 				<div class="fluxo__linha"><i></i><i></i><i></i></div>
-				<div class="fluxo__no fluxo__no--srv"><b>Seu portal</b><small>cache + arquivos estáticos</small></div>
+				<div class="fluxo__no fluxo__no--srv"><b>Seu portal</b><small>resultados guardados no servidor</small></div>
 				<div class="fluxo__leque">
 					<i></i><i></i><i></i><i></i><i></i><i></i>
 				</div>
 				<div class="fluxo__leitores" aria-hidden="true">
 					<span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
 				</div>
-				<small class="fluxo__leg">O servidor consulta o TSE · milhares de leitores atendidos pelo cache</small>
+				<small class="fluxo__leg">O seu servidor busca no TSE · o leitor recebe tudo pronto, sem espera</small>
 			</div>
 		</div>
 	</section>

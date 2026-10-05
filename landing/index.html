@@ -3,11 +3,11 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>JPX Eleições 2026 · Apuração ao vivo no seu portal</title>
-	<meta name="description" content="Plugin WordPress com a apuração oficial do TSE ao vivo no seu portal: Presidente, Governador, Senado e Deputados por estado, município e seção eleitoral.">
+	<title>JPX Eleições 2026 · Resultados detalhados no seu portal</title>
+	<meta name="description" content="Plugin WordPress com os resultados oficiais e detalhados das Eleições 2026 no seu portal: Presidente, Governador, Senado e Deputados por estado, município, local de votação e seção eleitoral.">
 	<meta name="theme-color" content="#070d1a">
-	<meta property="og:title" content="JPX Eleições 2026 · Apuração ao vivo no seu portal">
-	<meta property="og:description" content="Resultados oficiais do TSE por estado, município e seção, com mapa, hemiciclo e boletim de urna. Instale em minutos.">
+	<meta property="og:title" content="JPX Eleições 2026 · Resultados detalhados no seu portal">
+	<meta property="og:description" content="Quem venceu em cada cidade, escola e seção eleitoral, com dados oficiais do TSE, mapa, hemiciclo e boletim de urna. Instale em minutos.">
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -43,9 +43,9 @@
 		<div class="hero__brilho" aria-hidden="true"></div>
 		<div class="wrap hero__in">
 			<div class="hero__txt">
-				<span class="selo"><i class="pulso" aria-hidden="true"></i> 2º turno em 25 de outubro</span>
-				<h1>A apuração das eleições <span class="destaque">ao vivo</span>, dentro do seu portal.</h1>
-				<p class="hero__sub">Resultados oficiais do TSE para Presidente, Governador, Senado e Deputados, por estado, <strong>município</strong> e <strong>seção eleitoral</strong>. O leitor acompanha a noite inteira sem sair do seu site, e cada clique vira audiência para você.</p>
+				<span class="selo"><span aria-hidden="true">✓</span> Resultados oficiais do 1º turno já disponíveis</span>
+				<h1>Os resultados das eleições <span class="destaque">em detalhe</span>, dentro do seu portal.</h1>
+				<p class="hero__sub">Quem venceu em cada <strong>município</strong>, em cada <strong>escola</strong> e em cada <strong>seção eleitoral</strong>, para Presidente, Governador, Senado e Deputados, com dados oficiais do TSE. O conteúdo que o leitor procura por semanas, sem sair do seu site.</p>
 				<div class="hero__ctas">
 					<a class="btn" href="#precos">Ver planos</a>
 					<a class="btn btn--fantasma" href="#como-funciona">Como funciona <span aria-hidden="true">→</span></a>
@@ -58,18 +58,18 @@
 			</div>
 
 			<!-- Navegador simulado com o painel ao vivo -->
-			<div class="hero__demo" aria-label="Demonstração animada do painel de apuração">
+			<div class="hero__demo" aria-label="Demonstração animada do painel de resultados">
 				<div class="navegador">
 					<div class="navegador__barra">
 						<span></span><span></span><span></span>
-						<div class="navegador__url">seuportal.com.br/apuracao</div>
+						<div class="navegador__url">seuportal.com.br/eleicoes-2026</div>
 					</div>
 					<div class="painel" id="painelHero">
 						<div class="painel__abas" role="presentation">
-							<span class="aba is-on" data-i="0">Presidente</span>
-							<span class="aba" data-i="1">Governador</span>
-							<span class="aba" data-i="2">Senado</span>
-							<span class="aba" data-i="3">Dep. Estadual</span>
+							<span class="aba is-on">Presidente</span>
+							<span class="aba">Governador</span>
+							<span class="aba">Dep. Estadual</span>
+							<span class="aba">Por seção</span>
 						</div>
 						<div class="painel__locais">
 							<span class="chip">SC</span><span class="chip is-on">Pinhalzinho</span><span class="chip">São Lourenço do Oeste</span>
@@ -77,19 +77,19 @@
 						<div class="painel__card">
 							<div class="painel__cab">
 								<div>
-									<small class="olho">Eleições 2026 · 1º turno</small>
+									<small class="olho" id="heroOlho">Eleições 2026 · 1º turno</small>
 									<strong class="painel__titulo" id="heroTitulo">Presidente · Pinhalzinho</strong>
 								</div>
-								<span class="aovivo"><i class="pulso" aria-hidden="true"></i>Ao vivo</span>
+								<span class="oficial">✓ Resultado oficial</span>
 							</div>
-							<div class="progresso"><span id="heroProg" style="width:0%"></span></div>
-							<p class="painel__meta"><b id="heroPct">0,00%</b> das seções totalizadas</p>
+							<div class="progresso"><span style="width:100%"></span></div>
+							<p class="painel__meta" id="heroMeta"><b>100%</b> das seções totalizadas · Fonte: TSE</p>
 							<ol class="cands" id="heroCands"></ol>
 						</div>
 					</div>
 				</div>
-				<div class="flutua flutua--a" aria-hidden="true"><b>Por seção</b> boletim de urna oficial</div>
-				<div class="flutua flutua--b" aria-hidden="true"><i class="pulso"></i> Atualiza sozinho a cada 60s</div>
+				<div class="flutua flutua--a" aria-hidden="true"><b>Todos os municípios</b> do estado, com busca</div>
+				<div class="flutua flutua--b" aria-hidden="true"><span class="ok-v">✓</span> Dados oficiais do TSE</div>
 			</div>
 		</div>
 	</section>
@@ -98,10 +98,10 @@
 	<section class="faixa" aria-label="Destaques">
 		<div class="faixa__trilho">
 			<div class="faixa__itens">
-				<span>Presidente</span><span>Governador</span><span>Senado</span><span>Deputado Federal</span><span>Deputado Estadual</span><span>Por município</span><span>Por seção eleitoral</span><span>Mapa do Brasil</span><span>2º turno automático</span><span>Boletim de urna</span>
+				<span>Presidente</span><span>Governador</span><span>Senado</span><span>Deputado Federal</span><span>Deputado Estadual</span><span>Por município</span><span>Por seção eleitoral</span><span>Por local de votação</span><span>Mapa do Brasil</span><span>Boletim de urna</span>
 			</div>
 			<div class="faixa__itens" aria-hidden="true">
-				<span>Presidente</span><span>Governador</span><span>Senado</span><span>Deputado Federal</span><span>Deputado Estadual</span><span>Por município</span><span>Por seção eleitoral</span><span>Mapa do Brasil</span><span>2º turno automático</span><span>Boletim de urna</span>
+				<span>Presidente</span><span>Governador</span><span>Senado</span><span>Deputado Federal</span><span>Deputado Estadual</span><span>Por município</span><span>Por seção eleitoral</span><span>Por local de votação</span><span>Mapa do Brasil</span><span>Boletim de urna</span>
 			</div>
 		</div>
 	</section>
@@ -111,7 +111,7 @@
 		<div class="wrap">
 			<header class="secao__cab">
 				<span class="olho olho--l">Como funciona</span>
-				<h2>Do zero à apuração ao vivo em 4 passos</h2>
+				<h2>Do zero aos resultados detalhados em 4 passos</h2>
 				<p>Sem programador, sem servidor extra. É um plugin WordPress: você instala, escolhe sua cidade e cola uma linha na página.</p>
 			</header>
 
@@ -120,7 +120,7 @@
 					<li><button type="button" role="tab" class="passo is-on" data-p="0" aria-selected="true"><span class="passo__n">1</span><span><b>Instale o plugin</b><small>Envie o .zip em Plugins → Adicionar</small></span><i class="passo__barra"></i></button></li>
 					<li><button type="button" role="tab" class="passo" data-p="1" aria-selected="false"><span class="passo__n">2</span><span><b>Escolha sua região</b><small>Estado e municípios em destaque</small></span><i class="passo__barra"></i></button></li>
 					<li><button type="button" role="tab" class="passo" data-p="2" aria-selected="false"><span class="passo__n">3</span><span><b>Cole o shortcode</b><small>Numa página ou matéria</small></span><i class="passo__barra"></i></button></li>
-					<li><button type="button" role="tab" class="passo" data-p="3" aria-selected="false"><span class="passo__n">4</span><span><b>Pronto: ao vivo</b><small>Atualiza sozinho a noite toda</small></span><i class="passo__barra"></i></button></li>
+					<li><button type="button" role="tab" class="passo" data-p="3" aria-selected="false"><span class="passo__n">4</span><span><b>Pronto: no ar</b><small>Por cargo, cidade e seção</small></span><i class="passo__barra"></i></button></li>
 				</ol>
 
 				<div class="passos__tela navegador navegador--claro" aria-live="polite">
@@ -160,8 +160,8 @@
 					<!-- 3: shortcode -->
 					<div class="tela" data-t="2">
 						<div class="editor">
-							<div class="editor__titulo">Apuração ao vivo</div>
-							<p class="editor__p">Acompanhe os resultados oficiais em tempo real.</p>
+							<div class="editor__titulo">Resultados das Eleições 2026</div>
+							<p class="editor__p">Veja quem venceu na sua cidade, na sua escola e na sua seção.</p>
 							<div class="editor__bloco"><span class="editor__tag">Shortcode</span><code id="digitaShort"></code><i class="cursor"></i></div>
 							<span class="btn btn--wp editor__pub">Publicar</span>
 						</div>
@@ -173,7 +173,7 @@
 							<div class="mini__abas"><span class="is-on">Governador</span><span>Senado</span><span>Deputados</span><span>Por seção</span><span>Mapa</span></div>
 							<div class="lider">
 								<span class="avatar avatar--g">AR</span>
-								<div><small class="lider__rot">Lidera</small><b class="lider__nome">Ana Ribeiro</b><small>Partido A · vantagem de 2.274 votos</small></div>
+								<div><small class="lider__rot">Eleita</small><b class="lider__nome">Ana Ribeiro</b><small>Partido A · vantagem de 2.274 votos</small></div>
 								<b class="lider__pct contador" data-alvo="44.1" data-dec="1">0</b>
 							</div>
 							<div class="mini__barras">
@@ -192,8 +192,8 @@
 		<div class="wrap">
 			<header class="secao__cab">
 				<span class="olho olho--l">Telas</span>
-				<h2>Tudo que o leitor procura na noite da apuração</h2>
-				<p>Cada visão foi pensada para a pergunta que o público faz: quem está ganhando, na minha cidade, na minha seção, no meu estado.</p>
+				<h2>Tudo que o leitor procura depois da eleição</h2>
+				<p>Cada visão responde a uma pergunta do público: quem ganhou na minha cidade, na minha escola, na minha seção, quem foi eleito da região.</p>
 			</header>
 
 			<div class="grade">
@@ -242,7 +242,7 @@
 						</div>
 					</div>
 					<h3>Duelo do 2º turno</h3>
-					<p>No 2º turno, os dois candidatos lado a lado com a barra dividida. A troca de turno é automática, no dia da eleição.</p>
+					<p>Onde houver 2º turno, os dois candidatos aparecem lado a lado. O painel muda de turno sozinho no dia 25, e os resultados do 1º turno continuam disponíveis.</p>
 				</article>
 
 				<!-- Região -->
@@ -256,7 +256,7 @@
 						</ol>
 					</div>
 					<h3>Mais votados da região</h3>
-					<p>Soma os municípios da sua cobertura e mostra os deputados mais votados por cidade. Pauta pronta para o dia seguinte.</p>
+					<p>Soma os municípios da sua cobertura e mostra os deputados mais votados por cidade. Pauta pronta para matérias locais.</p>
 				</article>
 
 				<!-- Compartilhar -->
@@ -280,13 +280,13 @@
 		<div class="wrap desemp">
 			<div class="desemp__txt">
 				<span class="olho olho--l">Desempenho</span>
-				<h2>Aguenta o pico da noite da apuração, sem derrubar o seu site</h2>
-				<p>O TSE é consultado pelo servidor uma vez por minuto, nunca pelos leitores. As atualizações chegam ao navegador como arquivos estáticos, sem acionar o WordPress. Com milhares de leitores ao mesmo tempo, o site trabalha como se fossem poucos.</p>
+				<h2>Leve para o seu site, mesmo com muito acesso</h2>
+				<p>Os dados do TSE ficam em cache no seu servidor e chegam ao leitor como arquivos estáticos, sem acionar o WordPress. Como os resultados já estão consolidados, ficam guardados por horas: a página abre na hora e o site trabalha como se tivesse poucos acessos.</p>
 				<ul class="numeros">
 					<li><b class="contador" data-alvo="65" data-suf="ms">0</b><span>para abrir a página com o painel (em nossos testes)</span></li>
 					<li><b class="contador" data-alvo="0" data-suf="">0</b><span>consultas ao TSE feitas pelos leitores</span></li>
 					<li><b class="contador" data-alvo="15" data-suf=" KB">0</b><span>de CSS e JS, sem bibliotecas externas</span></li>
-					<li><b>6h</b><span>de cache depois de 100% apurado</span></li>
+					<li><b>6h</b><span>de cache para resultados consolidados</span></li>
 				</ul>
 			</div>
 			<div class="fluxo" aria-label="Diagrama: TSE para o seu servidor e do servidor para os leitores">
@@ -299,7 +299,7 @@
 				<div class="fluxo__leitores" aria-hidden="true">
 					<span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
 				</div>
-				<small class="fluxo__leg">1 consulta por minuto ao TSE · milhares de leitores atendidos pelo cache</small>
+				<small class="fluxo__leg">O servidor consulta o TSE · milhares de leitores atendidos pelo cache</small>
 			</div>
 		</div>
 	</section>
@@ -313,11 +313,11 @@
 			</header>
 			<ul class="recursos">
 				<li class="revela"><span class="ic">◎</span><b>Dados oficiais do TSE</b><p>Os mesmos arquivos do app Resultados, com situação de eleito, 2º turno, QP e suplência.</p></li>
-				<li class="revela"><span class="ic">⇄</span><b>2º turno automático</b><p>O painel troca sozinho no dia da eleição, só para os cargos e estados que terão 2º turno.</p></li>
+				<li class="revela"><span class="ic">⌖</span><b>Detalhe por seção</b><p>Boletim de urna oficial de cada seção, agrupado por escola, com o mais votado em cada local.</p></li>
 				<li class="revela"><span class="ic">⌂</span><b>Sua cidade em destaque</b><p>Botões com os municípios da sua cobertura e busca entre todas as cidades do estado.</p></li>
-				<li class="revela"><span class="ic">▣</span><b>Widgets para a home</b><p>Versão compacta com os 3 primeiros, para a capa ou a barra lateral, com link para a apuração completa.</p></li>
+				<li class="revela"><span class="ic">▣</span><b>Widgets para a home</b><p>Versão compacta com os 3 primeiros, para a capa ou a barra lateral, com link para os resultados completos.</p></li>
 				<li class="revela"><span class="ic">◐</span><b>Combina com o seu site</b><p>Usa a cor e a fonte do seu tema, tem modo escuro e funciona bem no celular.</p></li>
-				<li class="revela"><span class="ic">⟳</span><b>TSE fora do ar? Sem tela branca</b><p>Se o TSE oscilar, o leitor continua vendo o último resultado recebido, com aviso.</p></li>
+				<li class="revela"><span class="ic">⟳</span><b>Sempre conferido com o TSE</b><p>Retotalização ou decisão judicial? Um botão busca os dados novos, e o 2º turno entra sozinho.</p></li>
 			</ul>
 		</div>
 	</section>
@@ -328,7 +328,7 @@
 			<header class="secao__cab">
 				<span class="olho olho--l">Preços</span>
 				<h2>Licença por portal, válida para toda a Eleição 2026</h2>
-				<p>Pagamento único. Inclui o 1º e o 2º turno, atualizações do plugin e suporte na noite da apuração.</p>
+				<p>Pagamento único. Inclui os resultados do 1º e do 2º turno, atualizações do plugin e suporte.</p>
 			</header>
 
 			<div class="planos">
@@ -342,7 +342,7 @@
 						<li>Mapa, hemiciclo, região e boletim de urna</li>
 						<li>1º e 2º turno de 2026</li>
 						<li>Instalação guiada por videochamada</li>
-						<li>Suporte por WhatsApp na noite da apuração</li>
+						<li>Suporte por WhatsApp</li>
 					</ul>
 					<a class="btn btn--fantasma btn--bloco" data-plano="Portal" href="#" target="_blank" rel="noopener">Contratar pelo WhatsApp</a>
 				</article>
@@ -357,7 +357,7 @@
 						<li>Tudo do plano Portal</li>
 						<li><b>Instalação e configuração feitas por nós</b></li>
 						<li>Cores e municípios ajustados ao seu portal</li>
-						<li>Atendimento prioritário na noite da apuração</li>
+						<li>Atendimento prioritário</li>
 						<li>Preço especial para 2 ou mais portais</li>
 					</ul>
 					<a class="btn btn--bloco" data-plano="Parceiro" href="#" target="_blank" rel="noopener">Sou parceiro, quero o meu</a>
@@ -408,8 +408,12 @@
 					<p>O leitor continua vendo o último resultado recebido, com um aviso discreto, e o painel volta a atualizar sozinho quando o TSE responder.</p>
 				</details>
 				<details>
+					<summary>Os resultados do 1º turno já estão disponíveis?</summary>
+					<p>Sim. Os resultados oficiais e consolidados do TSE ficam disponíveis completos: por estado, município, local de votação e seção eleitoral.</p>
+				</details>
+				<details>
 					<summary>O 2º turno está incluído?</summary>
-					<p>Sim. A licença vale para toda a Eleição 2026, e o painel muda para o 2º turno automaticamente no dia, só nos cargos e estados que tiverem 2º turno.</p>
+					<p>Sim. A licença vale para toda a Eleição 2026. Onde houver 2º turno, o painel passa a mostrá-lo automaticamente, e o 1º turno continua disponível.</p>
 				</details>
 				<details>
 					<summary>Quem pode ser parceiro?</summary>
@@ -426,8 +430,8 @@
 	<!-- CTA FINAL ---------------------------------------------------------->
 	<section class="final">
 		<div class="wrap final__in revela">
-			<h2>O 2º turno é dia 25. Seu leitor vai acompanhar onde?</h2>
-			<p>Instale agora e tenha a apuração completa no ar antes da votação.</p>
+			<h2>Seu leitor quer saber quem venceu na cidade dele.</h2>
+			<p>Publique hoje os resultados detalhados por município, escola e seção eleitoral.</p>
 			<a class="btn btn--grande" data-plano="Portal" href="#" target="_blank" rel="noopener">Falar no WhatsApp</a>
 		</div>
 	</section>

@@ -83,78 +83,63 @@
 		}
 	});
 
-	/* ---------- hero: painel "ao vivo" simulado ---------- */
+	/* ---------- hero: navegação pelos resultados detalhados ---------- */
+	// [iniciais, nome, partido, %, cor, etiqueta]
 	var HERO = [
-		{ titulo: 'Presidente · Pinhalzinho', aba: 0, c: [['AR', 'Ana Ribeiro', 'Partido A', 61.3, 'a'], ['CM', 'Carlos Menezes', 'Partido B', 28.7, 'b'], ['JP', 'Júlia Prado', 'Partido C', 4.8, 'c'], ['RS', 'Rui Souza', 'Partido D', 3.2, 'd']] },
-		{ titulo: 'Governador · Pinhalzinho', aba: 1, c: [['MT', 'Marcos Tavares', 'Partido B', 44.1, 'b'], ['LS', 'Lia Santos', 'Partido A', 40.7, 'a'], ['PV', 'Paulo Viana', 'Partido C', 15.2, 'c']] },
-		{ titulo: 'Senado · Pinhalzinho', aba: 2, c: [['CT', 'Clara Torres', 'Partido A', 31.4, 'a'], ['EA', 'Edu Alves', 'Partido D', 20.5, 'd'], ['BR', 'Bia Rocha', 'Partido B', 16.2, 'b'], ['DL', 'Davi Lopes', 'Partido C', 12.7, 'c']] },
-		{ titulo: 'Deputado Estadual · Pinhalzinho', aba: 3, c: [['FL', 'Fábio Luz', 'Partido B', 21.9, 'b'], ['MV', 'Marcos Vieira', 'Partido C', 9.8, 'c'], ['AS', 'Alice Silva', 'Partido D', 9.5, 'd'], ['MN', 'Mauro Nadal', 'Partido A', 9.4, 'a']] }
+		{ olho: 'Eleições 2026 · 1º turno', titulo: 'Presidente · Pinhalzinho', aba: 0, chip: 1, meta: '<b>100%</b> das seções totalizadas · Fonte: TSE',
+			c: [['AR', 'Ana Ribeiro', 'Partido A', 61.3, 'a', '2º turno'], ['CM', 'Carlos Menezes', 'Partido B', 28.7, 'b', '2º turno'], ['JP', 'Júlia Prado', 'Partido C', 4.8, 'c'], ['RS', 'Rui Souza', 'Partido D', 3.2, 'd']] },
+		{ olho: 'Eleições 2026 · 1º turno', titulo: 'Governador · São Lourenço do Oeste', aba: 1, chip: 2, meta: '<b>100%</b> das seções totalizadas · 61 seções',
+			c: [['MT', 'Marcos Tavares', 'Partido B', 52.6, 'b', 'Eleito'], ['LS', 'Lia Santos', 'Partido A', 33.9, 'a'], ['PV', 'Paulo Viana', 'Partido C', 13.5, 'c']] },
+		{ olho: 'Eleições 2026 · 1º turno', titulo: 'Deputado Estadual · Pinhalzinho', aba: 2, chip: 1, meta: '<b>398</b> candidatos · 40 vagas · busca por nome',
+			c: [['FL', 'Fábio Luz', 'Partido B', 21.9, 'b', 'Eleito'], ['MV', 'Marcos Vieira', 'Partido C', 9.8, 'c'], ['AS', 'Alice Silva', 'Partido D', 9.5, 'd', 'Eleito'], ['MN', 'Mauro Nadal', 'Partido A', 9.4, 'a', 'Eleito']] },
+		{ olho: 'Boletim de urna · Seção 50', titulo: 'Paróquia Santo Antônio · Zona 66', aba: 3, chip: 1, meta: '<b>374</b> eleitores aptos · comparecimento 85%',
+			c: [['AR', 'Ana Ribeiro', '190 votos', 61.3, 'a'], ['CM', 'Carlos Menezes', '89 votos', 28.7, 'b'], ['JP', 'Júlia Prado', '15 votos', 4.8, 'c'], ['RS', 'Rui Souza', '10 votos', 3.2, 'd']] }
 	];
 	var heroI = 0;
-	var heroPct = 0;
 	var lista = $('#heroCands');
+	var painelHero = $('#painelHero');
 
-	function montarHero(d) {
-		$$('.aba', $('#painelHero')).forEach(function (a, i) {
-			a.classList.toggle('is-on', i === d.aba);
-		});
-		var t = $('#heroTitulo');
-		t.style.opacity = 0;
+	function mostrarHero(d) {
+		$$('.aba', painelHero).forEach(function (a, i) { a.classList.toggle('is-on', i === d.aba); });
+		$$('.chip', painelHero).forEach(function (a, i) { a.classList.toggle('is-on', i === d.chip); });
+		var cab = [$('#heroTitulo'), $('#heroOlho'), $('#heroMeta')];
+		cab.forEach(function (el) { el.style.opacity = 0; });
 		setTimeout(function () {
-			t.textContent = d.titulo;
-			t.style.opacity = 1;
+			$('#heroTitulo').textContent = d.titulo;
+			$('#heroOlho').textContent = d.olho;
+			$('#heroMeta').innerHTML = d.meta;
+			cab.forEach(function (el) { el.style.opacity = 1; });
 		}, 200);
 		lista.innerHTML = d.c.map(function (c) {
+			var tag = c[5] ? ' <i class="tag-mini' + (c[5] === '2º turno' ? ' tag-mini--t' : '') + '">' + c[5] + '</i>' : '';
 			return '<li class="cand"><span class="avatar avatar--' + c[4] + '">' + c[0] + '</span>' +
-				'<span class="cand__nome">' + c[1] + ' <small>' + c[2] + '</small></span>' +
-				'<span class="cand__pct">0,0%</span><span class="cand__bar"><i></i></span></li>';
+				'<span class="cand__nome">' + c[1] + tag + ' <small>' + c[2] + '</small></span>' +
+				'<span class="cand__pct">' + pct(c[3], 1) + '%</span><span class="cand__bar"><i></i></span></li>';
 		}).join('');
-	}
-
-	function atualizarHero() {
-		var d = HERO[heroI];
-		// Quanto mais seções apuradas, mais perto do resultado final (com uma oscilação no começo).
-		var k = heroPct / 100;
-		$$('.cand', lista).forEach(function (li, i) {
-			var final = d.c[i][3];
-			var ruido = (1 - k) * Math.sin(heroPct / 7 + i * 2) * 4;
-			var v = Math.max(0.1, final + ruido);
-			$('.cand__pct', li).textContent = pct(v, 1) + '%';
-			$('.cand__bar i', li).style.width = Math.min(100, v * 1.4) + '%';
+		// As barras crescem até o valor final a cada troca.
+		requestAnimationFrame(function () {
+			requestAnimationFrame(function () {
+				$$('.cand', lista).forEach(function (li, i) {
+					$('.cand__bar i', li).style.width = Math.min(100, d.c[i][3] * 1.4) + '%';
+				});
+			});
 		});
-		$('#heroProg').style.width = heroPct + '%';
-		$('#heroPct').textContent = pct(heroPct, 2) + '%';
 	}
-
-	function cicloHero() {
-		montarHero(HERO[heroI]);
-		heroPct = semMovimento ? 100 : 12;
-		atualizarHero();
-	}
-	cicloHero();
+	$$('#heroTitulo, #heroOlho, #heroMeta').forEach(function (el) { el.style.transition = 'opacity .25s'; });
+	mostrarHero(HERO[0]);
 	if (!semMovimento) {
-		var trocando = false;
 		setInterval(function () {
-			if (trocando || document.hidden) return;
-			heroPct = Math.min(100, heroPct + 11 + Math.random() * 9);
-			atualizarHero();
-			if (heroPct >= 100) {
-				// 100% apurado: segura o resultado um instante e passa para o próximo cargo.
-				trocando = true;
-				setTimeout(function () {
-					heroI = (heroI + 1) % HERO.length;
-					cicloHero();
-					trocando = false;
-				}, 1800);
-			}
-		}, 900);
+			if (document.hidden) return;
+			heroI = (heroI + 1) % HERO.length;
+			mostrarHero(HERO[heroI]);
+		}, 4200);
 	}
 
 	/* ---------- passos (como funciona) ---------- */
 	var passos = $('#passos');
 	var botoes = $$('.passo', passos);
 	var telas = $$('.tela', passos);
-	var URLS = ['seuportal.com.br/wp-admin/plugin-install.php', 'seuportal.com.br/wp-admin/options-general.php?page=jpx-eleicoes', 'seuportal.com.br/wp-admin/post-new.php?post_type=page', 'seuportal.com.br/apuracao'];
+	var URLS = ['seuportal.com.br/wp-admin/plugin-install.php', 'seuportal.com.br/wp-admin/options-general.php?page=jpx-eleicoes', 'seuportal.com.br/wp-admin/post-new.php?post_type=page', 'seuportal.com.br/eleicoes-2026'];
 	var DUR = 5500;
 	var atual = 0;
 	var timer = null;

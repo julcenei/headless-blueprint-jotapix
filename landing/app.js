@@ -6,7 +6,7 @@
 	var CONFIG = {
 		// Número do WhatsApp com DDI e DDD, só dígitos. Ex.: '5549999999999'.
 		// Vazio: o WhatsApp abre para o visitante escolher o contato.
-		whatsapp: '',
+		whatsapp: '5549991578745',
 		precoPortal: 1490,
 		precoParceiro: 790
 	};

@@ -24,7 +24,7 @@ class NFE_Render {
 		);
 		// Siglas comuns em nomes de urna e de coligações.
 		return preg_replace_callback(
-			'/\b(Sc|Br|Pt|Pl|Psd|Mdb|Pp|Psb|Pdt|Psdb|Psol|Pv|Pcdob|Ii|Iii|Iv)\b/u',
+			'/\b(Sc|Br|Pt|Pl|Psd|Mdb|Pp|Psb|Pdt|Psdb|Psol|Pv|Pcdob|Fe|Ii|Iii|Iv)\b/u',
 			function ( $m ) {
 				return strtoupper( $m[1] );
 			},
@@ -237,11 +237,7 @@ class NFE_Render {
 				}
 			);
 			if ( $com_vaga ) {
-				echo '<div class="nfe-vagas"><h4 class="nfe-sub">Cadeiras por partido / federação</h4><ul>';
-				foreach ( $com_vaga as $a ) {
-					echo '<li title="' . esc_attr( $a['nome'] . ' — ' . self::n( $a['votos'] ) . ' votos' ) . '"><strong>' . (int) $a['vagas'] . '</strong> <span>' . esc_html( $a['sigla'] ) . '</span></li>';
-				}
-				echo '</ul></div>';
+				self::hemiciclo( array_values( $com_vaga ), $r['agrupamentos'], $r['vagas'] );
 			}
 		}
 
@@ -280,6 +276,160 @@ class NFE_Render {
 		} elseif ( $total > $limite ) {
 			echo '<p class="nfe-mais">+ ' . (int) ( $total - $limite ) . ' candidatos</p>';
 		}
+	}
+
+	/* ------------------------------------------------------------------ *
+	 * Hemiciclo (cadeiras por partido/federação)
+	 * ------------------------------------------------------------------ */
+
+	/** Cores por sigla; federações usam a do partido que as lidera. */
+	const CORES = array(
+		'PL' => '#1e3a8a', 'PT' => '#dc2626', 'PCDOB' => '#991b1b', 'PV' => '#15803d', 'MDB' => '#059669',
+		'PSD' => '#eab308', 'PP' => '#2563eb', 'UNIAO' => '#0e7490', 'REPUBLICANOS' => '#0ea5e9', 'NOVO' => '#f97316',
+		'PODE' => '#65a30d', 'PSDB' => '#6366f1', 'CIDADANIA' => '#db2777', 'PSOL' => '#9333ea', 'REDE' => '#14b8a6',
+		'PDT' => '#be123c', 'PSB' => '#f59e0b', 'AVANTE' => '#0891b2', 'SOLIDARIEDADE' => '#ea580c', 'PRD' => '#a16207',
+		'MISSAO' => '#7c3aed', 'DC' => '#78716c', 'AGIR' => '#4d7c0f', 'MOBILIZA' => '#0f766e', 'PMB' => '#c026d3',
+		'PCB' => '#7f1d1d', 'PCO' => '#b91c1c', 'PSTU' => '#9f1239', 'UP' => '#e11d48',
+	);
+
+	/** Partido que dá a cor de uma federação/coligação. */
+	const LIDERES = array( 'PT', 'PSDB', 'UNIAO', 'PSOL', 'PRD', 'PL', 'MDB', 'PSD', 'PP' );
+
+	const RESERVA = array( '#334155', '#0d9488', '#b45309', '#7e22ce', '#be185d', '#4338ca', '#047857', '#c2410c', '#475569', '#a21caf' );
+
+	private static function cores( $grupos ) {
+		$usadas = array();
+		$out    = array();
+		foreach ( $grupos as $i => $g ) {
+			$tokens = array_map(
+				function ( $t ) {
+					return strtoupper( remove_accents( trim( $t ) ) );
+				},
+				preg_split( '#[/,]#', $g['sigla'] )
+			);
+			$cor = '';
+			foreach ( array_merge( array_intersect( self::LIDERES, $tokens ), $tokens ) as $t ) {
+				$t = str_replace( ' ', '', $t );
+				if ( isset( self::CORES[ $t ] ) && ! isset( $usadas[ self::CORES[ $t ] ] ) ) {
+					$cor = self::CORES[ $t ];
+					break;
+				}
+			}
+			// Sem cor conhecida (ou já usada neste gráfico): próxima da reserva.
+			foreach ( $cor ? array() : self::RESERVA as $rc ) {
+				if ( ! isset( $usadas[ $rc ] ) ) {
+					$cor = $rc;
+					break;
+				}
+			}
+			$cor            = $cor ? $cor : '#64748b';
+			$usadas[ $cor ] = true;
+			$out[ $i ]      = $cor;
+		}
+		return $out;
+	}
+
+	/** Posições das cadeiras em semicírculo, da esquerda para a direita. */
+	private static function assentos( $n ) {
+		$filas = max( 1, min( 8, (int) round( sqrt( $n / 1.6 ) ) ) );
+		$r0    = $filas > 1 ? 0.5 : 0.75;
+		$raios = array();
+		for ( $i = 0; $i < $filas; $i++ ) {
+			$raios[] = $filas > 1 ? $r0 + ( 1 - $r0 ) * $i / ( $filas - 1 ) : $r0;
+		}
+		// Cadeiras por fila proporcionais ao comprimento do arco.
+		$soma = array_sum( $raios );
+		$qtd  = array();
+		$tot  = 0;
+		foreach ( $raios as $i => $r ) {
+			$qtd[ $i ] = max( 1, (int) floor( $n * $r / $soma ) );
+			$tot      += $qtd[ $i ];
+		}
+		for ( $i = $filas - 1; $tot < $n; $i = ( $i - 1 + $filas ) % $filas ) {
+			$qtd[ $i ]++;
+			$tot++;
+		}
+		for ( $i = 0; $tot > $n; $i = ( $i + 1 ) % $filas ) {
+			if ( $qtd[ $i ] > 1 ) {
+				$qtd[ $i ]--;
+				$tot--;
+			}
+		}
+
+		$pos   = array();
+		$passo = PHP_INT_MAX;
+		foreach ( $raios as $i => $r ) {
+			$k = $qtd[ $i ];
+			for ( $j = 0; $j < $k; $j++ ) {
+				$a     = $k > 1 ? M_PI * ( 1 - $j / ( $k - 1 ) ) : M_PI / 2;
+				$pos[] = array( $a, $r, cos( $a ) * $r, sin( $a ) * $r );
+			}
+			if ( $k > 1 ) {
+				$passo = min( $passo, M_PI * $r / ( $k - 1 ) );
+			}
+		}
+		if ( $filas > 1 ) {
+			$passo = min( $passo, ( 1 - $r0 ) / ( $filas - 1 ) );
+		}
+		// Varre do lado esquerdo para o direito: cada partido ocupa uma "fatia".
+		usort(
+			$pos,
+			function ( $p, $q ) {
+				return abs( $p[0] - $q[0] ) > 1e-9 ? $q[0] <=> $p[0] : $p[1] <=> $q[1];
+			}
+		);
+		$raio = min( $n <= 20 ? 0.1 : 0.08, ( PHP_INT_MAX === $passo ? 0.2 : $passo ) * 0.44 );
+		return array( $pos, $raio );
+	}
+
+	private static function hemiciclo( $grupos, $todos, $vagas ) {
+		$total_vagas = array_sum( wp_list_pluck( $grupos, 'vagas' ) );
+		$total_votos = max( 1, array_sum( wp_list_pluck( $todos, 'votos' ) ) );
+		$cores       = self::cores( $grupos );
+		list( $pos, $raio ) = self::assentos( $total_vagas );
+
+		$w  = 220;
+		$cx = 110;
+		$cy = 104;
+		$R  = 100;
+
+		echo '<div class="nfe-vagas">';
+		echo '<h4 class="nfe-sub">Cadeiras por partido / federação</h4>';
+		echo '<div class="nfe-hemi">';
+
+		echo '<figure class="nfe-hemi__fig">';
+		echo '<svg viewBox="0 0 ' . (int) $w . ' ' . ( $cy + 14 ) . '" role="img" aria-label="' . esc_attr( $total_vagas . ' cadeiras distribuídas entre ' . count( $grupos ) . ' partidos e federações' ) . '">';
+		$i = 0;
+		foreach ( $grupos as $gi => $g ) {
+			echo '<g class="nfe-hemi__p" data-p="' . (int) $gi . '" fill="' . esc_attr( $cores[ $gi ] ) . '"><title>' . esc_html( $g['sigla'] . ': ' . $g['vagas'] . ( 1 === $g['vagas'] ? ' cadeira' : ' cadeiras' ) ) . '</title>';
+			for ( $k = 0; $k < $g['vagas']; $k++, $i++ ) {
+				if ( ! isset( $pos[ $i ] ) ) {
+					break;
+				}
+				printf( '<circle cx="%.2f" cy="%.2f" r="%.2f"/>', $cx + $pos[ $i ][2] * $R, $cy - $pos[ $i ][3] * $R, $raio * $R );
+			}
+			echo '</g>';
+		}
+		echo '<text x="' . (int) $cx . '" y="' . ( $cy - 6 ) . '" class="nfe-hemi__n" text-anchor="middle">' . (int) $total_vagas . '</text>';
+		echo '<text x="' . (int) $cx . '" y="' . ( $cy + 7 ) . '" class="nfe-hemi__l" text-anchor="middle">vagas</text>';
+		echo '</svg></figure>';
+
+		echo '<ol class="nfe-hemi__leg">';
+		foreach ( $grupos as $gi => $g ) {
+			$pct = 100 * $g['votos'] / $total_votos;
+			$ext = isset( $g['extenso'] ) && $g['extenso'] && strtoupper( remove_accents( $g['extenso'] ) ) !== strtoupper( remove_accents( $g['sigla'] ) ) ? $g['extenso'] : '';
+			echo '<li data-p="' . (int) $gi . '" tabindex="0" style="--nfe-c:' . esc_attr( $cores[ $gi ] ) . '">';
+			echo '<span class="nfe-hemi__sw" aria-hidden="true"></span>';
+			echo '<span class="nfe-hemi__nm"><strong>' . esc_html( str_replace( ' / ', '/', $g['sigla'] ) ) . '</strong>';
+			if ( $ext ) {
+				echo '<small>' . esc_html( $ext ) . '</small>';
+			}
+			echo '</span>';
+			echo '<span class="nfe-hemi__v"><b>' . (int) $g['vagas'] . '</b><small>' . esc_html( self::pct( $pct, 1 ) ) . ' dos votos</small></span>';
+			echo '<span class="nfe-hemi__bar" aria-hidden="true"><span style="width:' . esc_attr( round( 100 * $g['vagas'] / max( 1, $total_vagas ), 2 ) ) . '%"></span></span>';
+			echo '</li>';
+		}
+		echo '</ol></div></div>';
 	}
 
 	private static function estatisticas( $r ) {

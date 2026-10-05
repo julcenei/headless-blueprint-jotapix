@@ -4,7 +4,7 @@ Tags: eleições, tse, apuração, resultados, shortcode
 Requires at least: 5.8
 Tested up to: 6.8
 Requires PHP: 7.4
-Stable tag: 1.1.0
+Stable tag: 1.2.0
 License: GPLv2 or later
 
 Apuração e resultados oficiais das eleições direto dos arquivos públicos do TSE.
@@ -51,6 +51,10 @@ por estado e por município. Atualiza sozinho e detecta o 2º turno.
 3. Crie uma página "Apuração" com [eleicoes_tse_painel].
 
 == Changelog ==
+
+= 1.2.0 =
+* Cadeiras por partido/federação em hemiciclo, com legenda e destaque ao passar o mouse.
+* Painel e página por seção podem ser mais largos que a coluna do tema (Configurações → Largura do painel, padrão 1130px), sem passar da tela.
 
 = 1.1.0 =
 * Resultados por seção: boletim de urna oficial (leitor ASN.1), locais de votação de SC, aba "Por seção" no painel.

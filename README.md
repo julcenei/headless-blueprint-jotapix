@@ -10,6 +10,8 @@ alimenta o app *Resultados* do TSE e páginas como a `eleicoes.rco.com.br/oficia
 - **Atualização automática** a cada 60 s, com cache no servidor (o TSE nunca é consultado pelo navegador dos visitantes)
 - Situação dos candidatos (eleito, 2º turno, eleito por QP/média, suplente), cadeiras por partido/federação, comparecimento, abstenção, brancos e nulos
 - **Por seção:** boletim de urna oficial de cada seção, com as seções agrupadas por local de votação (escola, endereço). Funciona em qualquer município de SC
+- **Hemiciclo** de cadeiras por partido/federação nos cargos proporcionais
+- **Largura:** painel e página por seção vão até 1130px (configurável), saindo da coluna de 900px do tema sem estourar a tela
 - Cores e fonte do tema `nova-portal` (`--accent: #ff6600`, `--ink: #0B192C`, Encode Sans)
 
 ## Instalação

@@ -3,7 +3,7 @@
  * Plugin Name:       Eleições TSE – Nova FM
  * Plugin URI:        https://novafmportal.com.br
  * Description:       Apuração e resultados oficiais das eleições direto do TSE (resultados.tse.jus.br): Presidente, Governador, Senador, Deputados, por Brasil, estado e município. Inclui boletim de urna por seção. Shortcodes [eleicoes_tse], [eleicoes_tse_painel] e [eleicoes_tse_secoes].
- * Version:           1.1.0
+ * Version:           1.2.0
  * Requires at least: 5.8
  * Requires PHP:      7.4
  * Author:            Portal Nova FM
@@ -13,7 +13,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'NFE_VERSION', '1.1.0' );
+define( 'NFE_VERSION', '1.2.0' );
 define( 'NFE_FILE', __FILE__ );
 define( 'NFE_DIR', plugin_dir_path( __FILE__ ) );
 define( 'NFE_URL', plugin_dir_url( __FILE__ ) );

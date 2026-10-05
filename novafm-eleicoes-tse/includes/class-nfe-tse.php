@@ -549,6 +549,7 @@ class NFE_TSE {
 			$agrs[] = array(
 				'nome'  => 'i' === $tp ? implode( '/', $siglas ) : NFE_Render::titulo( $agr['nm'] ),
 				'sigla' => isset( $agr['com'] ) ? (string) $agr['com'] : implode( '/', $siglas ),
+				'extenso' => isset( $agr['nm'] ) ? NFE_Render::titulo( $agr['nm'] ) : '',
 				'tipo'  => $tp,
 				'votos' => $votos_ag,
 				'vagas' => isset( $agr['vag'] ) ? (int) $agr['vag'] : 0,

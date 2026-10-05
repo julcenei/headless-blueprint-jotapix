@@ -263,6 +263,27 @@
 		if (vazio) vazio.hidden = vis > 0;
 	};
 
+	/* ---------- hemiciclo: destaca o partido sob o mouse/foco ---------- */
+
+	function focoHemi(ev) {
+		var alvo = ev.target.closest ? ev.target.closest('.nfe-hemi [data-p]') : null;
+		var hemi = ev.target.closest ? ev.target.closest('.nfe-hemi') : null;
+		if (!hemi) return;
+		var p = alvo && ev.type !== 'mouseout' && ev.type !== 'focusout' ? alvo.getAttribute('data-p') : null;
+		if (ev.type === 'mouseout' && ev.relatedTarget && hemi.contains(ev.relatedTarget)) {
+			var dest = ev.relatedTarget.closest('[data-p]');
+			p = dest ? dest.getAttribute('data-p') : null;
+		}
+		hemi.classList.toggle('is-foco', p !== null);
+		var itens = hemi.querySelectorAll('[data-p]');
+		for (var i = 0; i < itens.length; i++) {
+			itens[i].classList.toggle('is-on', itens[i].getAttribute('data-p') === p);
+		}
+	}
+	['mouseover', 'mouseout', 'focusin', 'focusout'].forEach(function (t) {
+		document.addEventListener(t, focoHemi);
+	});
+
 	/* ---------- fotos que não existem no TSE viram iniciais ---------- */
 
 	document.addEventListener(
@@ -279,9 +300,49 @@
 		true
 	);
 
+	/* ---------- largura: sai da coluna do tema sem passar da tela ---------- */
+
+	// O CSS já centraliza assumindo coluna centrada; aqui medimos a coluna real
+	// (temas com barra lateral ou padding assimétrico) e mantemos 16px de folga.
+	function ajustaLargura() {
+		var els = document.querySelectorAll('.nfe[data-largo]');
+		var vw = document.documentElement.clientWidth;
+		for (var i = 0; i < els.length; i++) {
+			var el = els[i];
+			var par = el.parentElement;
+			if (!par) continue;
+			var max = parseInt(getComputedStyle(el).getPropertyValue('--nfe-largura'), 10) || 1130;
+			var pr = par.getBoundingClientRect();
+			var cs = getComputedStyle(par);
+			var pl = pr.left + parseFloat(cs.paddingLeft || 0);
+			var pw = par.clientWidth - parseFloat(cs.paddingLeft || 0) - parseFloat(cs.paddingRight || 0);
+			var w = Math.min(max, vw - 32);
+			var ml, mr;
+			if (w <= pw) {
+				// A coluna já comporta: ocupa a coluna (até o máximo), centralizado nela.
+				w = Math.min(max, pw);
+				ml = mr = (pw - w) / 2;
+			} else {
+				var left = Math.max(16, Math.min(vw - 16 - w, pl + pw / 2 - w / 2));
+				ml = left - pl;
+				mr = pl + pw - (left + w);
+			}
+			// !important: o layout "constrained" dos temas de blocos força margin:auto !important.
+			el.style.setProperty('width', w + 'px', 'important');
+			el.style.setProperty('margin-left', ml + 'px', 'important');
+			el.style.setProperty('margin-right', mr + 'px', 'important');
+		}
+	}
+	var rafLargura = 0;
+	window.addEventListener('resize', function () {
+		if (rafLargura) cancelAnimationFrame(rafLargura);
+		rafLargura = requestAnimationFrame(ajustaLargura);
+	});
+
 	/* ---------- boot ---------- */
 
 	function boot() {
+		ajustaLargura();
 		if (!CFG.rest || !window.fetch) return;
 		var widgets = [];
 		var els = document.querySelectorAll('.nfe-widget');

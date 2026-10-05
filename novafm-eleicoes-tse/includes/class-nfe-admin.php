@@ -100,6 +100,11 @@ class NFE_Admin {
 						<td><label><input type="checkbox" name="<?php echo esc_attr( NFE_Options::KEY ); ?>[fotos]" value="1" <?php checked( $o['fotos'], 1 ); ?>> Mostrar fotos (carregadas do TSE)</label></td>
 					</tr>
 					<tr>
+						<th scope="row"><label for="nfe_largura">Largura do painel (px)</label></th>
+						<td><?php self::campo( 'largura', $o['largura'], 'number', 'min="0" max="1600" step="10" style="width:7em"' ); ?>
+							<p class="description">O painel e a página por seção podem ficar mais largos que a coluna de texto do tema (900px), centralizados e sem passar da tela. Use <code>0</code> para seguir a largura do tema.</p></td>
+					</tr>
+					<tr>
 						<th scope="row"><label for="nfe_link">Página da apuração</label></th>
 						<td><?php self::campo( 'link', $o['link'], 'url' ); ?>
 							<p class="description">Link "Ver apuração completa" dos widgets compactos (ex.: a página onde está o painel).</p></td>

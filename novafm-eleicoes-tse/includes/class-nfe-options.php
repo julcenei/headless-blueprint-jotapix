@@ -18,6 +18,7 @@ class NFE_Options {
 			'cor'       => '#ff6600',
 			'fotos'     => 1,
 			'link'      => '',
+			'largura'   => 1130,
 		);
 	}
 
@@ -50,6 +51,9 @@ class NFE_Options {
 
 		$out['fotos'] = empty( $in['fotos'] ) ? 0 : 1;
 		$out['link']  = isset( $in['link'] ) ? esc_url_raw( trim( $in['link'] ) ) : '';
+		// 0 = respeitar a largura do tema; senão, entre 600 e 1600 px.
+		$larg           = isset( $in['largura'] ) ? (int) $in['largura'] : $d['largura'];
+		$out['largura'] = $larg <= 0 ? 0 : max( 600, min( 1600, $larg ) );
 
 		// Ciclo ou UF diferentes mudam todas as chaves de dados: invalida o cache.
 		$old = self::all();

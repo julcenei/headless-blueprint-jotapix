@@ -26,6 +26,15 @@
 	clip: rect(1px, 1px, 1px, 1px); white-space: nowrap;
 }
 
+/* Painel/seções mais largos que a coluna de texto do tema, centralizados e sem passar da tela. */
+.nfe[data-largo] {
+	--nfe-w: min(var(--nfe-largura, 1130px), calc(100vw - 32px));
+	width: var(--nfe-w) !important;
+	max-width: none !important;
+	margin-left: calc(50% - var(--nfe-w) / 2) !important;
+	margin-right: calc(50% - var(--nfe-w) / 2) !important;
+}
+
 /* ---------- painel ---------- */
 .nfe-painel__bar { display: flex; flex-direction: column; gap: 12px; margin-bottom: 16px; }
 .nfe-tabs {
@@ -128,14 +137,46 @@
 .nfe-tag--alerta { background: var(--nfe-warn-bg); color: var(--nfe-warn); }
 
 /* ---------- proporcionais ---------- */
-.nfe-vagas { margin: 0 0 16px; }
-.nfe .nfe-sub { margin: 0 0 8px; font-size: 13px; font-weight: 800; text-transform: uppercase; letter-spacing: .05em; color: var(--nfe-muted); }
-.nfe .nfe-vagas ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
-.nfe-vagas li {
-	margin: 0; display: inline-flex; align-items: baseline; gap: 6px; padding: 5px 10px;
-	border-radius: 8px; background: var(--nfe-soft); font-size: 13px;
+.nfe-vagas { margin: 0 0 20px; }
+.nfe .nfe-sub { margin: 0 0 10px; font-size: 13px; font-weight: 800; text-transform: uppercase; letter-spacing: .05em; color: var(--nfe-muted); }
+
+/* ---------- hemiciclo ---------- */
+.nfe-hemi {
+	display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: 20px 28px; align-items: center;
+	padding: 18px 20px; border-radius: 12px;
+	background: linear-gradient(180deg, var(--nfe-soft), var(--nfe-bg) 85%);
+	border: 1px solid var(--nfe-line);
 }
-.nfe-vagas strong { font-size: 16px; color: var(--nfe-accent); font-variant-numeric: tabular-nums; }
+.nfe .nfe-hemi__fig { margin: 0; padding: 0; }
+.nfe-hemi__fig svg { display: block; width: 100%; max-width: 480px; height: auto; margin: 0 auto; overflow: visible; }
+.nfe-hemi__p { transition: opacity .18s ease; cursor: default; }
+.nfe-hemi.is-foco .nfe-hemi__p { opacity: .16; }
+.nfe-hemi.is-foco .nfe-hemi__p.is-on { opacity: 1; }
+.nfe .nfe-hemi__n { font-size: 26px; font-weight: 800; fill: var(--nfe-ink); font-family: var(--font-head, inherit); }
+.nfe .nfe-hemi__l { font-size: 8px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; fill: var(--nfe-muted); }
+
+.nfe .nfe-hemi__leg { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; }
+.nfe .nfe-hemi__leg li {
+	margin: 0; display: grid; grid-template-columns: 12px minmax(0, 1fr) auto; gap: 4px 12px; align-items: center;
+	padding: 8px 10px; border-radius: 8px; transition: background .15s ease; outline: none;
+}
+.nfe .nfe-hemi__leg li:hover, .nfe .nfe-hemi__leg li.is-on, .nfe .nfe-hemi__leg li:focus-visible { background: var(--nfe-bg); box-shadow: 0 1px 3px rgba(11, 25, 44, .08); }
+.nfe-hemi__sw { width: 12px; height: 12px; border-radius: 4px; background: var(--nfe-c); }
+.nfe-hemi__nm { min-width: 0; display: flex; flex-direction: column; line-height: 1.25; }
+.nfe .nfe-hemi__nm strong { font-size: 15px; font-weight: 800; color: var(--nfe-ink); }
+.nfe .nfe-hemi__nm small { font-size: 12px; color: var(--nfe-muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.nfe-hemi__v { display: flex; flex-direction: column; align-items: flex-end; line-height: 1.15; font-variant-numeric: tabular-nums; }
+.nfe .nfe-hemi__v b { font-size: 22px; font-weight: 800; color: var(--nfe-ink); }
+.nfe .nfe-hemi__v small { font-size: 11px; color: var(--nfe-muted); white-space: nowrap; }
+.nfe-hemi__bar { grid-column: 2 / -1; height: 3px; border-radius: 999px; background: var(--nfe-line); overflow: hidden; }
+.nfe-hemi__bar span { display: block; height: 100%; border-radius: inherit; background: var(--nfe-c); }
+
+@container (max-width: 640px) {
+	.nfe-hemi { grid-template-columns: 1fr; padding: 14px; }
+	.nfe-hemi__fig svg { max-width: 380px; }
+	.nfe .nfe-hemi__leg { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); }
+}
+
 .nfe-tools { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; margin: 0 0 8px; }
 .nfe-search { flex: 1 1 240px; }
 .nfe-search input {

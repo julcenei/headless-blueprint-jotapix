@@ -74,9 +74,30 @@ class NFE_Shortcodes {
 		);
 	}
 
-	private static function estilo() {
+	/**
+	 * Atributos de estilo do contêiner.
+	 *
+	 * @param int|null $largura Largura máxima em px para sair da coluna do tema (0/null = não sair).
+	 */
+	private static function estilo( $largura = null ) {
+		$css = array();
 		$cor = NFE_Options::get( 'cor' );
-		return $cor ? ' style="--nfe-accent:' . esc_attr( $cor ) . '"' : '';
+		if ( $cor ) {
+			$css[] = '--nfe-accent:' . $cor;
+		}
+		if ( $largura ) {
+			$css[] = '--nfe-largura:' . (int) $largura . 'px';
+		}
+		return ( $largura ? ' data-largo="1"' : '' ) . ( $css ? ' style="' . esc_attr( implode( ';', $css ) ) . '"' : '' );
+	}
+
+	/** Largura do atributo "largura" (px) ou, sem ele, da configuração. */
+	private static function largura( $attr, $padrao ) {
+		if ( '' !== (string) $attr ) {
+			$v = (int) $attr;
+			return $v > 0 ? max( 320, min( 1600, $v ) ) : 0;
+		}
+		return $padrao ? (int) NFE_Options::get( 'largura' ) : 0;
 	}
 
 	private static function cargo_valido( $c, $padrao = 'presidente' ) {
@@ -107,8 +128,9 @@ class NFE_Shortcodes {
 				'layout' => 'completo',
 				'limite' => '',
 				'fotos'  => '',
-				'titulo' => '',
-				'link'   => '',
+				'titulo'  => '',
+				'link'    => '',
+				'largura' => '',
 			),
 			$atts,
 			'eleicoes_tse'
@@ -134,7 +156,8 @@ class NFE_Shortcodes {
 			'strlen'
 		);
 
-		return '<div class="nfe nfe-widget"' . self::estilo() . ' data-nfe="' . esc_attr( wp_json_encode( $params ) ) . '" data-gerado="' . time() . '" data-intervalo="' . (int) self::intervalo( $r ) . '">'
+		$largura = 'compacto' === $opts['layout'] ? 0 : self::largura( $a['largura'], false );
+		return '<div class="nfe nfe-widget"' . self::estilo( $largura ) . ' data-nfe="' . esc_attr( wp_json_encode( $params ) ) . '" data-gerado="' . time() . '" data-intervalo="' . (int) self::intervalo( $r ) . '">'
 			. '<div class="nfe-out">' . NFE_Render::resultado( $r, $opts ) . '</div></div>';
 	}
 
@@ -157,7 +180,7 @@ class NFE_Shortcodes {
 
 	/** [eleicoes_tse_secoes] — seções de um município e boletim de urna de cada uma. */
 	public static function secoes( $atts ) {
-		$a = shortcode_atts( array( 'local' => '', 'turno' => 'auto' ), $atts, 'eleicoes_tse_secoes' );
+		$a = shortcode_atts( array( 'local' => '', 'turno' => 'auto', 'largura' => '' ), $atts, 'eleicoes_tse_secoes' );
 		self::enqueue();
 
 		$local = NFE_Rest::limpa_local( $a['local'] );
@@ -177,7 +200,7 @@ class NFE_Shortcodes {
 			),
 			'strlen'
 		);
-		return '<div class="nfe nfe-widget"' . self::estilo() . ' data-nfe="' . esc_attr( wp_json_encode( $params ) ) . '" data-gerado="' . time() . '" data-intervalo="' . (int) $s['intervalo'] . '" data-url="1">'
+		return '<div class="nfe nfe-widget"' . self::estilo( self::largura( $a['largura'], true ) ) . ' data-nfe="' . esc_attr( wp_json_encode( $params ) ) . '" data-gerado="' . time() . '" data-intervalo="' . (int) $s['intervalo'] . '" data-url="1">'
 			. '<div class="nfe-out">' . $s['html'] . '</div></div>';
 	}
 
@@ -192,7 +215,8 @@ class NFE_Shortcodes {
 				'local'  => '',
 				'fotos'  => '',
 				'limite' => '',
-				'turno'  => 'auto',
+				'turno'   => 'auto',
+				'largura' => '',
 			),
 			$atts,
 			'eleicoes_tse_painel'
@@ -270,7 +294,7 @@ class NFE_Shortcodes {
 		$muns = NFE_TSE::municipios( $uf );
 
 		ob_start();
-		echo '<div class="nfe nfe-widget nfe-painel"' . self::estilo() . ' data-nfe="' . esc_attr( wp_json_encode( $params ) ) . '" data-gerado="' . time() . '" data-intervalo="' . (int) $intervalo . '" data-uf="' . esc_attr( $uf ) . '" data-url="1">'; // phpcs:ignore WordPress.Security.EscapeOutput
+		echo '<div class="nfe nfe-widget nfe-painel"' . self::estilo( self::largura( $a['largura'], true ) ) . ' data-nfe="' . esc_attr( wp_json_encode( $params ) ) . '" data-gerado="' . time() . '" data-intervalo="' . (int) $intervalo . '" data-uf="' . esc_attr( $uf ) . '" data-url="1">'; // phpcs:ignore WordPress.Security.EscapeOutput
 
 		echo '<div class="nfe-painel__bar">';
 		echo '<div class="nfe-tabs" role="group" aria-label="Cargo">';
